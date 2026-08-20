@@ -52,7 +52,7 @@ No GitHub, um repositório **público** e **vazio** chamado `valordocrm`
 ### 2. Enviar os arquivos
 
 ```bash
-git remote add origin https://github.com/themi/valordocrm.git
+git remote add origin https://github.com/imphard/valordocrm.git
 git push -u origin main
 ```
 
@@ -73,7 +73,7 @@ deles, então não é preciso trocar servidor de nomes):
 | AAAA  | `@`   | `2606:50c0:8001::153` |
 | AAAA  | `@`   | `2606:50c0:8002::153` |
 | AAAA  | `@`   | `2606:50c0:8003::153` |
-| CNAME | `www` | `themi.github.io.` |
+| CNAME | `www` | `imphard.github.io.` |
 
 Os quatro registros A são os endereços do GitHub Pages, e os quatro AAAA são os mesmos
 em IPv6. O `www` aponta para o GitHub, que o redireciona para o endereço sem `www`.
