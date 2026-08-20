@@ -58,3 +58,18 @@ Toda vez que quiser atualizar: `git add -A && git commit -m "..." && git push`.
 O PDF do guia é o produto pago. Em repositório público qualquer pessoa baixa o arquivo,
 e o Google indexa. A entrega tem que acontecer fora daqui: e-mail pós-compra, área de
 membros ou link assinado com expiração. Por isso `*.pdf` está no `.gitignore`.
+
+## Checkout e entrega (Kiwify)
+
+A venda e a entrega do PDF acontecem na Kiwify, fora deste repositório. O site só leva o
+visitante até lá.
+
+- O botão de compra da página de vendas aponta para o link de checkout
+  (`https://pay.kiwify.com.br/SEU-LINK`).
+- `assets/rastreio.js` está incluído em todas as páginas. Ele lê o `?ref=` da URL,
+  guarda na sessão e injeta `utm_source`, `utm_medium` e `utm_content` em qualquer link
+  que contenha `kiwify`. Com isso o painel da Kiwify mostra qual artigo trouxe a venda.
+- Os links internos já saem marcados: `?ref=artigo-como-medir-crm`,
+  `?ref=artigo-metricas-de-crm`, `?ref=blog`, `?ref=calculadora`.
+- Nada mais é necessário: sem cookie de terceiros, sem script externo, sem consentimento
+  de rastreio, porque a informação não sai do domínio até o clique de compra.
