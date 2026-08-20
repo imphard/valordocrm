@@ -93,6 +93,55 @@ p{margin-bottom:16px;max-width:66ch}
 footer{background:var(--ink);color:#9C8CA6;padding:40px 0;font-size:14.5px}
 footer a{color:var(--amb)}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* HERO EM DUAS COLUNAS */
+.heroline{display:flex;gap:52px;align-items:center;flex-wrap:wrap}
+.heroline .txt{flex:1 1 400px;min-width:280px}
+.heroline .arte{flex:0 0 268px;max-width:268px;margin:0 auto}
+/* moldura clara: a capa usa o mesmo gradiente do hero e sem isso ela some no fundo */
+.heroline .arte .moldura{background:#fff;padding:12px;border-radius:18px;
+  box-shadow:0 30px 70px -20px rgba(0,0,0,.6);transform:rotate(-2.5deg)}
+.heroline .arte img{width:100%;height:auto;border-radius:10px;display:block}
+.heroline h1{font-size:clamp(31px,4.4vw,46px)}
+.heroline .sub{font-size:clamp(16px,1.8vw,19px)}
+.heroline .btn{padding:15px 26px;font-size:16px}
+@media(max-width:820px){.heroline{gap:36px}.heroline .arte{flex:0 0 210px;max-width:210px}}
+
+/* FAIXA DE NUMEROS */
+.faixa{background:#fff;border-bottom:1px solid var(--line);padding:0}
+.faixa .w{display:flex;flex-wrap:wrap}
+.faixa .it{flex:1 1 150px;text-align:center;padding:30px 12px}
+.faixa .n{font-size:clamp(28px,4vw,38px);font-weight:900;color:var(--mag);line-height:1}
+.faixa .l{font-size:12.5px;color:var(--ink3);text-transform:uppercase;letter-spacing:.12em;margin-top:8px}
+
+/* FIGURA DE COMPARACAO */
+.fig{margin:34px 0}
+.fig .rot{display:flex;justify-content:space-between;font-size:14.5px;color:var(--ink2);margin:0 0 7px}
+.fig .rot b{color:var(--ink)}
+.fig .barra{display:flex;height:46px;border-radius:9px;overflow:hidden;margin-bottom:20px}
+.fig .seg{display:flex;align-items:center;padding:0 14px;font-size:13.5px;font-weight:700;color:#fff;white-space:nowrap}
+.fig .todo{background:var(--mag);width:100%}
+.fig .fantasma{background:#E9DAE3;color:var(--ink3);width:78%}
+.fig .real{background:var(--org);width:22%}
+.fig .nota{font-size:14px;color:var(--ink3);margin:0}
+@media(max-width:560px){.fig .seg{font-size:12px;padding:0 9px}}
+
+/* NUMERO GRANDE NOS MODULOS */
+.mod{position:relative;overflow:hidden}
+.mod .marca-n{position:absolute;right:12px;top:-6px;font-size:74px;font-weight:900;
+  color:var(--blush);line-height:1;pointer-events:none}
+.mod .n,.mod h3,.mod p{position:relative}
+
+/* SELO DE GARANTIA */
+.garantia{display:inline-flex;align-items:center;gap:12px;background:var(--blush);
+  border:1px solid var(--line);border-radius:100px;padding:12px 22px;margin-top:24px;
+  font-size:14.5px;color:var(--ink2);text-align:left}
+.garantia .d{font-size:22px;font-weight:900;color:var(--org);line-height:1}
+
+/* REVELACAO AO ROLAR (aplicada por JS; sem JS nada some) */
+.rev{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rev.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rev{opacity:1;transform:none;transition:none}}
+
 </style>
 <meta name="description" content="Guia prático em 5 módulos sobre como medir o resultado real do CRM: incrementalidade, grupo de controle, dimensionamento e como defender o número na reunião de orçamento.">
 <link rel="canonical" href="https://valordocrm.com.br/">
@@ -141,16 +190,36 @@ footer .fnav a{margin-right:18px}
       <a href="blog/">Artigos</a>
       <a href="calculadora/">Calculadora gratuita</a>
     </nav>
-    <div class="eb">Guia prático · CRM &amp; Loyalty</div>
-    <h1>Você consegue provar que o CRM da sua empresa gera dinheiro?</h1>
-    <p class="sub">Um método completo para medir o efeito real das suas campanhas, e defender esse número na sala onde o orçamento é decidido.</p>
-    <div class="cta">
-      <a class="btn b1" href="#comprar">Quero o guia completo</a>
-      <a class="btn b2" href="#ferramenta">Testar com a minha campanha</a>
+    <div class="heroline">
+      <div class="txt">
+        <div class="eb">Guia prático · CRM &amp; Loyalty</div>
+        <h1>Você consegue provar que o CRM da sua empresa gera dinheiro?</h1>
+        <p class="sub">Um método completo para medir o efeito real das suas campanhas, e defender esse número na sala onde o orçamento é decidido.</p>
+        <div class="cta">
+          <a class="btn b1" href="#comprar">Quero o guia completo</a>
+          <a class="btn b2" href="#ferramenta">Testar com a minha campanha</a>
+        </div>
+        <div class="fine">62 páginas · 5 módulos · exemplos calculados, não estimados</div>
+      </div>
+      <div class="arte">
+        <div class="moldura">
+          <img src="assets/capa-guia.png" width="760" height="760"
+               alt="Capa do guia Provando o valor do CRM">
+        </div>
+      </div>
     </div>
-    <div class="fine">62 páginas · 5 módulos · exemplos calculados, não estimados</div>
   </div>
 </header>
+
+
+<section class="faixa">
+  <div class="w">
+    <div class="it"><div class="n">5</div><div class="l">módulos</div></div>
+    <div class="it"><div class="n">62</div><div class="l">páginas</div></div>
+    <div class="it"><div class="n">5</div><div class="l">exercícios práticos</div></div>
+    <div class="it"><div class="n">7</div><div class="l">dias de garantia</div></div>
+  </div>
+</section>
 
 <section class="dor">
   <div class="w">
@@ -162,6 +231,17 @@ footer .fnav a{margin-right:18px}
     </div>
     <p>Performance responde com CAC e ROAS. Comercial responde com pipeline. CRM, na maioria das empresas, responde com taxa de abertura e clique. Isso não é resposta, é mudança de assunto.</p>
     <p>E o problema não é falta de competência. É que a resposta certa exige um tipo de medição que <b>nenhuma ferramenta entrega pronta</b> e que quase ninguém foi treinado para montar.</p>
+
+    <div class="fig">
+      <div class="rot"><span><b>O que o report diz</b></span><span>1.800 conversões · R$ 90.000</span></div>
+      <div class="barra"><div class="seg todo">tudo creditado à campanha</div></div>
+      <div class="rot"><span><b>O que a campanha causou</b></span><span>400 conversões · R$ 20.000</span></div>
+      <div class="barra">
+        <div class="seg fantasma">comprariam de qualquer jeito</div>
+        <div class="seg real">causado</div>
+      </div>
+      <p class="nota">Mesma campanha, duas leituras. Com uma taxa de compra natural de 0,7%, o report superestima o efeito em 4,5 vezes — e uma campanha que custou R$ 30.000 vira prejuízo em vez de lucro. Números fictícios, contas reais.</p>
+    </div>
   </div>
 </section>
 
@@ -185,19 +265,19 @@ footer .fnav a{margin-right:18px}
     <h2>Os cinco módulos</h2>
     <p class="lead">Cada módulo resolve uma etapa e cria a pergunta que o seguinte responde.</p>
     <div class="mods">
-      <div class="mod"><div class="n">Módulo 1</div>
+      <div class="mod"><div class="marca-n">01</div><div class="n">Módulo 1</div>
         <h3>Por que quase ninguém sabe se o CRM funciona</h3>
         <p>A dissecação do report padrão, linha por linha, e o exercício numérico que mostra o efeito superestimado em 4,5 vezes.</p></div>
-      <div class="mod"><div class="n">Módulo 2</div>
+      <div class="mod"><div class="marca-n">02</div><div class="n">Módulo 2</div>
         <h3>Incrementalidade</h3>
         <p>As três condições de um grupo de controle válido, e o viés de seleção que faz uma campanha de 20% parecer 200%.</p></div>
-      <div class="mod"><div class="n">Módulo 3</div>
+      <div class="mod"><div class="marca-n">03</div><div class="n">Módulo 3</div>
         <h3>Montar na prática</h3>
         <p>Tamanho de grupo com a conta feita, marcação que sobrevive ao tempo, e o mapa das quatro portas por onde o controle vaza.</p></div>
-      <div class="mod"><div class="n">Módulo 4</div>
+      <div class="mod"><div class="marca-n">04</div><div class="n">Módulo 4</div>
         <h3>Medir e interpretar</h3>
         <p>Do dado bruto ao número da apresentação, margem de erro, janela de medição e o teste que confere se o sorteio funcionou.</p></div>
-      <div class="mod"><div class="n">Módulo 5</div>
+      <div class="mod"><div class="marca-n">05</div><div class="n">Módulo 5</div>
         <h3>Vender o resultado</h3>
         <p>A tradução em três camadas, as objeções previsíveis com resposta pronta, e como conduzir a conversa quando o número vem ruim.</p></div>
     </div>
@@ -266,7 +346,10 @@ footer .fnav a{margin-right:18px}
         <li>Checklist de verificação antes de rodar qualquer teste</li>
       </ul>
       <a class="btn b1" href="https://pay.kiwify.com.br/jm98Xz9">Comprar agora</a>
-      <p style="margin:22px auto 0;font-size:14.5px;color:var(--ink3);max-width:46ch">Garantia de 7 dias. Se o material não entregar o que promete, é só pedir reembolso.</p>
+      <div class="garantia">
+        <span class="d">7</span>
+        <span>dias de garantia incondicional.<br>Se o material não entregar o que promete, é só pedir reembolso.</span>
+      </div>
     </div>
   </div>
 </section>
@@ -296,5 +379,33 @@ footer .fnav a{margin-right:18px}
 </footer>
 
 <script src="assets/rastreio.js" defer></script>
+<script>
+(function () {
+  if (!("IntersectionObserver" in window)) return;
+  var alvos = document.querySelectorAll("section > .w > *, .mod, .col, .price, .fig");
+  var obs = new IntersectionObserver(function (entradas) {
+    entradas.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("on"); obs.unobserve(e.target); }
+    });
+  }, { rootMargin: "0px 0px -60px 0px" });
+  var observados = [];
+  alvos.forEach(function (el, i) {
+    if (el.closest(".hero")) return;
+    el.classList.add("rev");
+    el.style.transitionDelay = (i % 3) * 70 + "ms";
+    obs.observe(el);
+    observados.push(el);
+  });
+
+  // rede de seguranca: se em 2s nada foi revelado, o observador nao esta
+  // funcionando neste ambiente. Mostra tudo em vez de deixar a pagina vazia.
+  setTimeout(function () {
+    var algum = observados.some(function (el) { return el.classList.contains("on"); });
+    if (!algum) {
+      observados.forEach(function (el) { el.style.transitionDelay = "0ms"; el.classList.add("on"); });
+    }
+  }, 2000);
+})();
+</script>
 </body>
 </html>
