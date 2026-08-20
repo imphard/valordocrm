@@ -3,30 +3,563 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Calculadora de incrementalidade de CRM</title>
-<meta name="description" content="Calculadora de incrementalidade e dimensionamento de grupo de controle para CRM.">
+<title>Diagnóstico de incrementalidade · Provando o valor do CRM</title>
+<style>
+@font-face{font-family:"Appetite Pro";font-weight:400;font-style:normal;font-display:swap;src:url("../assets/fonts/AppetitePro-Regular.otf") format("opentype")}
+@font-face{font-family:"Appetite Pro";font-weight:700;font-style:normal;font-display:swap;src:url("../assets/fonts/AppetitePro-Bold.otf") format("opentype")}
+@font-face{font-family:"Appetite Pro";font-weight:900;font-style:normal;font-display:swap;src:url("../assets/fonts/AppetitePro-Heavy.otf") format("opentype")}
+
+:root{
+  --ink:#1A1523; --ink-2:#4A3D52; --ink-3:#7A6B82;
+  --magenta:#C2185B; --orange:#E8590C; --amber:#FFB020;
+  --plum:#3D0A5B; --blush:#FDF0F5; --line:#EFD9E5;
+  --paper:#FBF8FA; --ok:#0F7B5A; --bad:#C2185B;
+  --disp:"Appetite Pro",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--disp);background:var(--paper);color:var(--ink);
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:940px;margin:0 auto;padding:0 24px}
+
+/* ---------- HERO ---------- */
+.hero{background:linear-gradient(155deg,#3D0A5B 0%,#A3126B 55%,#E8590C 100%);
+  color:#fff;padding:72px 0 64px;position:relative;overflow:hidden}
+.hero .eyebrow{font-size:12px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--amber);font-weight:700;margin-bottom:22px}
+.hero h1{font-size:clamp(34px,6vw,56px);font-weight:900;line-height:1.05;letter-spacing:-.5px;max-width:16ch}
+.hero p{margin-top:20px;font-size:clamp(16px,2vw,19px);color:#F6DCEC;max-width:52ch;line-height:1.55}
+.hero .strip{margin-top:34px;display:flex;flex-wrap:wrap;margin-left:-5px}
+.chip{margin:5px}
+.chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);
+  padding:7px 14px;border-radius:100px;font-size:13.5px;color:#fff}
+
+/* ---------- FORM ---------- */
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:32px;margin-top:-38px;position:relative;box-shadow:0 10px 40px rgba(61,10,91,.10)}
+.panel h2{font-size:21px;font-weight:700;color:var(--magenta);margin-bottom:6px}
+.panel .hint{font-size:14.5px;color:var(--ink-3);margin-bottom:26px}
+.grid{display:flex;flex-wrap:wrap;margin:0 -10px}
+.grid .field{flex:1 1 260px;min-width:220px;padding:0 10px;margin-bottom:20px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.panel{padding:24px}}
+.field label{display:block;font-size:13px;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink-2);margin-bottom:7px}
+.field .sub{font-size:13px;color:var(--ink-3);font-weight:400;text-transform:none;letter-spacing:0;display:block;margin-top:3px}
+.inp{width:100%;font-family:var(--disp);font-size:19px;padding:12px 14px;
+  border:1.5px solid var(--line);border-radius:8px;background:var(--blush);color:var(--ink)}
+.inp:focus{outline:3px solid rgba(232,89,12,.35);outline-offset:1px;border-color:var(--orange);background:#fff}
+.inp::placeholder{color:#C4AFCB}
+
+/* ---------- SLIDER ---------- */
+.slab{margin-top:30px;padding:26px;background:var(--blush);border-radius:12px;border:1px solid var(--line)}
+.slab .top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap}
+.slab .top>*{margin-right:16px}
+.slab label{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2)}
+.slab .val{font-size:34px;font-weight:900;color:var(--magenta);line-height:1}
+.slab .val small{font-size:16px;font-weight:700}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:100px;
+  background:linear-gradient(90deg,var(--amber),var(--magenta));margin-top:18px;cursor:pointer}
+input[type=range]:focus{outline:3px solid rgba(232,89,12,.35);outline-offset:6px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+  background:#fff;border:4px solid var(--orange);cursor:pointer;box-shadow:0 2px 8px rgba(61,10,91,.25)}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:#fff;
+  border:4px solid var(--orange);cursor:pointer}
+.ticks{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-3);margin-top:8px}
+.nosei{margin-top:14px;font-size:14px;color:var(--ink-2);background:#fff;
+  border-left:3px solid var(--orange);padding:12px 14px;border-radius:0 6px 6px 0}
+
+/* ---------- RESULTADO ---------- */
+.result{margin-top:26px;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.verdict{padding:26px 30px;color:#fff;transition:background .45s ease}
+.verdict .k{font-size:12px;letter-spacing:.24em;text-transform:uppercase;opacity:.9;font-weight:700}
+.verdict .big{font-size:clamp(24px,4.4vw,34px);font-weight:900;line-height:1.15;margin-top:8px}
+.verdict .why{margin-top:10px;font-size:15.5px;opacity:.95;max-width:60ch}
+.v-good{background:linear-gradient(135deg,#0F7B5A,#12A074)}
+.v-mid{background:linear-gradient(135deg,#B8730A,#E8990C)}
+.v-bad{background:linear-gradient(135deg,#8C1245,#C2185B)}
+
+/* ---------- BARRAS ---------- */
+.bars{padding:30px}
+.barrow{margin-bottom:22px}
+.barrow .lab{display:flex;justify-content:space-between;font-size:13.5px;
+  color:var(--ink-2);margin-bottom:7px;font-weight:700}
+.track{height:44px;background:var(--blush);border-radius:7px;overflow:hidden;display:flex}
+.seg{height:100%;display:flex;align-items:center;justify-content:center;color:#fff;
+  font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;
+  transition:width .5s cubic-bezier(.4,0,.2,1)}
+.seg-ghost{background:#DCC3D3;color:#5C3B50}
+.seg-real{background:var(--orange)}
+.seg-all{background:var(--magenta)}
+
+/* ---------- MÉTRICAS ---------- */
+.mets{display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border-top:1px solid var(--line)}
+.met{flex:1 1 calc(25% - 1px);min-width:150px}
+@media(max-width:720px){.met{flex:1 1 calc(50% - 1px)}}
+.met{background:#fff;padding:20px 18px}
+.met .n{font-size:26px;font-weight:900;color:var(--magenta);line-height:1.1}
+.met .n.neg{color:var(--orange)}
+.met .l{font-size:12.5px;color:var(--ink-3);margin-top:5px;line-height:1.35}
+
+/* ---------- PONTO DE VIRADA ---------- */
+.flip{margin-top:26px;padding:30px;border-radius:14px;background:var(--ink);color:#fff}
+.flip .k{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);font-weight:700}
+.flip h3{font-size:clamp(21px,3.4vw,27px);font-weight:900;margin:10px 0 12px;line-height:1.2}
+.flip p{font-size:15.5px;color:#D9CFE0;max-width:62ch}
+.flip .num{color:var(--amber)}
+
+/* ---------- EXERCÍCIO ---------- */
+.ex{margin:44px 0 0}
+.ex h2{font-size:24px;font-weight:900;color:var(--magenta)}
+.ex .sb{font-size:15px;color:var(--ink-3);margin:6px 0 22px;max-width:62ch}
+.q{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:14px}
+.q .qn{display:inline-block;background:var(--orange);color:#fff;font-size:12px;font-weight:700;
+  padding:3px 9px;border-radius:4px;margin-bottom:10px}
+.q p{font-size:16.5px;margin-bottom:12px}
+.q textarea{width:100%;font-family:var(--disp);font-size:16px;padding:12px 14px;border:1.5px solid var(--line);
+  border-radius:8px;background:var(--blush);resize:vertical;min-height:76px;color:var(--ink)}
+.q textarea:focus{outline:3px solid rgba(232,89,12,.35);outline-offset:1px;border-color:var(--orange);background:#fff}
+.btnrow{display:flex;flex-wrap:wrap;margin-top:20px;margin-left:-6px}
+.btnrow>*{margin:6px}
+.btn{font-family:var(--disp);font-size:16px;font-weight:700;padding:13px 24px;border-radius:8px;
+  border:none;cursor:pointer;transition:transform .12s ease,filter .12s ease}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:3px solid rgba(232,89,12,.5);outline-offset:2px}
+.btn-1{background:var(--magenta);color:#fff}
+.btn-2{background:#fff;color:var(--magenta);border:1.5px solid var(--line)}
+.toast{font-size:14.5px;color:var(--ok);font-weight:700;align-self:center;opacity:0;transition:opacity .3s}
+.toast.on{opacity:1}
+
+
+/* ---------- ETAPAS ---------- */
+.stage{margin-top:26px}
+.stage-h{display:flex;align-items:baseline;margin-bottom:6px}
+.stage-h .sn{margin-right:12px}
+.stage-h .sn{background:var(--ink);color:var(--amber);font-size:12px;font-weight:700;
+  padding:4px 10px;border-radius:5px;letter-spacing:.08em}
+.stage-h h2{font-size:23px;font-weight:900;color:var(--magenta)}
+.stage .sd{font-size:15.5px;color:var(--ink-3);margin-bottom:18px;max-width:64ch}
+
+/* palpite */
+.guess{background:#fff;border:1px solid var(--line);border-radius:14px;padding:30px}
+.guess .qq{font-size:19px;font-weight:700;margin-bottom:4px}
+.guess .qs{font-size:15px;color:var(--ink-3);margin-bottom:24px}
+.gval{font-size:44px;font-weight:900;color:var(--orange);line-height:1}
+.gval small{font-size:19px}
+.gside{font-size:14.5px;color:var(--ink-3);margin-top:4px}
+#locked .lockmsg{background:var(--blush);border:1px dashed var(--magenta);border-radius:12px;
+  padding:34px 28px;text-align:center;color:var(--ink-2);font-size:16px}
+#locked .lockmsg b{display:block;font-size:19px;color:var(--magenta);margin-bottom:6px;font-weight:900}
+.gap{margin-top:22px;padding:22px 24px;border-radius:12px;background:var(--ink);color:#fff}
+.gap .k{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);font-weight:700}
+.gap .t{font-size:20px;font-weight:900;margin:9px 0 8px;line-height:1.3}
+.gap p{font-size:15px;color:#D9CFE0;max-width:62ch}
+.gap .num{color:var(--amber)}
+
+/* casos */
+.case{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:12px}
+.case .ct{font-size:16.5px;margin-bottom:14px}
+.case .cb{display:flex;flex-wrap:wrap;margin-left:-5px}
+.case .cb .cbtn{margin:5px}
+.cbtn{font-family:var(--disp);font-size:15px;font-weight:700;padding:10px 20px;border-radius:8px;
+  border:1.5px solid var(--line);background:var(--blush);color:var(--ink-2);cursor:pointer}
+.cbtn:hover{border-color:var(--orange)}
+.cbtn:focus-visible{outline:3px solid rgba(232,89,12,.5);outline-offset:2px}
+.cbtn.sel{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.cfb{margin-top:14px;padding:14px 16px;border-radius:8px;font-size:15px;display:none;line-height:1.55}
+.cfb.show{display:block}
+.cfb.ok{background:#E7F5EF;border-left:4px solid var(--ok);color:#0B5540}
+.cfb.no{background:var(--blush);border-left:4px solid var(--magenta);color:#7A1039}
+.score{margin-top:16px;font-size:15.5px;color:var(--ink-2);font-weight:700}
+
+/* compromisso */
+.commit{background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px}
+.commit label{display:block;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--ink-2);margin:16px 0 7px}
+.commit label:first-child{margin-top:0}
+
+.closing{background:var(--ink);color:#fff;border-radius:14px;padding:34px}
+.closing .k{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);font-weight:700}
+.closing h3{font-size:clamp(21px,3.4vw,28px);font-weight:900;margin:11px 0 12px;line-height:1.22;max-width:22ch}
+.closing p{font-size:16px;color:#D9CFE0;max-width:64ch}
+.btn-amber{background:var(--amber);color:#2A1508}
+.closing .toast{color:var(--amber)}
+footer{margin:56px 0 40px;padding-top:24px;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap}
+footer span{margin-right:16px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+<meta name="description" content="Calculadora gratuita de incrementalidade de CRM: descubra quanto da receita da sua campanha foi realmente causado por ela, e a partir de qual taxa de compra natural ela deixa de se pagar.">
 <link rel="canonical" href="https://valordocrm.com.br/calculadora/">
-<link rel="stylesheet" href="../assets/site.css">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Sua última campanha realmente funcionou?">
+<meta property="og:description" content="Ferramenta gratuita de diagnóstico: quanto da receita reportada a campanha causou de fato.">
+<meta property="og:url" content="https://valordocrm.com.br/calculadora/">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+.navtop{display:flex;justify-content:flex-end;gap:26px;margin-bottom:28px;font-size:15px}
+.navtop a{color:#F6DCEC;text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.navtop a:hover{color:#fff;border-bottom-color:var(--amber)}
+.btn-guia{background:var(--amber);color:#2A1508;text-decoration:none;display:inline-block}
+footer .fnav a{color:var(--amber);margin-left:18px;text-decoration:none}
+@media(max-width:520px){.navtop{justify-content:flex-start;gap:18px;font-size:14px}}
+</style>
 </head>
 <body>
-<!-- PLACEHOLDER — substituir pelo HTML de arquivo unico da calculadora. -->
-<header class="topo">
+
+<header class="hero">
   <div class="wrap">
-    <a class="marca" href="../">Provando o valor <span>do CRM</span></a>
-    <nav class="nav">
+    <nav class="navtop">
+      <a href="../">O guia</a>
       <a href="../blog/">Artigos</a>
-      <a href="./" aria-current="page">Calculadora</a>
-      <a href="../?ref=calculadora#guia" class="btn">Ver o guia</a>
     </nav>
+    <div class="eyebrow">Módulo 1 · Exercício prático</div>
+    <h1>Sua última campanha realmente funcionou?</h1>
+    <p>Coloque os números da campanha e descubra quanto do resultado a campanha causou, e quanto teria acontecido de qualquer forma.</p>
+    <div class="strip">
+      <span class="chip">Nada é enviado para lugar nenhum</span>
+      <span class="chip">Roda no seu navegador</span>
+      <span class="chip">Leva 2 minutos</span>
+    </div>
   </div>
 </header>
+
 <main class="wrap">
-  <div class="texto" style="padding:4rem 0">
-    <p class="chapeu">Ferramenta</p>
-    <h1>Calculadora de incrementalidade</h1>
-    <p class="entrada">Esta pagina esta reservada para a calculadora interativa. O arquivo HTML sera colocado aqui.</p>
+
+  <section class="panel">
+    <h2>Os números da campanha</h2>
+    <p class="hint">Use uma campanha real que você rodou. Se não lembrar algum valor, uma estimativa próxima já serve.</p>
+
+    <div class="grid">
+      <div class="field">
+        <label for="base">Público impactado
+          <span class="sub">quantas pessoas receberam</span></label>
+        <input class="inp" id="base" type="number" min="1" value="200000" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="conv">Conversões atribuídas
+          <span class="sub">quantas compraram na janela</span></label>
+        <input class="inp" id="conv" type="number" min="0" value="1800" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="rec">Receita atribuída (R$)
+          <span class="sub">o número que foi para o report</span></label>
+        <input class="inp" id="rec" type="number" min="0" value="90000" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="custo">Custo da campanha (R$)
+          <span class="sub">disparo, mídia, desconto, produção</span></label>
+        <input class="inp" id="custo" type="number" min="0" value="30000" inputmode="numeric">
+      </div>
+    </div>
+
+
+  </section>
+
+
+  <section class="stage">
+    <div class="stage-h"><span class="sn">ETAPA 1</span><h2>Arrisque antes de ver</h2></div>
+    <p class="sd">Esta parte só funciona se você se comprometer com um número primeiro. Depois o resultado aparece.</p>
+
+    <div class="guess" id="guessBox">
+      <div class="qq">Dessa receita reportada, quanto você acha que a campanha realmente causou?</div>
+      <div class="qs">Ou seja: o quanto não teria acontecido se você não tivesse feito nada.</div>
+      <div class="gval" id="gVal">50<small>%</small></div>
+      <div class="gside" id="gSide">R$ 45.000 da receita reportada</div>
+      <input type="range" id="guess" min="0" max="100" value="50" aria-label="Percentual da receita que você acha que a campanha causou">
+      <div class="ticks"><span>nada foi causado</span><span>metade</span><span>tudo foi causado</span></div>
+      <div class="btnrow"><button class="btn btn-1" id="revelar">Ver o resultado</button></div>
+    </div>
+  </section>
+
+  <section class="stage" id="locked">
+    <div class="lockmsg"><b>O resultado está esperando o seu palpite</b>
+      Arrisque um número acima. A diferença entre o que você chutou e o que a conta mostra é a parte que ensina.</div>
+  </section>
+
+  <section class="result" id="result" style="display:none">
+    <div class="verdict v-bad" id="verdict">
+      <div class="k">Veredito</div>
+      <div class="big" id="vBig">Prejuízo de R$ 10.000</div>
+      <div class="why" id="vWhy">O report mostra lucro, mas depois de descontar quem compraria de qualquer forma, a campanha não pagou o próprio custo.</div>
+    </div>
+
+    <div class="bars">
+      <div class="barrow">
+        <div class="lab"><span>O que o report diz</span><span id="lRep">R$ 90.000</span></div>
+        <div class="track"><div class="seg seg-all" style="width:100%" id="bRep">1.800 conversões</div></div>
+      </div>
+      <div class="barrow">
+        <div class="lab"><span>O que a campanha causou</span><span id="lReal">R$ 20.000</span></div>
+        <div class="track">
+          <div class="seg seg-ghost" id="bGhost" style="width:78%">comprariam de qualquer jeito</div>
+          <div class="seg seg-real" id="bReal" style="width:22%">causado</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mets">
+      <div class="met"><div class="n" id="mInc">400</div><div class="l">conversões incrementais</div></div>
+      <div class="met"><div class="n" id="mRec">R$ 20.000</div><div class="l">receita incremental</div></div>
+      <div class="met"><div class="n" id="mRoiRep">+200%</div><div class="l">ROI que o report mostra</div></div>
+      <div class="met"><div class="n neg" id="mRoiReal">-33%</div><div class="l">ROI real</div></div>
+    </div>
+  </section>
+
+
+
+
+
+  <div class="gap" id="gapBox" style="display:none">
+    <div class="k">Seu palpite contra a conta</div>
+    <div class="t" id="gapT"></div>
+    <p id="gapP"></p>
   </div>
+
+  <section class="stage" id="exploraBox" style="display:none">
+    <div class="stage-h"><span class="sn">ETAPA 2</span><h2>Mexa na premissa</h2></div>
+    <p class="sd">O resultado acima depende inteiramente de um número que você não mediu. Arraste e veja o veredito da sua campanha trocar de lado.</p>
+    <div class="slab">
+      <div class="top">
+        <div>
+          <label for="taxa">Taxa de compra natural da base</label>
+          <div class="nosei" id="nosei">Você não mediu esse número, e quase ninguém mede. Foi ele que definiu todo o resultado acima.</div>
+        </div>
+        <div class="val" id="taxaVal">0,70<small>%</small></div>
+      </div>
+      <input type="range" id="taxa" min="0" max="200" value="70" aria-label="Taxa de compra natural da base em porcentagem">
+      <div class="ticks"><span>0%</span><span>1%</span><span>2%</span></div>
+    </div>
+  </section>
+
+  <section class="flip" id="flipBox" style="display:none">
+    <div class="k">O número que decide tudo</div>
+    <h3 id="flipT">Sua campanha só se paga se a taxa natural for menor que <span class="num" id="flipN">0,55%</span></h3>
+    <p id="flipP">Acima disso, o custo é maior que a receita que a campanha realmente gerou. É por isso que sem grupo de controle você não está medindo desempenho, está torcendo.</p>
+  </section>
+
+  <section class="stage">
+    <div class="stage-h"><span class="sn">ETAPA 3</span><h2>Reconheça em outros casos</h2></div>
+    <p class="sd">Diagnosticar a própria campanha é fácil quando alguém aponta o erro. O teste real é reconhecer o mesmo erro numa frase que parece normal. Para cada report abaixo: ele prova que a ação causou o resultado?</p>
+    <div id="cases"></div>
+    <div class="score" id="score"></div>
+  </section>
+
+  <section class="stage">
+    <div class="closing" id="closing">
+      <div class="k">Onde isso te deixa</div>
+      <h3>Você sabe reconhecer um report que não prova nada. Inclusive o seu.</h3>
+      <p>É só isso que o Módulo 1 entrega, e já é mais do que a maior parte do mercado consegue fazer. O que ainda falta é o outro lado: montar a medição que realmente prova. Em todos os cinco casos, o único que provou efeito foi o do sorteio, e é exatamente isso que vem a seguir.</p>
+      <div class="btnrow">
+        <a class="btn btn-guia" href="../">Ver o guia completo</a>
+        <button class="btn btn-amber" id="copiar">Copiar o diagnóstico da minha campanha</button>
+        <span class="toast" id="toast">Copiado</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Provando o valor do CRM · Guia prático em 5 módulos</span>
+    <span class="fnav"><a href="../">O guia</a><a href="../blog/como-medir-crm/">Como medir CRM</a><a href="../blog/metricas-de-crm/">Métricas de CRM</a></span>
+  </footer>
 </main>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const mil = v => { const s = String(Math.abs(Math.round(v)));
+    return (v<0?'-':'') + s.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
+  const brl = v => 'R$ ' + mil(v);
+  const pct = v => (v>=0?'+':'') + Math.round(v) + '%';
+  let revelado = false;
+
+  function dados(){
+    return {
+      N: Math.max(1, +$('base').value || 0),
+      C: Math.max(0, +$('conv').value || 0),
+      R: Math.max(0, +$('rec').value || 0),
+      K: Math.max(0, +$('custo').value || 0),
+      p: (+$('taxa').value || 0) / 10000
+    };
+  }
+
+  function calc(){
+    const {N,C,R,K,p} = dados();
+    $('taxaVal').innerHTML = (p*100).toFixed(2).replace('.',',') + '<small>%</small>';
+
+    const ticket = C > 0 ? R / C : 0;
+    const esperadas = Math.min(N * p, C);
+    const inc = Math.max(0, C - esperadas);
+    const recInc = inc * ticket;
+    const roiRep = K > 0 ? ((R - K) / K) * 100 : 0;
+    const roiReal = K > 0 ? ((recInc - K) / K) * 100 : 0;
+    const lucro = recInc - K;
+    const shareGhost = C > 0 ? (esperadas / C) * 100 : 0;
+
+    $('bGhost').style.width = shareGhost + '%';
+    $('bReal').style.width = (100 - shareGhost) + '%';
+    $('bGhost').textContent = shareGhost > 24 ? mil(esperadas) + ' comprariam de qualquer jeito' : '';
+    $('bReal').textContent  = (100 - shareGhost) > 15 ? mil(inc) + ' causadas' : '';
+    $('bRep').textContent = mil(C) + ' conversões';
+    $('lRep').textContent = brl(R);
+    $('lReal').textContent = brl(recInc);
+    $('mInc').textContent = mil(inc);
+    $('mRec').textContent = brl(recInc);
+    $('mRoiRep').textContent = pct(roiRep);
+    $('mRoiReal').textContent = pct(roiReal);
+    $('mRoiReal').className = 'n' + (roiReal < 0 ? ' neg' : '');
+
+    const v = $('verdict');
+    v.className = 'verdict ' + (lucro > K*0.2 ? 'v-good' : lucro >= 0 ? 'v-mid' : 'v-bad');
+    if (lucro >= 0) {
+      $('vBig').textContent = 'Lucro real de ' + brl(lucro);
+      $('vWhy').textContent = 'Mesmo descontando quem compraria de qualquer forma, a campanha cobriu o próprio custo e sobrou.';
+    } else {
+      $('vBig').textContent = 'Prejuízo de ' + brl(Math.abs(lucro));
+      $('vWhy').textContent = 'O report mostra lucro, mas depois de descontar quem compraria de qualquer forma, a campanha não pagou o próprio custo.';
+    }
+
+    const pBreak = ticket > 0 ? (C - K/ticket) / N : 0;
+    if (pBreak > 0) {
+      $('flipT').innerHTML = 'Sua campanha só se paga se a taxa natural for menor que <span class="num">' +
+        (pBreak*100).toFixed(2).replace('.',',') + '%</span>';
+      $('flipP').textContent = 'Acima disso, o custo supera a receita que a campanha realmente gerou. É por isso que sem grupo de controle você não está medindo desempenho, está torcendo.';
+    } else {
+      $('flipT').innerHTML = 'Essa campanha <span class="num">não se paga em nenhum cenário</span>';
+      $('flipP').textContent = 'Mesmo que ninguém na base comprasse sozinho, a receita atribuída não cobriria o custo informado. Vale revisar os números antes de seguir.';
+    }
+    if (revelado) atualizaGap();
+  }
+
+  // ---------- ETAPA 1: palpite ----------
+  function guessUI(){
+    const g = +$('guess').value;
+    const R = Math.max(0, +$('rec').value || 0);
+    $('gVal').innerHTML = g + '<small>%</small>';
+    $('gSide').textContent = brl(R * g/100) + ' da receita reportada';
+  }
+
+  function atualizaGap(){
+    const {N,C,R,K,p} = dados();
+    const g = +$('guess').value;
+    const ticket = C > 0 ? R / C : 0;
+    const recInc = Math.max(0, C - Math.min(N*p, C)) * ticket;
+    const realPct = R > 0 ? (recInc / R) * 100 : 0;
+    const dif = Math.abs(g - realPct);
+
+    // faixa plausivel: 0,2% a 1,2% de taxa natural
+    const faixa = [0.002, 0.012].map(pp => {
+      const ri = Math.max(0, C - Math.min(N*pp, C)) * ticket;
+      return R > 0 ? (ri / R) * 100 : 0;
+    });
+
+    let t;
+    if (dif <= 8) t = 'Você chegou perto: chutou ' + g + '%, a conta dá ' + Math.round(realPct) + '%';
+    else if (g > realPct) t = 'Você superestimou: chutou ' + g + '%, a conta dá ' + Math.round(realPct) + '%';
+    else t = 'Você subestimou: chutou ' + g + '%, a conta dá ' + Math.round(realPct) + '%';
+    $('gapT').innerHTML = t.replace(/(\d+%)/g, '<span class="num">$1</span>');
+
+    $('gapP').textContent = 'Mas repare no essencial: esse "a conta dá" depende inteiramente da taxa natural que você arrastou. '
+      + 'Dentro da faixa plausível para a maioria das bases, o mesmo report vale entre '
+      + Math.round(Math.min(faixa[0],faixa[1])) + '% e ' + Math.round(Math.max(faixa[0],faixa[1]))
+      + '% da receita. Seu palpite e essa conta são igualmente sem fundamento enquanto ninguém medir a taxa real. É para isso que existe o grupo de controle.';
+  }
+
+  $('revelar').addEventListener('click', () => {
+    revelado = true;
+    $('locked').style.display = 'none';
+    $('result').style.display = 'block';
+    $('gapBox').style.display = 'block';
+    $('exploraBox').style.display = 'block';
+    $('flipBox').style.display = 'block';
+    $('copiar').disabled = false;
+    $('copiar').style.opacity = 1;
+    $('revelar').textContent = 'Resultado liberado';
+    $('revelar').disabled = true;
+    $('revelar').style.opacity = .55;
+    calc();
+    $('result').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  // ---------- ETAPA 2: reconhecimento ----------
+  const casos = [
+    { t:'“Quem abriu o e-mail comprou 3 vezes mais que quem não abriu. A campanha funcionou.”',
+      prova:false,
+      fb:'Quem abre e-mail já é quem tem mais interesse na marca. Esses dois grupos eram diferentes antes do disparo, então a diferença mede engajamento prévio, não efeito da campanha.' },
+    { t:'“Sorteamos 8% da base para não receber nada. Esse grupo comprou menos no período.”',
+      prova:true,
+      fb:'O sorteio é o que torna os grupos comparáveis. Como a única diferença entre eles foi receber ou não a campanha, a diferença de compra pode ser atribuída a ela.' },
+    { t:'“A receita do mês foi 18% maior que a do mesmo mês do ano passado.”',
+      prova:false,
+      fb:'Entre um ano e outro mudaram preço, mix, concorrência, calendário e tamanho da base. Comparação temporal não isola o efeito da campanha de tudo o mais que mudou junto.' },
+    { t:'“Comparamos quem recebeu com quem não recebeu por não ter e-mail válido no cadastro.”',
+      prova:false,
+      fb:'Cadastro incompleto costuma andar junto com menor engajamento e menor consumo. O grupo de fora já compraria menos de qualquer forma, o que infla o resultado.' },
+    { t:'“A taxa de abertura subiu de 18% para 24% depois que mudamos o assunto.”',
+      prova:false,
+      fb:'Isso prova que o assunto novo atrai mais aberturas, o que é útil para otimizar a peça. Mas abertura é métrica de canal: não diz nada sobre receita causada.' }
+  ];
+
+  let respondidos = 0, acertos = 0;
+  const cont = $('cases');
+  casos.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'case';
+    d.innerHTML = '<div class="ct">' + c.t + '</div>' +
+      '<div class="cb"><button class="cbtn" data-v="1">Prova o efeito</button>' +
+      '<button class="cbtn" data-v="0">Não prova</button></div>' +
+      '<div class="cfb" id="fb'+i+'"></div>';
+    cont.appendChild(d);
+    const btns = Array.prototype.slice.call(d.querySelectorAll('.cbtn'));
+    btns.forEach(b => {
+      b.addEventListener('click', () => {
+        if (d.dataset.done) return;
+        d.dataset.done = '1';
+        const escolheu = b.dataset.v === '1';
+        const certo = escolheu === c.prova;
+        btns.forEach(x => { x.disabled = true; });
+        b.classList.add('sel');
+        const fb = $('fb'+i);
+        fb.className = 'cfb show ' + (certo ? 'ok' : 'no');
+        fb.innerHTML = '<b>' + (certo ? 'Isso mesmo. ' : 'Não é o caso. ') + '</b>' + c.fb;
+        respondidos++; if (certo) acertos++;
+        $('score').textContent = respondidos < casos.length
+          ? 'Respondidos: ' + respondidos + ' de ' + casos.length
+          : 'Você reconheceu ' + acertos + ' de ' + casos.length + '. O único caso que prova efeito é o do sorteio, e é isso que o Módulo 2 ensina a montar.';
+      });
+    });
+  });
+
+  $('copiar').addEventListener('click', () => {
+    if (!revelado) return;
+    const t = [
+      'DIAGNÓSTICO DE INCREMENTALIDADE','',
+      'Público impactado: ' + mil(+$('base').value),
+      'Conversões atribuídas: ' + mil(+$('conv').value),
+      'Receita atribuída: ' + brl(+$('rec').value),
+      'Custo da campanha: ' + brl(+$('custo').value),
+      'Taxa natural considerada: ' + ((+$('taxa').value)/100).toFixed(2).replace('.',',') + '%','',
+      'Receita incremental: ' + $('mRec').textContent,
+      'ROI do report: ' + $('mRoiRep').textContent,
+      'ROI real: ' + $('mRoiReal').textContent,
+      'Veredito: ' + $('vBig').textContent,'',
+      'Esta campanha só se paga se a taxa natural for menor que ' + $('flipT').textContent.replace(/^.*menor que /,'')
+    ].join('\n');
+    navigator.clipboard.writeText(t).then(() => {
+      const el = $('toast'); el.classList.add('on'); setTimeout(()=>el.classList.remove('on'), 1800);
+    }).catch(()=>{});
+  });
+
+  ['base','conv','rec','custo'].forEach(id => $(id).addEventListener('input', () => { calc(); guessUI(); }));
+  $('taxa').addEventListener('input', calc);
+  $('guess').addEventListener('input', guessUI);
+
+  $('copiar').disabled = true;
+  $('copiar').style.opacity = .5;
+  calc(); guessUI();
+})();
+</script>
 <script src="../assets/rastreio.js" defer></script>
 </body>
 </html>

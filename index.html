@@ -3,107 +3,276 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Provando o valor do CRM — guia prático em 5 módulos</title>
-<meta name="description" content="Guia prático em 5 módulos sobre como medir CRM com grupo de controle: incrementalidade, hold-out, leitura do resultado e como provar o valor da operação para quem decide o orçamento.">
+<title>Provando o valor do CRM · Guia prático em 5 módulos</title>
+<style>@font-face{font-family:"Appetite Pro";font-weight:400;font-style:normal;font-display:swap;src:url("assets/fonts/AppetitePro-Regular.otf") format("opentype")}
+@font-face{font-family:"Appetite Pro";font-weight:700;font-style:normal;font-display:swap;src:url("assets/fonts/AppetitePro-Bold.otf") format("opentype")}
+@font-face{font-family:"Appetite Pro";font-weight:900;font-style:normal;font-display:swap;src:url("assets/fonts/AppetitePro-Heavy.otf") format("opentype")}
+:root{--ink:#1A1523;--ink2:#4A3D52;--ink3:#7A6B82;--mag:#C2185B;--org:#E8590C;
+  --amb:#FFB020;--plum:#3D0A5B;--blush:#FDF0F5;--line:#EFD9E5;--paper:#FBF8FA;
+  --f:"Appetite Pro",Georgia,serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--paper);color:var(--ink);font-size:17px;line-height:1.65}
+.w{max-width:900px;margin:0 auto;padding:0 24px}
+section{padding:64px 0}
+
+/* HERO */
+.hero{background:linear-gradient(155deg,#3D0A5B 0%,#A3126B 55%,#E8590C 100%);color:#fff;padding:80px 0 72px}
+.hero .eb{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--amb);font-weight:700;margin-bottom:22px}
+.hero h1{font-size:clamp(34px,6.2vw,58px);font-weight:900;line-height:1.04;letter-spacing:-.5px;max-width:16ch}
+.hero .sub{margin-top:22px;font-size:clamp(17px,2.2vw,21px);color:#F6DCEC;max-width:56ch;line-height:1.5}
+.hero .cta{margin-top:36px;display:flex;flex-wrap:wrap;margin-left:-7px}
+.btn{display:inline-block;font-family:var(--f);font-size:17px;font-weight:700;padding:16px 30px;
+  border-radius:9px;text-decoration:none;margin:7px;border:none;cursor:pointer}
+.b1{background:var(--amb);color:#2A1508}
+.b2{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.45)}
+.hero .fine{margin-top:16px;font-size:14px;color:#E8C4DC}
+
+/* DOR */
+.dor{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+h2{font-size:clamp(26px,4vw,36px);font-weight:900;color:var(--mag);line-height:1.2;margin-bottom:14px}
+.lead{font-size:19px;color:var(--ink2);max-width:60ch;margin-bottom:28px}
+p{margin-bottom:16px;max-width:66ch}
+.quotebox{background:var(--blush);border-left:5px solid var(--mag);padding:26px 30px;margin:28px 0;border-radius:0 8px 8px 0}
+.quotebox .q{font-size:21px;font-style:italic;color:var(--mag);line-height:1.4}
+.quotebox .a{margin-top:12px;font-size:15.5px;color:var(--ink2)}
+
+/* CHECKLIST */
+.chk{list-style:none;margin:24px 0}
+.chk li{padding:14px 0 14px 34px;position:relative;border-bottom:1px solid var(--line);font-size:17px}
+.chk li:before{content:"";position:absolute;left:4px;top:20px;width:9px;height:9px;
+  border-radius:50%;background:var(--org)}
+.chk li b{color:var(--mag)}
+
+/* MÓDULOS */
+.mods{display:flex;flex-wrap:wrap;margin:0 -10px}
+.mod{flex:1 1 380px;margin:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px}
+.mod .n{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--org);font-weight:700}
+.mod h3{font-size:20px;font-weight:900;color:var(--ink);margin:8px 0 10px;line-height:1.25}
+.mod p{font-size:15.5px;color:var(--ink2);margin:0}
+
+/* DESTAQUE */
+.hi{background:var(--ink);color:#fff;border-radius:14px;padding:40px}
+.hi .k{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--amb);font-weight:700}
+.hi h3{font-size:clamp(22px,3.4vw,30px);font-weight:900;margin:12px 0 14px;line-height:1.22;max-width:24ch}
+.hi p{color:#D9CFE0;font-size:16.5px}
+.hi .num{color:var(--amb)}
+
+/* PARA QUEM */
+.two{display:flex;flex-wrap:wrap;margin:0 -10px}
+.col{flex:1 1 320px;margin:10px;padding:26px;border-radius:12px}
+.col.sim{background:#fff;border:2px solid var(--org)}
+.col.nao{background:#fff;border:1px solid var(--line)}
+.col h4{font-size:17px;font-weight:900;margin-bottom:14px}
+.col.sim h4{color:var(--org)}
+.col.nao h4{color:var(--ink3)}
+.col ul{list-style:none}
+.col li{padding:8px 0 8px 20px;position:relative;font-size:15.5px;color:var(--ink2)}
+.col li:before{position:absolute;left:0;font-weight:700}
+.col.sim li:before{content:"→";color:var(--org)}
+.col.nao li:before{content:"·";color:var(--ink3)}
+
+/* PREÇO */
+.price{background:#fff;border:2px solid var(--mag);border-radius:16px;padding:44px;text-align:center}
+.price .k{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--org);font-weight:700}
+.price .v{font-size:clamp(42px,7vw,60px);font-weight:900;color:var(--mag);line-height:1;margin:14px 0 6px}
+.price .d{font-size:16px;color:var(--ink3);margin-bottom:26px}
+.price .inc{text-align:left;max-width:420px;margin:0 auto 30px}
+.price .inc li{list-style:none;padding:9px 0 9px 26px;position:relative;font-size:16px;color:var(--ink2)}
+.price .inc li:before{content:"✓";position:absolute;left:0;color:var(--org);font-weight:700}
+.price .b1{background:var(--mag);color:#fff;font-size:19px;padding:18px 44px}
+
+/* FAQ */
+.faq details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px 24px;margin-bottom:12px}
+.faq summary{font-size:17.5px;font-weight:700;color:var(--ink);cursor:pointer;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:before{content:"+ ";color:var(--org);font-weight:900}
+.faq details[open] summary:before{content:"– "}
+.faq p{margin:14px 0 0;font-size:16px;color:var(--ink2)}
+
+footer{background:var(--ink);color:#9C8CA6;padding:40px 0;font-size:14.5px}
+footer a{color:var(--amb)}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<meta name="description" content="Guia prático em 5 módulos sobre como medir o resultado real do CRM: incrementalidade, grupo de controle, dimensionamento e como defender o número na reunião de orçamento.">
 <link rel="canonical" href="https://valordocrm.com.br/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
-<meta property="og:title" content="Provando o valor do CRM — guia prático em 5 módulos">
-<meta property="og:description" content="Como medir se as ações de CRM geram resultado real, e como provar isso para quem decide o orçamento.">
+<meta property="og:title" content="Provando o valor do CRM · Guia prático em 5 módulos">
+<meta property="og:description" content="Um método completo para medir o efeito real das suas campanhas, e defender esse número na sala onde o orçamento é decidido.">
 <meta property="og:url" content="https://valordocrm.com.br/">
-<link rel="stylesheet" href="assets/site.css">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+.navtop{display:flex;justify-content:flex-end;gap:26px;margin-bottom:30px;font-size:15px}
+.navtop a{color:#F6DCEC;text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.navtop a:hover{color:#fff;border-bottom-color:var(--amb)}
+footer .fnav{margin-top:14px;font-size:13.5px}
+footer .fnav a{margin-right:18px}
+@media(max-width:520px){.navtop{justify-content:flex-start;gap:18px;font-size:14px}}
+</style>
 </head>
 <body>
-<!-- ===================================================================
-     PLACEHOLDER — esta página será substituída pela página de vendas.
-     Mantenha o <header class="topo"> e o <footer class="rodape"> para
-     que a navegação com o blog e a calculadora continue funcionando.
-     =================================================================== -->
-<a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
-<header class="topo">
-  <div class="wrap">
-    <a class="marca" href="./">Provando o valor <span>do CRM</span></a>
-    <nav class="nav">
+<header class="hero">
+  <div class="w">
+    <nav class="navtop">
       <a href="blog/">Artigos</a>
-      <a href="calculadora/">Calculadora</a>
-      <a href="#guia" class="btn">Ver o guia</a>
+      <a href="calculadora/">Calculadora gratuita</a>
     </nav>
+    <div class="eb">Guia prático · CRM &amp; Loyalty</div>
+    <h1>Você consegue provar que o CRM da sua empresa gera dinheiro?</h1>
+    <p class="sub">Um método completo para medir o efeito real das suas campanhas, e defender esse número na sala onde o orçamento é decidido.</p>
+    <div class="cta">
+      <a class="btn b1" href="#comprar">Quero o guia completo</a>
+      <a class="btn b2" href="#ferramenta">Testar com a minha campanha</a>
+    </div>
+    <div class="fine">62 páginas · 5 módulos · exemplos calculados, não estimados</div>
   </div>
 </header>
 
-<main id="conteudo">
-  <section class="wrap">
-    <div class="texto" style="padding:4.5rem 0 2rem">
-      <p class="chapeu">Guia prático · CRM &amp; Loyalty</p>
-      <h1>Provando o valor do CRM</h1>
-      <p class="entrada">Como medir se suas ações geram resultado real para a empresa, e como provar isso para quem decide o orçamento.</p>
-      <p style="margin-top:1.8rem">
-        <a class="btn" href="#guia">Conhecer o guia</a>
-        <a class="btn sec" href="calculadora/">Abrir a calculadora</a>
-      </p>
+<section class="dor">
+  <div class="w">
+    <h2>A pergunta que trava a sala</h2>
+    <p class="lead">Em algum momento, alguém de fora da área vai perguntar:</p>
+    <div class="quotebox">
+      <div class="q">“Se a gente parasse de fazer isso, quanto a empresa perderia?”</div>
+      <div class="a">Não é uma pergunta hostil. É a pergunta mais razoável que existe sobre qualquer investimento.</div>
     </div>
-  </section>
+    <p>Performance responde com CAC e ROAS. Comercial responde com pipeline. CRM, na maioria das empresas, responde com taxa de abertura e clique. Isso não é resposta, é mudança de assunto.</p>
+    <p>E o problema não é falta de competência. É que a resposta certa exige um tipo de medição que <b>nenhuma ferramenta entrega pronta</b> e que quase ninguém foi treinado para montar.</p>
+  </div>
+</section>
 
-  <section class="wrap" id="guia">
-    <div class="texto">
-      <h2>Cinco módulos, 62 páginas</h2>
-      <p>Os cinco módulos formam uma sequência. Cada um resolve uma etapa e cria a pergunta que o seguinte responde.</p>
-    </div>
-    <div class="grade" style="margin:2rem 0">
-      <article class="cartao">
-        <h3>1 · Por que quase ninguém sabe se o CRM funciona</h3>
-        <p>O diagnóstico. Como reconhecer que o report aceito em qualquer reunião não prova o que afirma provar.</p>
-      </article>
-      <article class="cartao">
-        <h3>2 · Incrementalidade</h3>
-        <p>O conceito que resolve, as três condições de um grupo de controle válido, e o viés de seleção que imita uma prova.</p>
-      </article>
-      <article class="cartao">
-        <h3>3 · Montar na prática</h3>
-        <p>Tamanho de grupo, marcação que sobrevive ao tempo, e o mapa de onde o controle costuma vazar.</p>
-      </article>
-      <article class="cartao">
-        <h3>4 · Medir e interpretar</h3>
-        <p>Do dado bruto ao número da apresentação, e como distinguir resultado de ruído.</p>
-      </article>
-      <article class="cartao">
-        <h3>5 · Vender o resultado</h3>
-        <p>Traduzir incrementalidade para quem decide orçamento, e conduzir a conversa quando o número vem ruim.</p>
-      </article>
-    </div>
-  </section>
+<section>
+  <div class="w">
+    <h2>O que este guia resolve</h2>
+    <ul class="chk">
+      <li>Por que o report que passa em qualquer reunião <b>não prova nada</b>, e como reconhecer isso em dez segundos</li>
+      <li>Como montar um grupo de controle que <b>realmente prova</b> o efeito, e não apenas parece provar</li>
+      <li>Os falsos controles que inflam resultado sem ninguém perceber, e <b>por que eles são tão convincentes</b></li>
+      <li>Qual o <b>tamanho mínimo</b> que a sua base precisa ter para o teste conseguir enxergar o efeito que você espera</li>
+      <li>Como distinguir <b>resultado de ruído</b>, e quando o número que você tem não é resultado nenhum</li>
+      <li>Como apresentar incrementalidade para quem <b>nunca ouviu esse termo</b> e decide o orçamento</li>
+      <li>O que dizer quando o resultado <b>vem ruim</b>, que é o momento que mais define reputação</li>
+    </ul>
+  </div>
+</section>
 
-  <section class="wrap">
-    <div class="texto">
-      <h2>Material aberto</h2>
+<section style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="w">
+    <h2>Os cinco módulos</h2>
+    <p class="lead">Cada módulo resolve uma etapa e cria a pergunta que o seguinte responde.</p>
+    <div class="mods">
+      <div class="mod"><div class="n">Módulo 1</div>
+        <h3>Por que quase ninguém sabe se o CRM funciona</h3>
+        <p>A dissecação do report padrão, linha por linha, e o exercício numérico que mostra o efeito superestimado em 4,5 vezes.</p></div>
+      <div class="mod"><div class="n">Módulo 2</div>
+        <h3>Incrementalidade</h3>
+        <p>As três condições de um grupo de controle válido, e o viés de seleção que faz uma campanha de 20% parecer 200%.</p></div>
+      <div class="mod"><div class="n">Módulo 3</div>
+        <h3>Montar na prática</h3>
+        <p>Tamanho de grupo com a conta feita, marcação que sobrevive ao tempo, e o mapa das quatro portas por onde o controle vaza.</p></div>
+      <div class="mod"><div class="n">Módulo 4</div>
+        <h3>Medir e interpretar</h3>
+        <p>Do dado bruto ao número da apresentação, margem de erro, janela de medição e o teste que confere se o sorteio funcionou.</p></div>
+      <div class="mod"><div class="n">Módulo 5</div>
+        <h3>Vender o resultado</h3>
+        <p>A tradução em três camadas, as objeções previsíveis com resposta pronta, e como conduzir a conversa quando o número vem ruim.</p></div>
     </div>
-    <div class="grade" style="margin:2rem 0">
-      <article class="cartao">
-        <h3>Como medir CRM</h3>
-        <p>O método completo, do sorteio do grupo de controle à frase que vai para a apresentação.</p>
-        <a class="mais" href="blog/como-medir-crm/">Ler o artigo →</a>
-      </article>
-      <article class="cartao">
-        <h3>Métricas de CRM</h3>
-        <p>Quais métricas importam, quais só enfeitam o report, e o painel enxuto que sustenta decisão.</p>
-        <a class="mais" href="blog/metricas-de-crm/">Ler o artigo →</a>
-      </article>
-      <article class="cartao">
-        <h3>Calculadora de incrementalidade</h3>
-        <p>Descubra qual é o menor efeito que a sua base consegue enxergar, antes de rodar o teste.</p>
-        <a class="mais" href="calculadora/">Abrir a calculadora →</a>
-      </article>
-    </div>
-  </section>
-</main>
+  </div>
+</section>
 
-<footer class="rodape">
-  <div class="wrap">
-    <div>© 2026 · Provando o valor do CRM</div>
-    <div><a href="blog/">Artigos</a> · <a href="calculadora/">Calculadora</a></div>
+<section>
+  <div class="w">
+    <div class="hi">
+      <div class="k">O que ninguém te conta</div>
+      <h3>Com base de 200 mil e hold-out de 8%, você só enxerga efeitos de <span class="num">40% ou mais</span></h3>
+      <p>Um lift de 20%, que é resultado excelente em CRM, fica invisível: o teste devolve um número, mas indistinguível de ruído. Todo curso repete a regra de “use 5% a 10%” sem verificar se a base comporta a leitura. É por isso que tanto teste bem-intencionado termina inconclusivo e a pessoa conclui que o método não funciona, quando o desenho já estava condenado antes de começar.</p>
+      <p style="margin-bottom:0">O Módulo 3 traz a tabela completa, calculada, e as quatro saídas para quando a sua base não alcança.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="w">
+    <h2>Para quem é</h2>
+    <div class="two">
+      <div class="col sim">
+        <h4>Feito para você se</h4>
+        <ul>
+          <li>Você é analista, coordenador ou gestor de CRM, Loyalty ou Retenção</li>
+          <li>Já executa campanhas e sente que o report atual não prova o que afirma</li>
+          <li>Trabalha com base de clientes e tem acesso aos dados de compra</li>
+          <li>Precisa defender o investimento da área para quem decide orçamento</li>
+          <li>Quer sair da posição de quem opera para a de quem é consultado</li>
+        </ul>
+      </div>
+      <div class="col nao">
+        <h4>Não é para você se</h4>
+        <ul>
+          <li>Procura truques de copywriting ou otimização de assunto de e-mail</li>
+          <li>Quer um passo a passo de uma ferramenta específica</li>
+          <li>Não tem acesso a dados de compra da base</li>
+          <li>Busca conteúdo introdutório sobre o que é CRM</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ferramenta" style="background:#fff;border-top:1px solid var(--line)">
+  <div class="w">
+    <h2>Teste antes de comprar</h2>
+    <p class="lead">A ferramenta do Módulo 1 é gratuita e funciona sozinha. Coloque os números da sua última campanha e veja quanto dela a campanha realmente causou.</p>
+    <p>Ela também mostra o número que decide tudo: a partir de qual taxa de compra natural a sua campanha deixa de se pagar. Se o resultado incomodar, o guia é o passo seguinte.</p>
+    <a class="btn b1" style="background:var(--org);color:#fff" href="calculadora/">Abrir a ferramenta gratuita</a>
+  </div>
+</section>
+
+<section id="comprar">
+  <div class="w">
+    <div class="price">
+      <div class="k">Guia completo</div>
+      <div class="v">R$ 197</div>
+      <div class="d">pagamento único · acesso vitalício · atualizações incluídas</div>
+      <ul class="inc">
+        <li>5 módulos em PDF, 62 páginas no total</li>
+        <li>Exemplos numéricos calculados, com margem de erro real</li>
+        <li>Tabela de dimensionamento de amostra pronta para consulta</li>
+        <li>Ferramenta interativa de diagnóstico</li>
+        <li>Exercício prático ao fim de cada módulo</li>
+        <li>Checklist de verificação antes de rodar qualquer teste</li>
+      </ul>
+      <a class="btn b1" href="https://pay.kiwify.com.br/SEU-LINK">Comprar agora</a>
+      <p style="margin:22px auto 0;font-size:14.5px;color:var(--ink3);max-width:46ch">Garantia de 7 dias. Se o material não entregar o que promete, é só pedir reembolso.</p>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="w">
+    <h2>Perguntas frequentes</h2>
+    <details><summary>Funciona com a minha ferramenta?</summary>
+      <p>Sim. O guia não ensina a operar uma plataforma específica, ensina o método. Ele funciona com Salesforce Marketing Cloud, Braze, HubSpot, Klaviyo, RD Station ou qualquer outra, porque o que muda entre elas é onde você clica, não o que precisa ser feito.</p></details>
+    <details><summary>Preciso saber estatística?</summary>
+      <p>Não. As contas necessárias estão feitas e explicadas, incluindo a tabela de dimensionamento e os intervalos de confiança. O que se exige é saber ler os dados da sua própria base.</p></details>
+    <details><summary>Minha base é pequena. Ainda vale?</summary>
+      <p>Vale, e talvez mais. O Módulo 3 trata exatamente disso: mostra o que uma base pequena consegue e não consegue enxergar, e apresenta quatro saídas legítimas para quando o volume não alcança. Saber a limitação antes de rodar evita um teste inconclusivo.</p></details>
+    <details><summary>É teoria ou é aplicável?</summary>
+      <p>Cada módulo termina com um exercício sobre a sua própria operação, e o Módulo 3 é inteiramente operacional. Os exemplos são numéricos e seguem do dado bruto até a frase que vai para a apresentação.</p></details>
+    <details><summary>Os números dos exemplos são reais?</summary>
+      <p>São fictícios e construídos para fins didáticos, mas os cálculos são reais: dimensionamento de amostra e margem de erro usam 95% de confiança e 80% de poder estatístico.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="w">
+    <p style="margin:0">Provando o valor do CRM · Guia prático em 5 módulos</p>
+    <p style="margin:8px 0 0;font-size:13.5px">© 2026 · [seu nome ou marca] · [contato]</p>
+    <p class="fnav"><a href="blog/">Artigos</a><a href="calculadora/">Calculadora</a><a href="blog/como-medir-crm/">Como medir CRM</a><a href="blog/metricas-de-crm/">Métricas de CRM</a></p>
   </div>
 </footer>
+
 <script src="assets/rastreio.js" defer></script>
 </body>
 </html>

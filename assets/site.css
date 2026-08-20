@@ -28,32 +28,41 @@
 @font-face {
   font-family: "Appetite Pro";
   src: url("fonts/AppetitePro-Heavy.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Appetite Pro";
+  src: url("fonts/AppetitePro-Heavy.otf") format("opentype");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 
 /* ---------- PALETA ---------- */
+/* Mesmos valores da página de vendas e da calculadora. */
 :root {
-  --magenta: #c81d77;
-  --magenta-esc: #9c1259;
-  --laranja: #ef7d29;
-  --laranja-claro: #fbe3cf;
-  --roxo: #4b2367;
-  --roxo-esc: #2f1442;
-  --roxo-claro: #ede6f4;
+  --magenta: #C2185B;
+  --magenta-esc: #9A1247;
+  --laranja: #E8590C;
+  --laranja-claro: #FDEEE1;
+  --ambar: #FFB020;
+  --roxo: #3D0A5B;
+  --roxo-esc: #2A0640;
+  --roxo-claro: #F1E7F6;
 
-  --tinta: #241a2c;
-  --tinta-suave: #5d5268;
-  --papel: #fffdfb;
-  --papel-2: #f7f2f6;
-  --linha: #e6dde7;
+  --tinta: #1A1523;
+  --tinta-suave: #4A3D52;
+  --papel: #FBF8FA;
+  --papel-2: #FDF0F5;
+  --linha: #EFD9E5;
 
   --fonte: "Appetite Pro", Georgia, "Times New Roman", serif;
   --largura-texto: 44rem;
   --largura-total: 72rem;
   --raio: 14px;
-  --sombra: 0 1px 2px rgba(36, 26, 44, .06), 0 12px 32px -12px rgba(36, 26, 44, .18);
+  --sombra: 0 1px 2px rgba(61, 10, 91, .06), 0 12px 32px -12px rgba(61, 10, 91, .18);
 }
 
 /* ---------- Base ---------- */
