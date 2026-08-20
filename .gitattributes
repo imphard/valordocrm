@@ -1,0 +1,4 @@
+# Arquivos servidos na web sempre com quebra de linha LF,
+# independente do sistema em que forem editados.
+* text=auto eol=lf
+*.otf binary
