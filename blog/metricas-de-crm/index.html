@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Métricas de CRM: quais importam e quais só enfeitam o report</title>
+<meta name="description" content="Guia das métricas de CRM: as duas famílias (canal e negócio), o conjunto mínimo que responde à liderança, como calcular receita incremental por cliente e o painel enxuto que substitui o dashboard inchado.">
+<link rel="canonical" href="https://SEUUSUARIO.github.io/blog/metricas-de-crm/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Métricas de CRM: quais importam e quais só enfeitam o report">
+<meta property="og:description" content="As duas famílias de métrica de CRM, o conjunto mínimo que conversa com a liderança e os erros de denominador que invalidam o número.">
+<meta property="og:url" content="https://SEUUSUARIO.github.io/blog/metricas-de-crm/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../../assets/site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Métricas de CRM: quais importam e quais só enfeitam o report",
+  "description": "As duas famílias de métrica de CRM, o conjunto mínimo que conversa com a liderança, como calcular receita incremental por cliente elegível e os erros de denominador mais comuns.",
+  "inLanguage": "pt-BR",
+  "datePublished": "2026-08-19",
+  "dateModified": "2026-08-19",
+  "mainEntityOfPage": "https://SEUUSUARIO.github.io/blog/metricas-de-crm/",
+  "about": ["CRM", "Métricas de marketing", "Incrementalidade"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Quais são as principais métricas de CRM?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Elas se dividem em duas famílias. Métricas de canal — entrega, abertura, clique, descadastro, bounce — diagnosticam a peça e a saúde do canal. Métricas de negócio — receita por cliente elegível, taxa de conversão, ticket médio, frequência, retenção e receita incremental — descrevem o efeito. Só a segunda família responde quanto a empresa perderia sem o CRM."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual é a métrica mais importante de CRM?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Receita incremental por cliente elegível: a receita do grupo impactado menos a do grupo de controle sorteado, dividida pela base elegível inteira de cada grupo. É a única que responde diretamente à pergunta da liderança e a única que se converte em dinheiro defensável."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Taxa de abertura ainda serve para alguma coisa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Serve como diagnóstico: identifica assunto fraco, queda de entregabilidade e problemas de reputação de domínio. O que ela não faz é medir resultado de negócio. Depois da proteção de privacidade do Apple Mail, a abertura também ficou inflada e menos confiável para comparações ao longo do tempo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual a diferença entre lift absoluto e lift relativo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O lift absoluto é a diferença bruta entre os grupos, em pontos percentuais ou em reais por cliente — é o que vira dinheiro. O lift relativo é a diferença proporcional, em porcentagem — é o que impressiona na apresentação. Apresentar só o relativo é a forma mais comum de inflar percepção sem mentir em nenhum número."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="wrap">
+    <a class="marca" href="../../">Provando o valor <span>do CRM</span></a>
+    <nav class="nav">
+      <a href="../">Artigos</a>
+      <a href="../../calculadora/">Calculadora</a>
+      <a href="../../#guia" class="btn">Ver o guia</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+<article class="artigo">
+  <div class="wrap">
+    <div class="texto">
+      <p class="chapeu">Métricas</p>
+      <h1>Métricas de CRM: quais importam e quais só enfeitam o report</h1>
+      <p class="entrada">Existe uma diferença silenciosa entre as métricas que descrevem a peça e as que descrevem o efeito. O dashboard entrega as primeiras de graça. As segundas, que são as que sustentam orçamento, exigem desenho.</p>
+      <p class="meta"><span>Atualizado em agosto de 2026</span><span>12 min de leitura</span></p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="texto prosa">
+
+      <div class="destaque">
+        <span class="rotulo">Resposta curta</span>
+        <p>Métricas de CRM se dividem em duas famílias. <strong>Métricas de canal</strong> (entrega, abertura, clique, descadastro) diagnosticam a peça: são úteis para operar, inúteis para provar valor. <strong>Métricas de negócio</strong> (receita por cliente elegível, conversão, ticket, frequência, retenção) descrevem o efeito — e só ganham significado quando comparadas contra um grupo de controle sorteado.</p>
+      </div>
+
+      <nav class="sumario" aria-label="Sumário">
+        <p>O que este artigo cobre</p>
+        <ol>
+          <li><a href="#duas-familias">As duas famílias de métrica</a></li>
+          <li><a href="#canal">Métricas de canal: para que servem de verdade</a></li>
+          <li><a href="#negocio">Métricas de negócio: o conjunto mínimo</a></li>
+          <li><a href="#incremental">A métrica que resume tudo</a></li>
+          <li><a href="#lift">Lift absoluto e lift relativo</a></li>
+          <li><a href="#denominador">O erro de denominador que invalida o número</a></li>
+          <li><a href="#ciclo-de-vida">Métricas por etapa do ciclo de vida</a></li>
+          <li><a href="#painel">O painel enxuto</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="duas-familias">1. As duas famílias de métrica</h2>
+      <p>Toda métrica de CRM cai em um de dois grupos, e a confusão entre eles explica a maior parte dos reports que passam na reunião sem provar nada.</p>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Família</th><th>Exemplos</th><th>O que descreve</th><th>Responde "quanto a empresa perderia sem isso?"</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Canal</strong></td><td>entrega, abertura, clique, descadastro, bounce</td><td>a peça e a saúde do canal</td><td>não</td></tr>
+            <tr class="marca-linha"><td><strong>Negócio</strong></td><td>receita por cliente, conversão, ticket, frequência, retenção, margem</td><td>o efeito sobre o cliente</td><td>sim, se houver controle</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Note a condição da última célula. Métrica de negócio sem grupo de comparação continua sendo <em>observação</em>, não medição de efeito: quem está na sua base é, por definição, quem já compra de você. Esse é o assunto do artigo <a href="../como-medir-crm/">como medir CRM</a>.</p>
+
+      <h2 id="canal">2. Métricas de canal: para que servem de verdade</h2>
+      <p>Elas não são inúteis — são mal empregadas. Cada uma responde bem a uma pergunta operacional específica:</p>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Métrica</th><th>Cálculo</th><th>Serve para</th><th>Não serve para</th></tr></thead>
+          <tbody>
+            <tr><td>Taxa de entrega</td><td>entregues ÷ enviados</td><td>detectar problema de reputação, domínio ou lista</td><td>nada além disso</td></tr>
+            <tr><td>Taxa de abertura</td><td>aberturas únicas ÷ entregues</td><td>testar assunto e remetente</td><td>comparar períodos após a proteção de privacidade do Apple Mail</td></tr>
+            <tr><td>Taxa de clique</td><td>cliques únicos ÷ entregues</td><td>avaliar criativo, oferta e clareza da ação</td><td>medir intenção causada — quem clica já estava interessado</td></tr>
+            <tr><td>CTOR</td><td>cliques ÷ aberturas</td><td>separar problema de assunto de problema de conteúdo</td><td>qualquer leitura de resultado</td></tr>
+            <tr><td>Descadastro e reclamação</td><td>opt-outs ÷ entregues</td><td>medir custo de pressão sobre a base</td><td>medir satisfação</td></tr>
+            <tr><td>Bounce</td><td>rejeitados ÷ enviados</td><td>higiene de base</td><td>segmentação de valor</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="destaque alerta">
+        <span class="rotulo">O sintoma clássico</span>
+        <p>Responder "quanto a empresa perderia sem CRM" com taxa de abertura é como responder "esse remédio cura?" com "97% dos pacientes conseguiram engolir o comprimido". A frase é verdadeira e completamente ao lado da pergunta.</p>
+      </div>
+      <p>Vale acompanhar uma métrica de canal que quase ninguém coloca no report: <strong>pressão de contato</strong> — número médio de mensagens por cliente por período. Ela é a variável que explica boa parte do descadastro e da queda de engajamento ao longo do tempo, e é a única alavanca de canal que se traduz direto em custo.</p>
+
+      <h2 id="negocio">3. Métricas de negócio: o conjunto mínimo</h2>
+      <p>Quatro métricas bastam para a maior parte das decisões. Mais que isso costuma ser dashboard, não análise.</p>
+      <ul>
+        <li><strong>Receita por cliente elegível.</strong> Some a receita do grupo e divida pelo total de pessoas dele. É a métrica que resume tudo e a única que conversa direto com a liderança.</li>
+        <li><strong>Taxa de conversão.</strong> Quantos por cento de cada grupo compraram na janela. Ajuda a entender se o efeito veio de <em>mais gente</em> comprando.</li>
+        <li><strong>Ticket médio dos convertidos.</strong> Mostra se o efeito veio de <em>compras maiores</em> em vez de mais compras.</li>
+        <li><strong>Frequência na janela.</strong> Comparada com a janela seguinte, é o que revela antecipação de compra.</li>
+      </ul>
+      <p>As três últimas explicam o mecanismo. A primeira é a que vai para o slide.</p>
+      <p>Para programas de relacionamento e assinatura, acrescente <strong>retenção</strong> (ou o seu inverso, churn) e <strong>reativação</strong>, sempre medidas em coorte: clientes que entraram no mesmo mês, acompanhados ao longo do tempo. Média geral de retenção mistura safras diferentes e esconde exatamente a variação que interessa.</p>
+      <div class="destaque">
+        <span class="rotulo">Sobre LTV</span>
+        <p>LTV é uma projeção, não uma medição, e depende de premissas de margem, horizonte e taxa de desconto que raramente aparecem no slide. Serve para priorizar investimento entre segmentos. Não serve para provar o efeito de uma ação: para isso, o número é receita incremental observada na janela.</p>
+      </div>
+
+      <h2 id="incremental">4. A métrica que resume tudo</h2>
+      <p>Se for para levar um número só à liderança, é este:</p>
+      <div class="destaque">
+        <span class="rotulo">Receita incremental por cliente elegível</span>
+        <p><strong>(receita do grupo impactado ÷ pessoas elegíveis do impactado) − (receita do controle ÷ pessoas elegíveis do controle)</strong></p>
+        <p>Multiplicada pelo tamanho da base impactada, ela vira o valor em reais que só existiu porque a operação existiu.</p>
+      </div>
+      <p>Um exemplo completo, com números fictícios: hold-out global de 10% numa base de 400 mil clientes, ao longo de um trimestre, ticket médio de R$ 85.</p>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Grupo</th><th class="n">Pessoas</th><th class="n">Compraram</th><th class="n">Taxa</th></tr></thead>
+          <tbody>
+            <tr><td>Controle (sorteado)</td><td class="n">40.000</td><td class="n">1.240</td><td class="n">3,10%</td></tr>
+            <tr><td>Impactado</td><td class="n">360.000</td><td class="n">12.420</td><td class="n">3,45%</td></tr>
+            <tr class="marca-linha"><td>Efeito incremental</td><td class="n">—</td><td class="n">1.260 compras</td><td class="n">R$ 107.100</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A frase que vai para a apresentação começa pelo desenho, não pelo resultado: "Separamos aleatoriamente 40 mil clientes que não receberam nenhuma comunicação no trimestre. O grupo que recebeu comprou 11% mais, o que representa R$ 107 mil de receita que só existiu porque a operação existiu."</p>
+      <p><a href="../../calculadora/">Rode os seus números na calculadora</a> para ver o efeito incremental e a margem de erro da sua base.</p>
+
+      <h2 id="lift">5. Lift absoluto e lift relativo</h2>
+      <p>Reporte sempre os dois, porque cada um esconde uma coisa diferente.</p>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Medida</th><th>Como se calcula</th><th>O que mostra</th></tr></thead>
+          <tbody>
+            <tr><td>Lift absoluto</td><td>taxa impactado − taxa controle</td><td>0,35 p.p. — vira dinheiro direto</td></tr>
+            <tr><td>Lift relativo</td><td>lift absoluto ÷ taxa do controle</td><td>11,3% — impressiona na apresentação</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Um lift relativo de 40% sobre uma métrica minúscula pode valer menos dinheiro que 4% sobre uma métrica grande. Apresentar só o relativo é a forma mais comum — e quase sempre involuntária — de inflar percepção sem mentir em nenhum número.</p>
+      <p>E há o passo que separa resultado de palpite: a <strong>margem de erro</strong>. As mesmas taxas (3,10% contra 3,45%) são conclusivas numa base de 400 mil e inconclusivas numa de 40 mil, onde a faixa de incerteza atravessa o zero. Quando isso acontece, os dados são compatíveis com a ação ter ajudado, não ter feito nada, ou ter atrapalhado. Dizer "entre 0,17 e 0,53 ponto percentual" é mais honesto e, na prática, mais convincente que um número seco.</p>
+
+      <h2 id="denominador">6. O erro de denominador que invalida o número</h2>
+      <p>Este erro é sutil e destrói a comparação inteira: dividir pelo grupo errado.</p>
+      <div class="destaque alerta">
+        <span class="rotulo">A regra</span>
+        <p>Tudo que você divide precisa existir <strong>nos dois grupos</strong>. Receita, conversão e frequência existem nos dois. Abertura e clique existem só em um — o controle não recebeu nada — e por isso nunca entram no cálculo do efeito.</p>
+      </div>
+      <p>Filtrar o impactado por "quem abriu" e comparar com o controle inteiro é trocar um grupo selecionado por engajamento por um grupo não selecionado. O viés que o sorteio tinha eliminado volta em uma linha de consulta. O mesmo vale para as variações comuns: comparar quem clicou com quem não clicou, ou comparar convertidos com não convertidos. Todas medem interesse prévio, não efeito.</p>
+      <p>Três fenômenos completam a lista de armadilhas, e todos se disfarçam de boa notícia:</p>
+      <ul>
+        <li><strong>Autosseleção:</strong> o clique não causou a compra, a intenção causou os dois.</li>
+        <li><strong>Antecipação:</strong> o impactado compra mais na primeira janela e menos na seguinte. No total, empata — você mudou a data de uma compra que já era sua.</li>
+        <li><strong>Canibalização:</strong> parte de quem comprou com desconto compraria sem ele. O volume não muda, o faturamento sobe um pouco e o lucro cai. É a mais cara das três, porque só aparece quando alguém olha margem em vez de receita.</li>
+      </ul>
+
+      <h2 id="ciclo-de-vida">7. Métricas por etapa do ciclo de vida</h2>
+      <p>A métrica principal muda conforme o que a régua tenta provocar. Escolher a métrica certa para cada programa evita comparar coisas incomparáveis no fim do trimestre.</p>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Programa</th><th>Métrica principal</th><th>Janela típica</th><th>Cuidado específico</th></tr></thead>
+          <tbody>
+            <tr><td>Boas-vindas / onboarding</td><td>conversão à primeira compra</td><td>ciclo de compra do negócio</td><td>o controle precisa entrar na mesma data de cadastro</td></tr>
+            <tr><td>Recorrência / recompra</td><td>frequência e receita por cliente</td><td>1 a 2 ciclos de compra</td><td>medir a janela seguinte para flagrar antecipação</td></tr>
+            <tr><td>Carrinho e navegação abandonados</td><td>conversão incremental</td><td>curta, dias</td><td>altíssima autosseleção — sem controle o número é fantasia</td></tr>
+            <tr><td>Reativação de inativos</td><td>taxa de retorno</td><td>longa, 60 a 90 dias</td><td>base pequena e taxa baixa exigem controle maior</td></tr>
+            <tr><td>Retenção / assinatura</td><td>churn por coorte</td><td>ciclo de cobrança</td><td>não misturar safras diferentes na média</td></tr>
+            <tr><td>Programa de fidelidade</td><td>margem por cliente</td><td>trimestre</td><td>olhar margem, não receita: o benefício tem custo</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="painel">8. O painel enxuto</h2>
+      <p>Um painel de CRM que sustenta decisão cabe em uma tela e tem três blocos:</p>
+      <ol>
+        <li><strong>Saúde do canal</strong> (semanal): entrega, descadastro, reclamação e pressão de contato. Serve para agir rápido quando algo quebra.</li>
+        <li><strong>Efeito</strong> (mensal ou trimestral): receita incremental por cliente elegível, com faixa de margem de erro, comparada ao hold-out.</li>
+        <li><strong>Registro de testes</strong> (contínuo): uma linha por teste com hipótese, desenho, janela, resultado com margem e <em>a decisão tomada</em>. Uma planilha resolve.</li>
+      </ol>
+      <p>O terceiro bloco é o que quase ninguém mantém e o que mais vale com o tempo: ele guarda o que foi decidido, não só o que foi medido. Padronize a métrica principal entre campanhas — métrica que muda a cada teste impede acúmulo — e estabeleça cadência, porque medição que depende de alguém lembrar vira evento heroico e some na primeira semana corrida.</p>
+
+      <h2 id="faq">Perguntas frequentes</h2>
+      <div class="faq">
+        <details>
+          <summary>Quantas métricas de CRM devo acompanhar?</summary>
+          <p>Quatro de negócio (receita por cliente elegível, conversão, ticket, frequência) e quatro de canal (entrega, descadastro, reclamação, pressão de contato). O resto é diagnóstico pontual, consultado quando surge uma pergunta específica, não acompanhado semanalmente.</p>
+        </details>
+        <details>
+          <summary>Taxa de conversão de CRM: qual é um bom número?</summary>
+          <p>Não existe referência de mercado útil, porque a taxa depende de categoria, ciclo de compra, tamanho da base e quanto dela já compraria sozinha. A única referência que significa alguma coisa é a taxa do seu próprio grupo de controle na mesma janela. Ela é o zero da régua.</p>
+        </details>
+        <details>
+          <summary>Receita atribuída serve para alguma coisa?</summary>
+          <p>Serve para acompanhamento operacional e para comparar campanhas entre si sob a mesma regra de janela. O que ela não é: prova de causa. "Atribuída" significa que a compra aconteceu depois do envio e alguém decidiu contá-la — uma convenção, não uma medição.</p>
+        </details>
+        <details>
+          <summary>Como medir CRM em base pequena?</summary>
+          <p>Prefira métricas contínuas (receita por cliente) a métricas binárias (converteu ou não): elas carregam mais informação por pessoa e exigem menos gente para a mesma confiança. Aumente o controle — 20% a 50% em base pequena custa pouco em receita absoluta — e alongue a janela com um hold-out global trimestral em vez de campanhas isoladas.</p>
+        </details>
+        <details>
+          <summary>Qual métrica levar para a reunião de orçamento?</summary>
+          <p>Receita incremental no período, precedida do desenho que a produziu e seguida da faixa de incerteza. Sem abertura e sem clique no slide: elas devolvem a conversa ao terreno antigo, onde o seu número novo vira mais uma métrica na lista.</p>
+        </details>
+      </div>
+
+      <div class="chamada">
+        <h2>Do report que ninguém questiona ao número que decide orçamento</h2>
+        <p>O guia em 5 módulos mostra como sair das métricas de canal e chegar à receita incremental: desenho do hold-out, dimensionamento, leitura com margem de erro e como conduzir a conversa com quem aprova o investimento.</p>
+        <p><a class="btn" href="../../#guia">Conhecer o guia</a></p>
+      </div>
+
+      <hr>
+      <p><strong>Continue:</strong> <a href="../como-medir-crm/">Como medir CRM: o método que prova o resultado da operação</a> — o passo a passo do grupo de controle, do sorteio à apresentação.</p>
+
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <div>© 2026 · Provando o valor do CRM</div>
+    <div><a href="../">Artigos</a> · <a href="../../calculadora/">Calculadora</a> · <a href="../../">Início</a></div>
+  </div>
+</footer>
+</body>
+</html>

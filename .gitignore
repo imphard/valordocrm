@@ -1,0 +1,7 @@
+# o guia em PDF e o produto pago: nunca em repositorio publico
+*.pdf
+
+# lixo de sistema
+Thumbs.db
+desktop.ini
+.DS_Store
