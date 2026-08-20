@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://SEUUSUARIO.github.io/sitemap.xml
+Sitemap: https://valordocrm.com.br/sitemap.xml

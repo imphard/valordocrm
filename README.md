@@ -40,18 +40,61 @@ python -m http.server 5510
 
 ## Publicar no GitHub Pages
 
-1. Crie no GitHub um repositório **público** com o nome exato `SEUUSUARIO.github.io`.
-2. No terminal, dentro desta pasta:
+O site roda em `valordocrm.com.br`. Como o domínio é próprio, o repositório pode ter
+qualquer nome: com domínio customizado, um repositório comum também é servido na raiz
+do domínio, sem o nome dele no caminho da URL.
+
+### 1. Criar o repositório
+
+No GitHub, um repositório **público** e **vazio** chamado `valordocrm`
+(sem README, sem .gitignore, sem licença — este projeto já tem os dois primeiros).
+
+### 2. Enviar os arquivos
 
 ```bash
-git remote add origin https://github.com/SEUUSUARIO/SEUUSUARIO.github.io.git
+git remote add origin https://github.com/themi/valordocrm.git
 git push -u origin main
 ```
 
-3. Em **Settings → Pages**, defina Source = `Deploy from a branch`, branch `main`, pasta `/ (root)`.
-4. Em poucos minutos o site fica em `https://SEUUSUARIO.github.io/`.
+O Git Credential Manager abre o navegador para você entrar na conta do GitHub.
 
-Toda vez que quiser atualizar: `git add -A && git commit -m "..." && git push`.
+### 3. Apontar o DNS
+
+No painel do Registro.br, em **DNS → Editar Zona** (o domínio já usa o DNS automático
+deles, então não é preciso trocar servidor de nomes):
+
+| Tipo  | Nome  | Valor |
+|-------|-------|-------|
+| A     | `@`   | `185.199.108.153` |
+| A     | `@`   | `185.199.109.153` |
+| A     | `@`   | `185.199.110.153` |
+| A     | `@`   | `185.199.111.153` |
+| AAAA  | `@`   | `2606:50c0:8000::153` |
+| AAAA  | `@`   | `2606:50c0:8001::153` |
+| AAAA  | `@`   | `2606:50c0:8002::153` |
+| AAAA  | `@`   | `2606:50c0:8003::153` |
+| CNAME | `www` | `themi.github.io.` |
+
+Os quatro registros A são os endereços do GitHub Pages, e os quatro AAAA são os mesmos
+em IPv6. O `www` aponta para o GitHub, que o redireciona para o endereço sem `www`.
+
+### 4. Ligar o Pages
+
+Em **Settings → Pages**: Source = `Deploy from a branch`, branch `main`, pasta `/ (root)`.
+O campo Custom domain já vem preenchido com `valordocrm.com.br`, porque o arquivo `CNAME`
+na raiz deste repositório faz esse papel.
+
+Quando a verificação do DNS passar, marque **Enforce HTTPS**. O certificado é emitido
+automaticamente e de graça. O DNS costuma propagar em minutos; o certificado pode levar
+até uma hora depois disso.
+
+### Atualizações seguintes
+
+```bash
+git add -A && git commit -m "descrição da mudança" && git push
+```
+
+O site atualiza sozinho em um ou dois minutos.
 
 ## O que NÃO entra neste repositório
 
