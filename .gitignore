@@ -1,5 +1,7 @@
 # o guia em PDF e o produto pago: nunca em repositorio publico
 *.pdf
+# excecao: o checklist e isca gratuita, tem que ser publico
+!checklist-falsos-controles.pdf
 
 # lixo de sistema
 Thumbs.db
