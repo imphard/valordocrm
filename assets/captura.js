@@ -44,7 +44,7 @@
     '    <input type="email" name="email" required autocomplete="email" placeholder="seu e-mail de trabalho" aria-label="Seu e-mail">' +
     '    <button type="submit">Receber o checklist</button>' +
     '  </form>' +
-    '  <p class="aviso">Você recebe o checklist na hora. Depois, no máximo um e-mail por semana sobre mensuração de CRM, e o link para sair fica em todos eles. Seu endereço não é vendido nem repassado.</p>' +
+    '  <p class="aviso">Você recebe o checklist na hora. Depois, no máximo um e-mail por semana sobre mensuração de CRM, e o link para sair fica em todos eles. Seu endereço não é vendido nem repassado — <a href="/privacidade/">política de privacidade</a>.</p>' +
     '</div>';
 
   var form = alvo.querySelector("form");
