@@ -1,12 +1,12 @@
-# Provando o valor do CRM — site
+# Provando o valor do CRM, site
 
 Site estático do infoproduto. Sem build, sem dependências: são arquivos HTML e CSS servidos direto pelo GitHub Pages.
 
 ## Estrutura
 
 ```
-index.html                     página de vendas  (PLACEHOLDER — substituir)
-calculadora/index.html         calculadora       (PLACEHOLDER — substituir)
+index.html                     página de vendas  (PLACEHOLDER, substituir)
+calculadora/index.html         calculadora       (PLACEHOLDER, substituir)
 blog/index.html                índice dos artigos
 blog/como-medir-crm/           artigo: "como medir CRM"
 blog/metricas-de-crm/          artigo: "métricas de CRM"
@@ -15,7 +15,7 @@ assets/fonts/                  Appetite Pro (Regular, Itálico, Bold, Heavy)
 404.html  robots.txt  sitemap.xml  .nojekyll
 ```
 
-`.nojekyll` desliga o processamento Jekyll do GitHub Pages — sem ele, pastas iniciadas
+`.nojekyll` desliga o processamento Jekyll do GitHub Pages, sem ele, pastas iniciadas
 com `_` são ignoradas e alguns arquivos somem da publicação.
 
 ## Paleta e tipografia
@@ -47,7 +47,7 @@ do domínio, sem o nome dele no caminho da URL.
 ### 1. Criar o repositório
 
 No GitHub, um repositório **público** e **vazio** chamado `valordocrm`
-(sem README, sem .gitignore, sem licença — este projeto já tem os dois primeiros).
+(sem README, sem .gitignore, sem licença, este projeto já tem os dois primeiros).
 
 ### 2. Enviar os arquivos
 

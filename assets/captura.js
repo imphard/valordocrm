@@ -3,7 +3,7 @@
 
    Para funcionar, ENDPOINT precisa apontar para um servico de formulario
    (Formspree, Tally, Getform). Enquanto estiver vazio, o bloco nao aparece
-   — melhor nada do que um formulario que engole o e-mail de quem confiou. */
+  , melhor nada do que um formulario que engole o e-mail de quem confiou. */
 (function () {
   var ENDPOINT = "https://formspree.io/f/xwleybzz";
   var ARQUIVO = "/checklist-falsos-controles.pdf";
@@ -44,7 +44,7 @@
     '    <input type="email" name="email" required autocomplete="email" placeholder="seu e-mail de trabalho" aria-label="Seu e-mail">' +
     '    <button type="submit">Receber o checklist</button>' +
     '  </form>' +
-    '  <p class="aviso">Você recebe o checklist na hora. Depois, no máximo um e-mail por semana sobre mensuração de CRM, e o link para sair fica em todos eles. Seu endereço não é vendido nem repassado — <a href="/privacidade/">política de privacidade</a>.</p>' +
+    '  <p class="aviso">Você recebe o checklist na hora. Depois, no máximo um e-mail por semana sobre mensuração de CRM, e o link para sair fica em todos eles. Seu endereço não é vendido nem repassado, <a href="/privacidade/">política de privacidade</a>.</p>' +
     '</div>';
 
   var form = alvo.querySelector("form");

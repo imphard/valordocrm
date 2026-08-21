@@ -55,7 +55,7 @@
     var hoje = new Date().toLocaleDateString("pt-BR");
     var base = +pega("base") || 0;
     var conv = +pega("conv") || 0;
-    var taxaCampanha = base ? (conv / base * 100).toFixed(2).replace(".", ",") : "—";
+    var taxaCampanha = base ? (conv / base * 100).toFixed(2).replace(".", ",") : ", ";
 
     folha.innerHTML =
       '<div class="topo">' +
@@ -87,7 +87,7 @@
       '</div>' +
 
       '<h2>O ponto de virada</h2>' +
-      '<p class="nota">' + (pega("flipT") || "—") + ' ' + (pega("flipP") || "") + '</p>' +
+      '<p class="nota">' + (pega("flipT") || ", ") + ' ' + (pega("flipP") || "") + '</p>' +
 
       '<h2>O que este número ainda não é</h2>' +
       '<p class="nota">A taxa de compra natural usada aqui é uma <b>premissa</b>, não uma medição: ' +
@@ -98,7 +98,7 @@
 
       '<h2>Próximo passo</h2>' +
       '<p class="nota">Verifique se a sua base comporta o efeito que você espera medir, em ' +
-      'valordocrm.com.br/dimensionamento — antes de reservar o grupo de controle. Base pequena ' +
+      'valordocrm.com.br/dimensionamento, antes de reservar o grupo de controle. Base pequena ' +
       'só enxerga efeito grande, e descobrir isso depois do teste custa um trimestre.</p>' +
 
       '<div class="rod">' +

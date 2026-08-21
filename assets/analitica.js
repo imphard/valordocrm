@@ -1,7 +1,7 @@
 /* Medição de audiência do site.
 
    Usa Cloudflare Web Analytics: gratuito, sem cookie, sem identificar
-   ninguém — e por isso sem necessidade de banner de consentimento.
+   ninguém, e por isso sem necessidade de banner de consentimento.
 
    Enquanto TOKEN estiver vazio, nada é carregado: o site não chama
    servidor nenhum e não coleta nada. */
