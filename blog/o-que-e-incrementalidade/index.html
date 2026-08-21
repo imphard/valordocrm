@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>O que é incrementalidade e como calcular na prática</title>
+<meta name="description" content="Incrementalidade é a parcela do resultado que só existe porque a ação existiu. Veja a definição, a fórmula, um exemplo calculado do começo ao fim e os erros que fazem o número parecer maior do que é.">
+<link rel="canonical" href="https://valordocrm.com.br/blog/o-que-e-incrementalidade/">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="O que é incrementalidade e como calcular na prática">
+<meta property="og:description" content="A definição, a fórmula e um exemplo calculado do começo ao fim — mais os erros que inflam o número sem ninguém perceber.">
+<meta property="og:url" content="https://valordocrm.com.br/blog/o-que-e-incrementalidade/">
+<meta property="og:image" content="https://valordocrm.com.br/assets/og-capa.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://valordocrm.com.br/assets/og-capa.png">
+<link rel="stylesheet" href="../../assets/site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "O que é incrementalidade e como calcular na prática",
+  "description": "Definição de incrementalidade, a fórmula, um exemplo calculado do começo ao fim e os erros que inflam o resultado.",
+  "inLanguage": "pt-BR",
+  "datePublished": "2026-08-20",
+  "dateModified": "2026-08-20",
+  "mainEntityOfPage": "https://valordocrm.com.br/blog/o-que-e-incrementalidade/",
+  "about": ["Incrementalidade", "CRM", "Mensuração de marketing"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O que é incrementalidade?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Incrementalidade é a parcela do resultado que só existe porque a ação existiu. É o que sobra depois de descontar tudo que aconteceria de qualquer forma, e se calcula subtraindo o resultado de um grupo de controle comparável do resultado do grupo impactado."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qual a diferença entre conversão atribuída e conversão incremental?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Conversão atribuída é toda compra que aconteceu dentro de uma janela depois do envio — uma convenção de tempo. Conversão incremental é apenas a parcela que não teria acontecido sem a ação, medida contra um grupo de controle. Em bases engajadas, a diferença entre as duas costuma ser de várias vezes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Como calcular incrementalidade?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sorteie parte do público elegível antes do disparo e não envie nada para esse grupo. Ao fim da janela, subtraia a taxa do controle da taxa do grupo impactado: essa diferença é o lift absoluto. Multiplicada pelo número de pessoas impactadas, dá as conversões incrementais; multiplicada pelo ticket médio, dá a receita incremental."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Incrementalidade serve só para e-mail e CRM?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. O raciocínio vale para qualquer investimento cujo efeito precise ser separado do que aconteceria naturalmente: mídia paga, cupom, programa de fidelidade, mudança de preço. O que muda é como o grupo de controle é construído, não a lógica."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="wrap">
+    <a class="marca" href="../../">Provando o valor <span>do CRM</span></a>
+    <nav class="nav">
+      <a href="../">Artigos</a>
+      <a href="../../calculadora/">Calculadora</a>
+      <a href="../../?ref=artigo-incrementalidade" class="btn">Ver o guia</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+<article class="artigo">
+  <div class="wrap">
+    <div class="texto">
+      <p class="chapeu">Conceito</p>
+      <h1>O que é incrementalidade e como calcular na prática</h1>
+      <p class="entrada">A palavra aparece em toda apresentação de marketing e quase nunca vem com a conta junto. Este artigo traz a definição, a fórmula, um exemplo calculado do começo ao fim e os erros que fazem o número parecer maior do que é.</p>
+      <p class="meta"><span>Atualizado em agosto de 2026</span><span>9 min de leitura</span></p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="texto prosa">
+
+      <div class="destaque">
+        <span class="rotulo">Definição curta</span>
+        <p><strong>Incrementalidade é a parcela do resultado que só existe porque a ação existiu.</strong> É o que sobra depois de descontar tudo que teria acontecido de qualquer forma — e a única forma de saber quanto é isso é comparar contra um grupo que não recebeu a ação.</p>
+      </div>
+
+      <nav class="sumario" aria-label="Sumário">
+        <p>O que este artigo cobre</p>
+        <ol>
+          <li><a href="#definicao">A definição, e por que ela incomoda</a></li>
+          <li><a href="#formula">A fórmula, em uma linha</a></li>
+          <li><a href="#exemplo">Um exemplo calculado do começo ao fim</a></li>
+          <li><a href="#atribuida">Incremental não é atribuída</a></li>
+          <li><a href="#erros">Os quatro erros que inflam o número</a></li>
+          <li><a href="#quando">Quando não vale a pena medir</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="definicao">1. A definição, e por que ela incomoda</h2>
+      <p>Toda ação de marketing acontece sobre um mundo que já estava em movimento. Clientes compram, retornam e abandonam por conta própria, com ou sem campanha. Quando você dispara uma comunicação e observa mil compras depois, parte dessas mil teria acontecido de qualquer jeito.</p>
+      <p class="citacao">Incrementalidade é o quanto do resultado a ação causou, e não apenas presenciou.</p>
+      <p>A definição é simples e o incômodo é imediato: ela implica que a maior parte do que se reporta como resultado de CRM não é resultado, é coincidência de calendário. Quem está na sua base é, por definição, quem já compra de você — é o público mais propenso a comprar mesmo sem estímulo nenhum.</p>
+      <p>O nome técnico do que estamos tentando estimar é <strong>contrafactual</strong>: o que teria acontecido com esses mesmos clientes se você não tivesse feito nada. Ele é impossível de observar, porque o mesmo cliente não vive os dois cenários. Mas dá para construir uma boa aproximação dele, e é disso que trata o resto do artigo.</p>
+
+      <h2 id="formula">2. A fórmula, em uma linha</h2>
+      <div class="destaque">
+        <span class="rotulo">Resultado incremental</span>
+        <p><strong>resultado do grupo impactado − resultado do grupo não impactado</strong></p>
+        <p>Com uma condição que decide tudo: os dois grupos precisam ser comparáveis. É nessa condição que quase todo mundo escorrega.</p>
+      </div>
+      <p>Comparáveis não significa parecidos no papel. Significa que a única diferença sistemática entre eles é ter recebido a ação. E a única forma conhecida de conseguir isso é o <strong>sorteio</strong>: separar aleatoriamente parte do público elegível antes do disparo.</p>
+      <p>O sorteio faz algo que nenhuma segmentação manual consegue: equilibra os dois grupos em tudo que você mediu <em>e também em tudo que você nem sabe que existe</em> — renda, momento de vida, proximidade de uma loja, humor da economia naquele mês.</p>
+
+      <h2 id="exemplo">3. Um exemplo calculado do começo ao fim</h2>
+      <p>Uma base de 400 mil clientes elegíveis. Antes do trimestre começar, 10% são sorteados para não receber nenhuma comunicação de CRM. Ticket médio de R$ 85. Ao fim da janela:</p>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th>Grupo</th><th class="n">Pessoas</th><th class="n">Compraram</th><th class="n">Taxa</th></tr></thead>
+          <tbody>
+            <tr><td>Controle (sorteado)</td><td class="n">40.000</td><td class="n">1.240</td><td class="n">3,10%</td></tr>
+            <tr><td>Impactado</td><td class="n">360.000</td><td class="n">12.420</td><td class="n">3,45%</td></tr>
+            <tr class="marca-linha"><td>Diferença</td><td class="n">—</td><td class="n">—</td><td class="n">0,35 p.p.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Daí saem quatro números, nesta ordem:</p>
+      <ol>
+        <li><strong>Lift absoluto:</strong> 3,45% − 3,10% = <strong>0,35 ponto percentual</strong>. É o que vira dinheiro.</li>
+        <li><strong>Lift relativo:</strong> 0,35 ÷ 3,10 = <strong>11,3%</strong>. É o que impressiona em apresentação.</li>
+        <li><strong>Conversões incrementais:</strong> 0,35% sobre as 360 mil pessoas impactadas = <strong>1.260 compras</strong> que não teriam acontecido.</li>
+        <li><strong>Receita incremental:</strong> 1.260 × R$ 85 = <strong>R$ 107.100</strong> no trimestre.</li>
+      </ol>
+      <div class="destaque alerta">
+        <span class="rotulo">O passo que quase todo mundo pula</span>
+        <p>Esse resultado só significa alguma coisa acompanhado da <strong>margem de erro</strong>. Nesse caso ela vai de 0,17 a 0,53 ponto percentual — toda a faixa acima de zero, então o efeito existe. Com uma base dez vezes menor e exatamente as mesmas taxas, a faixa iria de −0,22 a +0,92: atravessaria o zero, e o mesmo 11,3% seria ruído. <a href="../../dimensionamento/">Verifique antes se a sua base comporta o efeito que você espera</a>.</p>
+      </div>
+
+      <h2 id="atribuida">4. Incremental não é atribuída</h2>
+      <p>São duas contas diferentes e a confusão entre elas explica a maior parte dos números inflados do mercado.</p>
+      <div class="tabela-rolagem">
+        <table>
+          <thead><tr><th></th><th>Conversão atribuída</th><th>Conversão incremental</th></tr></thead>
+          <tbody>
+            <tr><td>O que mede</td><td>compras que aconteceram depois do envio</td><td>compras que não teriam acontecido sem ele</td></tr>
+            <tr><td>Como se obtém</td><td>janela de tempo definida na ferramenta</td><td>comparação com grupo sorteado</td></tr>
+            <tr><td>O que é</td><td>uma convenção</td><td>uma medição de efeito</td></tr>
+            <tr class="marca-linha"><td>Exemplo numérico</td><td>1.800 conversões</td><td>400 conversões</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>"Atribuída" significa: essa compra aconteceu dentro de uma janela depois do envio, então decidimos contá-la como da campanha. A ferramenta não sabe se a campanha causou a compra — sabe que a compra veio depois. E <strong>depois não é por causa</strong>.</p>
+
+      <h2 id="erros">5. Os quatro erros que inflam o número</h2>
+      <ul>
+        <li><strong>Usar quem sobrou como controle.</strong> Comparar com quem não tinha e-mail, deu opt-out ou não abriu a mensagem parece razoável e infla o resultado, porque esses grupos já compravam menos antes de qualquer campanha. Um caso real de laboratório: o falso controle indicava 200% de lift onde o controle sorteado mostrava 20%.</li>
+        <li><strong>Filtrar o impactado por engajamento.</strong> Calcular a taxa só sobre quem abriu compara um subconjunto selecionado com um grupo inteiro. O controle não tem abertura, porque não recebeu nada — o denominador precisa ser a base elegível dos dois lados.</li>
+        <li><strong>Medir só a primeira janela.</strong> Uma campanha pode não criar receita, apenas antecipar uma compra que aconteceria em duas semanas. O sintoma é característico: o impactado compra mais na primeira janela e menos na seguinte, e no total empata.</li>
+        <li><strong>Olhar receita quando houve desconto.</strong> Parte de quem converteu com cupom compraria sem ele. Para essas pessoas você não gerou venda, entregou margem — e isso só aparece quando alguém troca receita por margem na análise.</li>
+      </ul>
+
+      <h2 id="quando">6. Quando não vale a pena medir</h2>
+      <p>Medir incrementalidade tem custo: uma parte da base fica sem receber, e alguém precisa sustentar essa marcação ao longo do tempo. Há situações em que a conta não fecha.</p>
+      <ul>
+        <li><strong>Quando a base é pequena demais para o efeito esperado.</strong> Se só dá para detectar lift de 60% e você espera 15%, o teste vai terminar inconclusivo e consumir um trimestre. Melhor alongar a janela ou medir receita por cliente, que exige menos gente.</li>
+        <li><strong>Quando a ação é obrigatória.</strong> Não faz sentido medir o efeito incremental de um e-mail transacional, de uma confirmação de compra ou de um aviso legal — eles não são opcionais.</li>
+        <li><strong>Quando a decisão já está tomada.</strong> Medição que não muda nada é custo sem contrapartida. Antes de desenhar o teste, vale perguntar o que você faria diferente com cada resultado possível; se a resposta for "nada", não meça.</li>
+      </ul>
+
+      <h2 id="faq">Perguntas frequentes</h2>
+      <div class="faq">
+        <details>
+          <summary>Incrementalidade e ROI são a mesma coisa?</summary>
+          <p>Não. ROI compara retorno com investimento; incrementalidade define qual retorno pode ser contado como seu. Um ROI calculado sobre receita atribuída costuma ser bem maior que o mesmo ROI calculado sobre receita incremental — e é o segundo que sobrevive a uma pergunta difícil.</p>
+        </details>
+        <details>
+          <summary>Preciso de estatística avançada?</summary>
+          <p>Não. A conta central é uma subtração. O que exige cuidado é o desenho — sortear antes, isolar o grupo, usar o mesmo denominador — e a leitura da margem de erro, que é uma fórmula fechada e cabe numa planilha.</p>
+        </details>
+        <details>
+          <summary>Qual o tamanho ideal do grupo de controle?</summary>
+          <p>Depende do efeito que você quer detectar e da taxa de conversão natural, não de um percentual fixo. Bases grandes funcionam com 5% a 10%; bases pequenas frequentemente precisam de 20% a 50%. <a href="../../dimensionamento/">A calculadora de dimensionamento</a> resolve isso em segundos.</p>
+        </details>
+        <details>
+          <summary>Dá para medir incrementalidade sem deixar ninguém de fora?</summary>
+          <p>Existem métodos que dispensam o sorteio — comparações geográficas, séries temporais, modelos de mix. Todos exigem mais premissas e entregam menos certeza, e nenhum é tão barato de montar quanto um hold-out sorteado. Quando o sorteio é possível, ele é a melhor opção disponível.</p>
+        </details>
+      </div>
+
+      <div class="chamada">
+        <h2>Do conceito ao número que muda decisão</h2>
+        <p>Este artigo explica o que é. O guia em 5 módulos mostra como montar o hold-out numa operação que não para, sustentar a marcação, ler o resultado com margem de erro e defender tudo isso na sala onde o orçamento é decidido.</p>
+        <p><a class="btn" href="../../?ref=artigo-incrementalidade">Conhecer o guia</a></p>
+      </div>
+
+      <hr>
+      <p><strong>Continue:</strong> <a href="../como-medir-crm/">Como medir CRM: o método que prova o resultado da operação</a> e <a href="../metricas-de-crm/">Métricas de CRM: quais importam</a>.</p>
+
+    </div>
+  </div>
+</article>
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <div>© 2026 · Provando Valor do CRM · <a href="mailto:contactaugustorodrigues@gmail.com">contactaugustorodrigues@gmail.com</a></div>
+    <div><a href="../">Artigos</a> · <a href="../../calculadora/">Calculadora</a> · <a href="../../">Início</a> · <a href="../../privacidade/">Privacidade</a></div>
+  </div>
+</footer>
+<script src="../../assets/rastreio.js" defer></script>
+<script src="../../assets/analitica.js" defer></script>
+</body>
+</html>
