@@ -80,6 +80,7 @@
     <nav class="nav">
       <a href="../">Artigos</a>
       <a href="../../calculadora/">Calculadora</a>
+      <a href="../../dimensionamento/">Dimensionamento</a>
       <a href="../../?ref=artigo-como-medir-crm" class="btn">Ver o guia</a>
     </nav>
   </div>
@@ -202,6 +203,39 @@
       </div>
       <p>A campanha funcionou: 20% de lift é um resultado respeitável. Mas o report dizia 200%, e foi sobre esse número inflado que a empresa decidiu aumentar o investimento. Os falsos controles mais comuns são sempre os mesmos: quem não tem e-mail ou telefone válido, quem deu opt-out, quem não abriu a mensagem, quem ficou fora do segmento, quem teve falha de entrega e, o clássico, o mesmo período do ano anterior.</p>
 
+<figure class="figura">
+  <svg viewBox="0 0 720 224" role="img" aria-labelledby="t-7148" preserveAspectRatio="xMidYMid meet">
+    <title id="t-7148">Comparação entre falso controle e controle sorteado, mostrando o exagero de quatro vezes</title>
+
+    <text x="0" y="20" class="fig-rot" fill="#C2185B">Falso controle</text>
+    <text x="0" y="44" class="fig-lbl" fill="#7A6B82">comparar com quem sobrou</text>
+    
+    <rect x="0" y="60" width="60" height="26" rx="6" fill="#E4D3DD"/>
+    <text x="72" y="78" class="fig-lbl">0,30% quem não tinha e-mail</text>
+    
+    <rect x="0" y="100" width="180" height="26" rx="6" fill="#C2185B"/>
+    <text x="192" y="118" class="fig-lbl">0,90% quem recebeu</text>
+    <text x="0" y="164" class="fig-forte" fill="#C2185B">Diferença aparente: 3 vezes</text>
+    <text x="0" y="188" class="fig-lbl">Os dois grupos já eram diferentes</text>
+    <text x="0" y="208" class="fig-lbl">antes da campanha.</text>
+
+    <line x1="352" y1="8" x2="352" y2="216" stroke="#EFD9E5" stroke-width="2"/>
+
+    <text x="384" y="20" class="fig-rot" fill="#E8590C">Controle sorteado</text>
+    <text x="384" y="44" class="fig-lbl" fill="#7A6B82">comparar com quem foi sorteado</text>
+    
+    <rect x="384" y="60" width="150" height="26" rx="6" fill="#E4D3DD"/>
+    <text x="546" y="78" class="fig-lbl">0,75%</text>
+    
+    <rect x="384" y="100" width="180" height="26" rx="6" fill="#E8590C"/>
+    <text x="576" y="118" class="fig-lbl">0,90%</text>
+    <text x="384" y="164" class="fig-forte" fill="#E8590C">Efeito real: 20% de lift</text>
+    <text x="384" y="188" class="fig-lbl">A única diferença entre eles</text>
+    <text x="384" y="208" class="fig-lbl">é ter recebido a campanha.</text>
+  </svg>
+  <figcaption><b>O mesmo teste, lido de duas formas.</b> Comparar com quem sobrou indicava 200% de lift; o controle sorteado mostrou 20%. O falso controle não errou a conta, errou o grupo. As barras estão na mesma escala nos dois lados.</figcaption>
+</figure>
+
       <h2 id="passo-a-passo">5. Como montar a medição, passo a passo</h2>
       <ol>
         <li><strong>Defina a pergunta.</strong> "O CRM inteiro vale o que custa?" pede um <em>hold-out global</em>: um percentual fixo da base fora de toda comunicação por um trimestre. "Vale a pena repetir esta ação?" pede controle por campanha. Comece pelo global: responde à pergunta que sustenta o orçamento e tem custo recorrente próximo de zero.</li>
@@ -271,6 +305,28 @@
         </table>
       </div>
       <p>Mesmas taxas, mesmo lift, conclusões opostas. Na base de 400 mil, a margem vai de 0,17 a 0,53 p.p.: toda a faixa está acima de zero, o efeito existe e resta discutir o tamanho. Na base de 40 mil, a margem vai de −0,22 a +0,92: a faixa atravessa o zero, o que significa que os dados são compatíveis com a campanha ter ajudado, não ter feito nada ou até ter atrapalhado. Reportar "lift de 11%" nesse caso é apresentar ruído como resultado.</p>
+
+<figure class="figura">
+  <svg viewBox="0 0 720 210" role="img" aria-labelledby="t-1057" preserveAspectRatio="xMidYMid meet">
+    <title id="t-1057">Duas faixas de incerteza para o mesmo lift: uma inteiramente acima do zero, outra atravessando o zero</title>
+
+    <line x1="300" y1="24" x2="300" y2="196" stroke="#7A6B82" stroke-width="2" stroke-dasharray="4 4"/>
+    <text x="300" y="16" class="fig-lbl" text-anchor="middle" fill="#7A6B82">zero</text>
+
+    <text x="0" y="60" class="fig-rot">Base de 400 mil</text>
+    <rect x="352" y="72" width="150" height="14" rx="7" fill="#0F7B5A"/>
+    <circle cx="412" cy="79" r="7" fill="#3D0A5B"/>
+    <text x="516" y="84" class="fig-forte" fill="#0F7B5A">conclusivo</text>
+    <text x="0" y="86" class="fig-lbl">de 0,17 a 0,53 p.p.</text>
+
+    <text x="0" y="146" class="fig-rot">Base de 40 mil</text>
+    <rect x="206" y="158" width="480" height="14" rx="7" fill="#E8590C"/>
+    <circle cx="412" cy="165" r="7" fill="#3D0A5B"/>
+    <text x="0" y="172" class="fig-lbl">de −0,22 a +0,92 p.p.</text>
+    <text x="206" y="196" class="fig-forte" fill="#E8590C">inconclusivo: a faixa atravessa o zero</text>
+  </svg>
+  <figcaption><b>Mesma taxa, mesmo lift de 11,3%, conclusões opostas.</b> O ponto é o efeito medido; a barra é a incerteza em volta dele. Quando a barra cruza o zero, o número não sustenta decisão.</figcaption>
+</figure>
       <p>Quatro hábitos evitam o autoengano:</p>
       <ul>
         <li><strong>Reporte a faixa, não só o ponto.</strong> "Entre 0,17 e 0,53" é mais honesto e, na prática, mais convincente que um número seco.</li>

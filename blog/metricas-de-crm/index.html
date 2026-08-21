@@ -80,6 +80,7 @@
     <nav class="nav">
       <a href="../">Artigos</a>
       <a href="../../calculadora/">Calculadora</a>
+      <a href="../../dimensionamento/">Dimensionamento</a>
       <a href="../../?ref=artigo-metricas-de-crm" class="btn">Ver o guia</a>
     </nav>
   </div>
@@ -131,6 +132,29 @@
         </table>
       </div>
       <p>Note a condição da última célula. Métrica de negócio sem grupo de comparação continua sendo <em>observação</em>, não medição de efeito: quem está na sua base é, por definição, quem já compra de você. Esse é o assunto do artigo <a href="../como-medir-crm/">como medir CRM</a>.</p>
+
+<figure class="figura">
+  <svg viewBox="0 0 720 252" role="img" aria-labelledby="t-8137" preserveAspectRatio="xMidYMid meet">
+    <title id="t-8137">Dois blocos comparando métricas de canal e métricas de negócio</title>
+
+    <rect x="0" y="10" width="340" height="188" rx="12" fill="#FDF0F5" stroke="#EFD9E5"/>
+    <text x="24" y="44" class="fig-rot" fill="#7A6B82">Métricas de canal</text>
+    <text x="24" y="76" class="fig-lbl">entrega · abertura · clique</text>
+    <text x="24" y="100" class="fig-lbl">descadastro · bounce</text>
+    <text x="24" y="140" class="fig-forte" fill="#7A6B82">descrevem a peça</text>
+    <text x="24" y="172" class="fig-lbl" fill="#7A6B82">não respondem à pergunta</text>
+
+    <rect x="380" y="10" width="340" height="188" rx="12" fill="#fff" stroke="#E8590C" stroke-width="2"/>
+    <text x="404" y="44" class="fig-rot" fill="#E8590C">Métricas de negócio</text>
+    <text x="404" y="76" class="fig-lbl">receita por cliente elegível</text>
+    <text x="404" y="100" class="fig-lbl">conversão · ticket · frequência</text>
+    <text x="404" y="140" class="fig-forte" fill="#3D0A5B">descrevem o efeito</text>
+    <text x="404" y="172" class="fig-lbl" fill="#E8590C">respondem, se houver controle</text>
+
+    <text x="360" y="238" class="fig-forte" text-anchor="middle" fill="#3D0A5B">“quanto a empresa perderia sem isso?”</text>
+  </svg>
+  <figcaption><b>A pergunta da liderança mora do lado direito.</b> O dashboard entrega o lado esquerdo de graça; o direito exige desenho, e só significa alguma coisa contra um grupo de controle.</figcaption>
+</figure>
 
       <h2 id="canal">2. Métricas de canal: para que servem de verdade</h2>
       <p>Elas não são inúteis, são mal empregadas. Cada uma responde bem a uma pergunta operacional específica:</p>
@@ -210,6 +234,31 @@
         <p>Tudo que você divide precisa existir <strong>nos dois grupos</strong>. Receita, conversão e frequência existem nos dois. Abertura e clique existem só em um, o controle não recebeu nada, e por isso nunca entram no cálculo do efeito.</p>
       </div>
       <p>Filtrar o impactado por "quem abriu" e comparar com o controle inteiro é trocar um grupo selecionado por engajamento por um grupo não selecionado. O viés que o sorteio tinha eliminado volta em uma linha de consulta. O mesmo vale para as variações comuns: comparar quem clicou com quem não clicou, ou comparar convertidos com não convertidos. Todas medem interesse prévio, não efeito.</p>
+
+<figure class="figura">
+  <svg viewBox="0 0 720 126" role="img" aria-labelledby="t-6335" preserveAspectRatio="xMidYMid meet">
+    <title id="t-6335">Comparação entre dividir pelo grupo filtrado por abertura e dividir pela base elegível inteira</title>
+
+    <text x="0" y="20" class="fig-rot" fill="#C2185B">Errado</text>
+    <rect x="0" y="34" width="150" height="52" rx="8" fill="#E4D3DD"/>
+    <text x="75" y="66" class="fig-lbl" text-anchor="middle">controle inteiro</text>
+    <text x="168" y="66" class="fig-num" fill="#7A6B82">vs</text>
+    <rect x="210" y="42" width="90" height="36" rx="8" fill="#C2185B"/>
+    <text x="255" y="66" class="fig-lbl" text-anchor="middle" fill="#fff">só quem abriu</text>
+    <text x="0" y="112" class="fig-lbl">o viés que o sorteio eliminou volta aqui</text>
+
+    <line x1="360" y1="10" x2="360" y2="130" stroke="#EFD9E5" stroke-width="2"/>
+
+    <text x="400" y="20" class="fig-rot" fill="#E8590C">Certo</text>
+    <rect x="400" y="34" width="150" height="52" rx="8" fill="#E4D3DD"/>
+    <text x="475" y="66" class="fig-lbl" text-anchor="middle">controle inteiro</text>
+    <text x="568" y="66" class="fig-num" fill="#7A6B82">vs</text>
+    <rect x="610" y="34" width="110" height="52" rx="8" fill="#E8590C"/>
+    <text x="665" y="66" class="fig-lbl" text-anchor="middle" fill="#fff">base inteira</text>
+    <text x="400" y="112" class="fig-lbl">tudo que você divide existe nos dois lados</text>
+  </svg>
+  <figcaption><b>O controle não tem abertura, porque não recebeu nada.</b> Filtrar o impactado por engajamento compara um subconjunto selecionado com um grupo inteiro.</figcaption>
+</figure>
       <p>Três fenômenos completam a lista de armadilhas, e todos se disfarçam de boa notícia:</p>
       <ul>
         <li><strong>Autosseleção:</strong> o clique não causou a compra, a intenção causou os dois.</li>

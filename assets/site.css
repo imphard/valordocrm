@@ -241,3 +241,22 @@ tr.marca-linha td { background: var(--laranja-claro); font-weight: 700; color: v
   .chamada { padding: 2rem 1.25rem; border-radius: 16px; }
   .rodape .wrap { flex-direction: column; gap: .6rem; }
 }
+
+/* ---------- Figuras ---------- */
+.figura { margin: 2.6rem 0; }
+.figura svg { width: 100%; height: auto; display: block; font-family: var(--fonte); }
+.figura figcaption {
+  font-size: .88rem; color: var(--tinta-suave); margin-top: .8rem;
+  padding-left: .1rem; line-height: 1.5;
+}
+.figura figcaption b { color: var(--roxo); font-weight: 700; }
+.fig-rot { font-size: 13px; font-weight: 700; fill: var(--tinta-suave); letter-spacing: .06em; text-transform: uppercase; }
+.fig-lbl { font-size: 14px; fill: var(--tinta-suave); }
+.fig-num { font-size: 20px; font-weight: 800; fill: var(--roxo); }
+.fig-forte { font-size: 15px; font-weight: 700; fill: var(--roxo); }
+@media (max-width: 560px) {
+  .fig-rot { font-size: 15px; }
+  .fig-lbl { font-size: 16px; }
+  .fig-num { font-size: 22px; }
+  .fig-forte { font-size: 17px; }
+}

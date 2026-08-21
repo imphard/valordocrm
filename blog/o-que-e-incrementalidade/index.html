@@ -78,6 +78,7 @@
     <nav class="nav">
       <a href="../">Artigos</a>
       <a href="../../calculadora/">Calculadora</a>
+      <a href="../../dimensionamento/">Dimensionamento</a>
       <a href="../../?ref=artigo-incrementalidade" class="btn">Ver o guia</a>
     </nav>
   </div>
@@ -169,6 +170,25 @@
       </div>
       <p>"Atribuída" significa: essa compra aconteceu dentro de uma janela depois do envio, então decidimos contá-la como da campanha. A ferramenta não sabe se a campanha causou a compra, sabe que a compra veio depois. E <strong>depois não é por causa</strong>.</p>
 
+<figure class="figura">
+  <svg viewBox="0 0 720 226" role="img" aria-labelledby="t-3590" preserveAspectRatio="xMidYMid meet">
+    <title id="t-3590">Barra cheia representando as conversões atribuídas e barra dividida mostrando quanto foi causado</title>
+
+    <text x="0" y="20" class="fig-rot">O que o report diz</text>
+    <rect x="0" y="34" width="700" height="46" rx="8" fill="#C2185B"/>
+    <text x="20" y="63" class="fig-forte" fill="#fff">1.800 conversões · R$ 90.000 creditados à campanha</text>
+
+    <text x="0" y="122" class="fig-rot">O que realmente aconteceu</text>
+    <rect x="0" y="136" width="544" height="46" rx="8" fill="#E4D3DD"/>
+    <rect x="552" y="136" width="148" height="46" rx="8" fill="#E8590C"/>
+    <text x="20" y="165" class="fig-lbl" fill="#7A6B82">1.400 comprariam de qualquer jeito</text>
+    <text x="626" y="165" class="fig-forte" fill="#fff" text-anchor="middle">400 reais</text>
+
+    <text x="0" y="212" class="fig-forte" fill="#E8590C">O report superestimou o efeito em 4,5 vezes.</text>
+  </svg>
+  <figcaption><b>Conversão observada não é conversão causada.</b> A parte clara já aconteceria sem campanha nenhuma. Só a parte laranja é resultado da ação.</figcaption>
+</figure>
+
       <h2 id="erros">5. Os quatro erros que inflam o número</h2>
       <ul>
         <li><strong>Usar quem sobrou como controle.</strong> Comparar com quem não tinha e-mail, deu opt-out ou não abriu a mensagem parece razoável e infla o resultado, porque esses grupos já compravam menos antes de qualquer campanha. Um caso real de laboratório: o falso controle indicava 200% de lift onde o controle sorteado mostrava 20%.</li>
@@ -176,6 +196,30 @@
         <li><strong>Medir só a primeira janela.</strong> Uma campanha pode não criar receita, apenas antecipar uma compra que aconteceria em duas semanas. O sintoma é característico: o impactado compra mais na primeira janela e menos na seguinte, e no total empata.</li>
         <li><strong>Olhar receita quando houve desconto.</strong> Parte de quem converteu com cupom compraria sem ele. Para essas pessoas você não gerou venda, entregou margem, e isso só aparece quando alguém troca receita por margem na análise.</li>
       </ul>
+
+<figure class="figura">
+  <svg viewBox="0 0 720 186" role="img" aria-labelledby="t-6871" preserveAspectRatio="xMidYMid meet">
+    <title id="t-6871">Duas janelas de medição: na primeira o grupo impactado compra mais, na segunda compra menos</title>
+
+    <text x="0" y="20" class="fig-rot">Janela da campanha</text>
+    <rect x="0" y="34" width="120" height="60" rx="6" fill="#E4D3DD"/>
+    <rect x="140" y="20" width="120" height="74" rx="6" fill="#E8590C"/>
+    <text x="60" y="112" class="fig-lbl" text-anchor="middle">controle</text>
+    <text x="200" y="112" class="fig-lbl" text-anchor="middle">impactado</text>
+    <text x="200" y="12" class="fig-forte" text-anchor="middle" fill="#E8590C">sobe</text>
+
+    <text x="400" y="20" class="fig-rot">Janela seguinte</text>
+    <rect x="400" y="34" width="120" height="60" rx="6" fill="#E4D3DD"/>
+    <rect x="540" y="48" width="120" height="46" rx="6" fill="#C2185B"/>
+    <text x="460" y="112" class="fig-lbl" text-anchor="middle">controle</text>
+    <text x="600" y="112" class="fig-lbl" text-anchor="middle">impactado</text>
+    <text x="600" y="40" class="fig-forte" text-anchor="middle" fill="#C2185B">cai</text>
+
+    <line x1="0" y1="140" x2="720" y2="140" stroke="#EFD9E5" stroke-width="1"/>
+    <text x="0" y="172" class="fig-forte" fill="#3D0A5B">No total, empata: a compra mudou de data, não de existência.</text>
+  </svg>
+  <figcaption><b>O sintoma da antecipação.</b> Medir só a primeira janela transforma deslocamento de compra em resultado. A janela seguinte, do mesmo tamanho, revela o que aconteceu.</figcaption>
+</figure>
 
       <h2 id="quando">6. Quando não vale a pena medir</h2>
       <p>Medir incrementalidade tem custo: uma parte da base fica sem receber, e alguém precisa sustentar essa marcação ao longo do tempo. Há situações em que a conta não fecha.</p>

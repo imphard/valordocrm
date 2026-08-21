@@ -107,6 +107,18 @@ footer a{color:var(--amb)}
 @media(max-width:820px){.heroline{gap:36px}.heroline .arte{flex:0 0 210px;max-width:210px}}
 
 
+
+/* FIGURAS */
+.figura{margin:30px 0}
+.figura svg{width:100%;height:auto;display:block;font-family:var(--f)}
+.figura figcaption{font-size:14.5px;color:var(--ink3);margin-top:12px;line-height:1.5;max-width:66ch}
+.figura figcaption b{color:var(--plum)}
+.fig-rot{font-size:13px;font-weight:700;fill:var(--ink3);letter-spacing:.06em;text-transform:uppercase}
+.fig-lbl{font-size:14px;fill:var(--ink3)}
+.fig-num{font-size:20px;font-weight:800;fill:var(--plum)}
+.fig-forte{font-size:15px;font-weight:700;fill:var(--plum)}
+@media(max-width:560px){.fig-rot{font-size:15px}.fig-lbl{font-size:16px}.fig-forte{font-size:17px}}
+
 /* VEJA POR DENTRO */
 .dentro{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .paginas{display:flex;gap:18px;flex-wrap:wrap;margin:26px 0 10px}
@@ -201,6 +213,7 @@ footer .fnav a{margin-right:18px}
     <nav class="navtop">
       <a href="blog/">Artigos</a>
       <a href="calculadora/">Calculadora gratuita</a>
+      <a href="dimensionamento/">Dimensionamento</a>
     </nav>
     <div class="heroline">
       <div class="txt">
@@ -276,6 +289,40 @@ footer .fnav a{margin-right:18px}
   <div class="w">
     <h2>Os cinco módulos</h2>
     <p class="lead">Cada módulo resolve uma etapa e cria a pergunta que o seguinte responde.</p>
+
+<figure class="figura">
+  <svg viewBox="-34 0 788 170" role="img" aria-labelledby="t-4718" preserveAspectRatio="xMidYMid meet">
+    <title id="t-4718">Os cinco módulos como uma sequência: diagnóstico, conceito, operação, leitura e defesa</title>
+
+    <line x1="60" y1="52" x2="660" y2="52" stroke="#EFD9E5" stroke-width="3"/>
+    <circle cx="60" cy="52" r="22" fill="#E8590C"/>
+    <text x="60" y="59" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">01</text>
+    <text x="60" y="102" text-anchor="middle" class="fig-forte">Diagnóstico</text>
+    <text x="60" y="126" text-anchor="middle" class="fig-lbl">por que o report</text>
+    <text x="60" y="146" text-anchor="middle" class="fig-lbl">não prova nada</text>
+    <circle cx="210" cy="52" r="22" fill="#E8590C"/>
+    <text x="210" y="59" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">02</text>
+    <text x="210" y="102" text-anchor="middle" class="fig-forte">Conceito</text>
+    <text x="210" y="126" text-anchor="middle" class="fig-lbl">o que torna uma</text>
+    <text x="210" y="146" text-anchor="middle" class="fig-lbl">medição válida</text>
+    <circle cx="360" cy="52" r="22" fill="#E8590C"/>
+    <text x="360" y="59" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">03</text>
+    <text x="360" y="102" text-anchor="middle" class="fig-forte">Operação</text>
+    <text x="360" y="126" text-anchor="middle" class="fig-lbl">montar e sustentar</text>
+    <text x="360" y="146" text-anchor="middle" class="fig-lbl">o grupo de controle</text>
+    <circle cx="510" cy="52" r="22" fill="#E8590C"/>
+    <text x="510" y="59" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">04</text>
+    <text x="510" y="102" text-anchor="middle" class="fig-forte">Leitura</text>
+    <text x="510" y="126" text-anchor="middle" class="fig-lbl">do dado bruto ao</text>
+    <text x="510" y="146" text-anchor="middle" class="fig-lbl">número da apresentação</text>
+    <circle cx="660" cy="52" r="22" fill="#C2185B"/>
+    <text x="660" y="59" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">05</text>
+    <text x="660" y="102" text-anchor="middle" class="fig-forte">Defesa</text>
+    <text x="660" y="126" text-anchor="middle" class="fig-lbl">a conversa com quem</text>
+    <text x="660" y="146" text-anchor="middle" class="fig-lbl">decide o orçamento</text>
+  </svg>
+  <figcaption><b>Cada módulo resolve uma etapa e cria a pergunta que o seguinte responde.</b> Dá para consultar isolado, mas a ordem foi desenhada para ser lida inteira.</figcaption>
+</figure>
     <div class="mods">
       <div class="mod"><div class="marca-n">01</div><div class="n">Módulo 1</div>
         <h3>Por que quase ninguém sabe se o CRM funciona</h3>
@@ -422,7 +469,8 @@ footer .fnav a{margin-right:18px}
   <div class="w">
     <p style="margin:0">Provando o valor do CRM · Guia prático em 5 módulos</p>
     <p style="margin:8px 0 0;font-size:13.5px">© 2026 · Provando Valor do CRM · <a href="mailto:contactaugustorodrigues@gmail.com">contactaugustorodrigues@gmail.com</a></p>
-    <p class="fnav"><a href="blog/">Artigos</a><a href="calculadora/">Calculadora</a><a href="blog/como-medir-crm/">Como medir CRM</a><a href="blog/metricas-de-crm/">Métricas de CRM</a><a href="privacidade/">Privacidade</a></p>
+    <p class="fnav"><a href="blog/">Artigos</a><a href="calculadora/">Calculadora</a>
+      <a href="dimensionamento/">Dimensionamento</a><a href="blog/como-medir-crm/">Como medir CRM</a><a href="blog/metricas-de-crm/">Métricas de CRM</a><a href="privacidade/">Privacidade</a></p>
   </div>
 </footer>
 
