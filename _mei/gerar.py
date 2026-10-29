@@ -31,18 +31,24 @@ LIMITE_CAMINHONEIRO = 251600
 OFERTAS = {
     "contabilidade": {
         "url": "",
-        "rotulo": "Parceiro",
+        "rotulo": "Indicação",
+        "titulo": "Quer alguém cuidando disso por você?",
+        "itens": ["DAS", "Declaração anual", "Notas fiscais"],
+        "icone": "contador",
         "texto": "Prefere que alguém cuide do DAS, da declaração e das notas por você? Uma contabilidade online resolve tudo pelo celular.",
         "botao": "Ver contabilidade online",
     },
     "maquininha": {
         "url": "https://buy.infinitepay.io/smart?rid=pataconecta",
-        "rotulo": "Parceiro InfinitePay",
-        "texto": "Quer receber no cartão e no Pix com o CNPJ do MEI? Dá pra usar a maquininha da InfinitePay ou cobrar por aproximação no próprio celular, com o InfiniteTap.",
-        "botao": "Ver a maquininha",
+        "rotulo": "Indicação InfinitePay",
+        "titulo": "Comece a receber no cartão e no Pix com o CNPJ do MEI",
+        "texto": "Com a InfinitePay você usa a maquininha Smart ou cobra por aproximação no próprio celular, com o InfiniteTap, sem comprar aparelho.",
+        "itens": ["Cartão e Pix", "Cobra pelo celular", "Conta no CNPJ do MEI"],
+        "botao": "Quero a maquininha",
         # segundo botão, opcional
         "url2": "https://infinitepay.onelink.me/IGWD/pataconecta",
         "botao2": "Cobrar pelo celular",
+        "icone": "maquininha",
     },
 }
 
@@ -159,16 +165,27 @@ def chamada_planilha(ref):
             f'<div class="oferta-botoes"><a class="btn" href="/planilha-mei/?ref={e(ref)}">Ver a planilha</a></div></aside>')
 
 
+ICONES = {
+    "maquininha": '<svg viewBox="0 0 48 48" fill="none" stroke="#10231B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="4" width="26" height="40" rx="5"/><rect x="16" y="10" width="16" height="10" rx="2"/><path d="M17 27h2M23 27h2M29 27h2M17 33h2M23 33h2M29 33h2M17 39h14"/></svg>',
+    "contador": '<svg viewBox="0 0 48 48" fill="none" stroke="#10231B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6h18l8 8v28H12z"/><path d="M30 6v8h8M18 24h12M18 31h12M18 38h7"/></svg>',
+}
+
+
 def oferta(chave, ref):
+    """Bloco de indicação. Some sozinho enquanto a url estiver vazia."""
     o = OFERTAS[chave]
     if not o["url"]:
         return ""
     # link de indicação vai sem parâmetro extra, pra não atrapalhar a atribuição do parceiro
-    botoes = f'<a class="btn" rel="sponsored noopener" target="_blank" href="{e(o["url"])}" data-oferta="{chave}" data-ref="{e(ref)}">{e(o["botao"])}</a>'
+    botoes = f'<a class="btn sol" rel="sponsored noopener" target="_blank" href="{e(o["url"])}" data-oferta="{chave}" data-ref="{e(ref)}">{e(o["botao"])} →</a>'
     if o.get("url2"):
-        botoes += f' <a class="btn sec" rel="sponsored noopener" target="_blank" href="{e(o["url2"])}" data-oferta="{chave}-2" data-ref="{e(ref)}">{e(o["botao2"])}</a>'
-    return (f'<aside class="oferta"><p><span class="rot">{e(o["rotulo"])}</span>{e(o["texto"])}</p>'
-            f'<div class="oferta-botoes">{botoes}</div></aside>')
+        botoes += f'<a class="btn claro" rel="sponsored noopener" target="_blank" href="{e(o["url2"])}" data-oferta="{chave}-2" data-ref="{e(ref)}">{e(o["botao2"])}</a>'
+    itens = "".join(f"<li>{e(i)}</li>" for i in o.get("itens", []))
+    return (f'<aside class="parceiro"><div class="dentro"><div class="icone" aria-hidden="true">{ICONES.get(o.get("icone", ""), "")}</div><div>'
+            f'<span class="etq">{e(o["rotulo"])}</span><h3>{e(o.get("titulo", ""))}</h3><p>{e(o["texto"])}</p>'
+            f'<ul>{itens}</ul><div class="botoes">{botoes}</div>'
+            f'<p class="nota">Link de indicação: se você contratar por ele, o Guia do MEI pode receber uma comissão, sem custo a mais pra você.</p>'
+            f'</div></div></aside>')
 
 
 def cabeca(titulo, descricao, caminho, extra_ld=None, robots="index,follow"):
@@ -190,31 +207,38 @@ def cabeca(titulo, descricao, caminho, extra_ld=None, robots="index,follow"):
 <meta property="og:description" content="{e(descricao)}">
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="pt_BR">
-<link rel="stylesheet" href="/assets/mei.css">
-<link rel="icon" href="/favicon.ico" sizes="32x32">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#0B6B48">
+<meta property="og:image" content="{SITE}/assets/mei/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/assets/mei/jakarta-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/mei.css?v=2">
+<link rel="icon" href="/assets/mei/favicon.ico" sizes="48x48">
+<link rel="icon" href="/assets/mei/marca.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/mei/icone-180.png">
+<meta name="theme-color" content="#0A5C3E">
 {lds}
 </head>
 <body>
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 <header class="topo"><div class="w">
-  <a class="marca" href="/">Guia do <b>MEI</b></a>
+  <a class="marca" href="/"><img src="/assets/mei/marca.svg" alt="" width="36" height="36"><span>guia do <b>MEI</b></span></a>
   <nav class="nav">
-    <a href="/mei/">Todas as profissões</a>
+    <a href="/mei/">Profissões</a>
     <a href="/calculadora-das-mei/">Calculadora do DAS</a>
-    <a href="/limite-mei/">Limite de faturamento</a>
+    <a href="/limite-mei/">Limite</a>
+    {'<a class="destaque" href="/planilha-mei/">Planilha do MEI</a>' if PLANILHA["kiwify"] else ''}
   </nav>
 </div></header>
 """
 
 
 RODAPE = f"""<footer class="rodape"><div class="w">
-  <div>Guia do MEI · informação independente, sem ligação com o governo. Abrir MEI no Portal do Empreendedor é grátis.</div>
+  <div><a class="marca" href="/"><img src="/assets/mei/marca.svg" alt="" width="32" height="32"><span>guia do <b>MEI</b></span></a>
+  <p>Informação independente, sem ligação com o governo. Abrir MEI no Portal do Empreendedor é grátis.</p></div>
   <div><a href="/mei/">Profissões</a> · <a href="/calculadora-das-mei/">DAS</a> · <a href="/limite-mei/">Limite</a> · <a href="/privacidade/">Privacidade</a> · <a href="/crm/">Provando o valor do CRM</a></div>
 </div></footer>
-<script src="/assets/mei.js" defer></script>
+<script src="/assets/mei.js?v=2" defer></script>
 <script src="/assets/analitica.js" defer></script>
 </body>
 </html>
@@ -303,6 +327,8 @@ def pagina_ocupacao(o, s, nome, parecidas):
   <div><dt>Limite por ano</dt><dd>{brl(limite)[:-3]}<small>{brl(limite / 12)[:-3]} por mês, em média</small></dd></div>
 </dl>
 
+{oferta("maquininha", s)}
+
 <section>
   <h2>Quanto o MEI {e(nome.lower())} paga de DAS</h2>
   <p>O DAS é a guia única do MEI. Ele junta a contribuição pro INSS com o imposto da sua atividade, num valor fixo que não muda com o quanto você fatura. Vence todo dia 20, referente ao mês anterior.</p>
@@ -310,7 +336,6 @@ def pagina_ocupacao(o, s, nome, parecidas):
   <p>Pagando em dia você conta tempo pra aposentadoria por idade e tem direito a auxílio-doença e salário-maternidade, depois das carências do INSS. <a href="/calculadora-das-mei/?tipo={TIPO_CALC[t]}">Simular o DAS, inclusive com atraso</a>.</p>
 </section>
 
-{oferta("maquininha", s)}
 
 <section>
   <h2>Pode ser MEI? As condições</h2>
@@ -358,6 +383,8 @@ def pagina_ocupacao(o, s, nome, parecidas):
   {"".join(f'<details><summary>{e(q)}</summary><div><p>{e(a)}</p></div></details>' for q, a in faq)}
 </section>
 
+{oferta("maquininha", s + "-fim")}
+
 <section>
   <h2>Ocupações parecidas</h2>
   <div class="grade">{lista_par}</div>
@@ -387,13 +414,14 @@ def pagina_home(ocs, por_nome):
     corpo = f"""<main id="conteudo">
 <div class="hero"><div class="w">
   <p class="chapeu">Atualizado pra {ANO}</p>
-  <h1>Tudo do MEI, explicado pra sua profissão</h1>
+  <h1>Tudo do MEI, explicado pra <em>sua profissão</em></h1>
   <p>Digite o que você faz e veja o CNAE certo, quanto paga por mês, se precisa de nota e como abrir de graça.</p>
   <div class="busca">
     <label for="busca-ocupacao" class="pular">Sua profissão</label>
     <input id="busca-ocupacao" type="search" placeholder="Ex.: manicure, eletricista, confeiteira" autocomplete="off">
     <ul id="busca-resultados" class="resultados"></ul>
   </div>
+  <div class="selos"><span>{len(ocs)} profissões</span><span>Valores de {ANO}</span><span>Grátis, sem cadastro</span></div>
 </div></div>
 
 <div class="w">
@@ -402,6 +430,7 @@ def pagina_home(ocs, por_nome):
   <div class="grade">{pop}</div>
   <p style="margin-top:14px"><a href="/mei/">Ver as {len(ocs)} ocupações permitidas, de A a Z</a></p>
 </section>
+{oferta("maquininha", "home")}
 
 <section>
   <h2>Quanto o MEI paga em {ANO}</h2>
@@ -415,7 +444,6 @@ def pagina_home(ocs, por_nome):
   <p>O projeto que sobe o limite pra R$ 130 mil (PLP 108/2021) passou no Senado e teve urgência aprovada na Câmara, mas ainda não foi votado nem sancionado. Até lá, vale R$ 81 mil por ano, ou R$ 6.750 por mês no ano em que o MEI é aberto.</p>
   <p><a class="btn sec" href="/limite-mei/">Ver quanto ainda dá pra faturar</a></p>
 </section>
-{oferta("maquininha", "home")}
 
 <section>
   <h2>Datas que todo MEI precisa lembrar</h2>
@@ -479,6 +507,7 @@ def pagina_das():
   <input id="atraso" name="atraso" type="number" min="0" max="999" value="0" inputmode="numeric"></div>
 </form>
 <div class="saida"><div class="grande" id="das-mes"></div><p id="das-detalhe"></p><p id="das-atraso"></p></div>
+{oferta("maquininha", "calculadora-das")}
 <script>(function(){{var t=new URLSearchParams(location.search).get('tipo');var s=document.getElementById('tipo');if(t&&s.querySelector('option[value="'+t+'"]'))s.value=t;}})();</script>
 <section>
   <h2>Como o valor é formado</h2>
