@@ -79,6 +79,7 @@ tr.total td{font-weight:800}
 .oferta .rot{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--tinta3)}
 .btn{display:inline-block;background:var(--verde);color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:10px;border:0;font:inherit;font-weight:700;cursor:pointer}
 .btn:hover{background:var(--verde2)}
+.hero .btn{background:var(--sol);color:#2A1E00;font-size:18px;padding:15px 24px}
 .btn.sec{background:#fff;color:var(--verde);border:1.5px solid var(--verde)}
 
 /* faq */

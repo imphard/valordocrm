@@ -46,6 +46,10 @@ OFERTAS = {
     },
 }
 
+# Produto próprio: a Planilha do MEI, vendida na Kiwify. Sem link, a página de venda sai
+# com noindex e botão "em breve", e as chamadas nas outras páginas não aparecem.
+PLANILHA = {"kiwify": "", "preco": "47"}
+
 POPULARES = [
     "Cabeleireiro(a) independente", "Manicure/pedicure independente", "Barbeiro independente",
     "Esteticista independente", "Maquiador(a) independente", "Depilador(a) independente",
@@ -144,6 +148,15 @@ TIPO_TXT = {
 
 TIPO_CALC = {"servico": "servico", "comercio": "comercio", "ambos": "ambos", "locacao": "locacao",
              "caminhoneiro": "caminhoneiro", "caminhoneiro_iss": "caminhoneiro_iss"}
+
+
+def chamada_planilha(ref):
+    if not PLANILHA["kiwify"]:
+        return ""
+    return (f'<aside class="oferta"><p><span class="rot">Planilha do MEI {ANO}</span>'
+            f'Anote o que entra e sai e a planilha monta o relatório mensal, acompanha o limite, os DAS e '
+            f'separa os números da declaração anual. R$ {PLANILHA["preco"]}, pagamento único.</p>'
+            f'<div class="oferta-botoes"><a class="btn" href="/planilha-mei/?ref={e(ref)}">Ver a planilha</a></div></aside>')
 
 
 def oferta(chave, ref):
@@ -324,6 +337,8 @@ def pagina_ocupacao(o, s, nome, parecidas):
     <li><strong>Acompanhar o limite de faturamento.</strong> <a href="/limite-mei/">Ver quanto ainda dá pra faturar este ano</a>.</li>
   </ol>
 </section>
+
+{chamada_planilha(s)}
 
 {oferta("contabilidade", s)}
 
@@ -507,6 +522,7 @@ def pagina_limite():
   </ul>
   <p>O projeto que subiria o limite pra R$ 130 mil ainda não foi aprovado pela Câmara. Se mudar, esta página muda junto.</p>
 </section>
+{chamada_planilha("limite")}
 {oferta("maquininha", "limite")}
 {oferta("contabilidade", "limite")}
 </div></main>
@@ -514,6 +530,78 @@ def pagina_limite():
     return cabeca(f"Limite MEI {ANO}: calculadora de quanto ainda dá pra faturar",
                   "O limite do MEI segue R$ 81 mil por ano. Calcule quanto ainda pode faturar, a média por mês e o que acontece se passar.",
                   "/limite-mei/", [ld]) + corpo + RODAPE
+
+
+def pagina_planilha():
+    link = PLANILHA["kiwify"]
+    preco = PLANILHA["preco"]
+    if link:
+        botao = f'<a class="btn" data-checkout href="{e(link)}">Quero a planilha por R$ {preco}</a>'
+    else:
+        botao = '<span class="btn" style="opacity:.6;cursor:default">Disponível em breve</span>'
+    mig, ld = migalha([("Início", "/"), ("Planilha do MEI", "/planilha-mei/")])
+    abas = [
+        ("Meu MEI", "Nome, CNPJ, quando abriu e o tipo de atividade. Daí saem o valor do seu DAS e o seu limite do ano, já proporcional se abriu este ano."),
+        ("Lançamentos", "Um dinheiro por linha: data, o que foi, categoria, valor e se teve nota. As categorias já separam venda, serviço, despesa e o que você tira pra casa."),
+        ("Relatório mensal", "O modelo oficial do relatório de receitas brutas, somado sozinho. Escolhe o mês, imprime ou salva em PDF e guarda com as notas."),
+        ("Painel do ano", "Quanto entrou, quanto saiu e quanto sobrou em cada mês, o faturamento acumulado e quanto falta pro limite, com aviso aos 80%."),
+        ("Declaração anual", "No fim do painel, os números exatos pra DASN-SIMEI: receita total, parte de comércio e parte de serviço."),
+        ("DAS", "Os 12 vencimentos do ano com o valor certo. Marca a data do pagamento e vê na hora o que está atrasado."),
+        ("Preço", "Quanto cobrar por produto ou serviço, somando material, seu tempo, contas fixas e taxa da maquininha. Mostra quando você está pagando pra trabalhar."),
+    ]
+    cards = "".join(f'<div class="cartao"><h3 style="margin-top:0">{e(t)}</h3><p style="margin:0">{e(d)}</p></div>' for t, d in abas)
+    faq = [
+        ("Funciona no celular?", "Funciona no aplicativo do Google Planilhas e no Excel do celular. Pra preencher todo dia, o Google Planilhas é o mais prático."),
+        ("Preciso saber Excel?", "Não. Você só preenche as células brancas. Tudo que é cálculo já está pronto e marcado em verde."),
+        ("Como recebo?", "Logo depois do pagamento, a Kiwify manda o arquivo pro seu e-mail. Pix cai na hora."),
+        ("E se eu não gostar?", "Você tem 7 dias pra pedir o dinheiro de volta pela própria Kiwify, sem precisar explicar."),
+        ("Serve pro ano que vem?", "Serve. Quando o salário mínimo mudar, você troca o valor e o ano na aba Meu MEI e o resto se ajusta."),
+        ("Substitui o contador?", "Não. Ela organiza o que a lei pede do MEI. Em situação fora do comum, como passar do limite, vale falar com um contador."),
+    ]
+    ld_faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+    relatorio = "".join(f"<tr><td>{a}</td><td class=num>{b}</td></tr>" for a, b in [
+        ("VII. Serviços sem nota", "R$ 2.150,00"), ("VIII. Serviços com nota", "R$ 1.800,00"),
+        ("IX. Total de serviços", "R$ 3.950,00")])
+    corpo = f"""<main id="conteudo">
+<div class="hero"><div class="w">
+  <p class="chapeu">Planilha do MEI {ANO}</p>
+  <h1>Anote o que entra e sai. O resto a planilha faz.</h1>
+  <p>Relatório mensal pronto, limite de faturamento, DAS do ano, números da declaração e quanto cobrar. Excel ou Google Planilhas.</p>
+  <p style="margin-top:22px">{botao}</p>
+  <p style="font-size:15px;color:#D8EFE4">R$ {preco}, pagamento único. Garantia de 7 dias.</p>
+</div></div>
+<div class="w">
+{mig}
+<section>
+  <h2>O que tem dentro</h2>
+  <div class="grade" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">{cards}</div>
+</section>
+<section>
+  <h2>O relatório que o MEI tem que guardar, sem fazer conta</h2>
+  <p>Todo mês o MEI precisa preencher o relatório de receitas brutas e guardar junto com as notas. Na planilha ele sai sozinho dos seus lançamentos, separado entre com nota e sem nota, do jeito do modelo oficial.</p>
+  <div class="rolagem" style="max-width:560px"><table><thead><tr><th>Exemplo de outubro</th><th class="num">Valor</th></tr></thead><tbody>{relatorio}<tr class="total"><td>X. Total geral do mês</td><td class=num>R$ 3.950,00</td></tr></tbody></table></div>
+</section>
+<section>
+  <h2>E avisa antes de você passar do limite</h2>
+  <p>O painel soma o faturamento mês a mês e compara com o seu limite, já proporcional se o MEI abriu este ano. Passou de 80%, a linha fica amarela. Passou do limite, fica vermelha e diz o que acontece.</p>
+  <div class="saida" style="max-width:560px"><div class="grande">74% do limite</div><p>Faturado até setembro: R$ 59.940. Ainda dá pra faturar R$ 21.060 no ano.</p></div>
+</section>
+<section>
+  <h2>Perguntas frequentes</h2>
+  {"".join(f'<details><summary>{e(q)}</summary><div><p>{e(a)}</p></div></details>' for q, a in faq)}
+</section>
+<section style="text-align:center">
+  <p style="margin:0 auto 14px">{botao}</p>
+  <p class="fonte" style="margin:0 auto">Pagamento pela Kiwify, com Pix ou cartão. A planilha organiza as obrigações do MEI e não substitui um contador.</p>
+</section>
+</div>
+</main>
+<script>(function(){{var r=new URLSearchParams(location.search).get('ref');if(!r)return;document.querySelectorAll('a[data-checkout]').forEach(function(a){{a.href+=(a.href.indexOf('?')<0?'?':'&')+'utm_source=guiadomei&utm_content='+encodeURIComponent(r)}})}})();</script>
+"""
+    return cabeca(f"Planilha do MEI {ANO}: relatório mensal, limite e DAS",
+                  "Planilha do MEI pra Excel e Google Planilhas: relatório mensal de receitas pronto, limite de faturamento, DAS do ano, números da declaração anual e quanto cobrar.",
+                  "/planilha-mei/", [ld, ld_faq], robots="index,follow" if link else "noindex,follow") + corpo + RODAPE
 
 
 def sitemap(urls):
@@ -551,6 +639,9 @@ def main():
     escrever("/mei/", pagina_az(ocs))
     escrever("/calculadora-das-mei/", pagina_das())
     escrever("/limite-mei/", pagina_limite())
+    escrever("/planilha-mei/", pagina_planilha())
+    if PLANILHA["kiwify"]:
+        urls.append("/planilha-mei/")
 
     urls += ["/crm/", "/crm/calculadora/", "/crm/dimensionamento/", "/crm/blog/", "/crm/blog/como-medir-crm/",
              "/crm/blog/metricas-de-crm/", "/crm/blog/o-que-e-incrementalidade/", "/privacidade/"]
