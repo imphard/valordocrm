@@ -245,7 +245,7 @@ def cabeca(titulo, descricao, caminho, extra_ld=None, robots="index,follow"):
 RODAPE = f"""<footer class="rodape"><div class="w">
   <div><a class="marca" href="/"><img src="/assets/mei/marca.svg" alt="" width="32" height="32"><span>guia do <b>MEI</b></span></a>
   <p>Informação independente, sem ligação com o governo. Abrir MEI no Portal do Empreendedor é grátis.</p></div>
-  <div><a href="/mei/">Profissões</a> · <a href="/calculadora-das-mei/">DAS</a> · <a href="/limite-mei/">Limite</a> · <a href="/privacidade/">Privacidade</a> · <a href="/crm/">Provando o valor do CRM</a></div>
+  <div><a href="/mei/">Profissões</a> · <a href="/calculadora-das-mei/">DAS</a> · <a href="/limite-mei/">Limite</a> · <a href="/como-abrir-mei/">Abrir MEI</a> · <a href="/boleto-das-mei/">Boleto do DAS</a> · <a href="/declaracao-anual-mei/">Declaração anual</a> · <a href="/nota-fiscal-mei/">Nota fiscal</a> · <a href="/privacidade/">Privacidade</a> · <a href="/crm/">Provando o valor do CRM</a></div>
 </div></footer>
 <script src="/assets/mei.js?v=3" defer></script>
 <script src="/assets/analitica.js" defer></script>
@@ -423,6 +423,7 @@ def pagina_home(ocs, por_nome):
         ("Comércio e serviço", INSS + 6), ("Caminhoneiro", INSS_CAMINHONEIRO + 1),
     ]
     tab = "".join(f"<tr><td>{a}</td><td class=num>{brl(v)}</td></tr>" for a, v in linhas)
+    guias_home = "".join(f'<a href="{g["url"]}">{e(g["curto"])}<span>{e(g["chapeu"])}</span></a>' for g in guias())
     corpo = f"""<main id="conteudo">
 <div class="hero"><div class="w">
   <p class="chapeu">Atualizado pra {ANO}</p>
@@ -464,10 +465,15 @@ def pagina_home(ocs, por_nome):
 </section>
 
 <section>
+  <h2>Guias do MEI, passo a passo</h2>
+  <div class="grade">{guias_home}</div>
+</section>
+
+<section>
   <h2>Datas que todo MEI precisa lembrar</h2>
   <ul class="lista">
-    <li><strong>Dia 20 de todo mês:</strong> vence o DAS do mês anterior.</li>
-    <li><strong>31 de maio:</strong> prazo da declaração anual (DASN-SIMEI).</li>
+    <li><strong>Dia 20 de todo mês:</strong> vence o DAS do mês anterior. <a href="/boleto-das-mei/">Como emitir o boleto</a>.</li>
+    <li><strong>31 de maio:</strong> prazo da declaração anual (DASN-SIMEI). <a href="/declaracao-anual-mei/">Como fazer</a>.</li>
     <li><strong>Janeiro:</strong> o DAS muda de valor quando o salário mínimo muda.</li>
   </ul>
 </section>
@@ -620,7 +626,7 @@ def pagina_novo_limite():
   <ol class="lista">
     <li><strong>Limite de R$ 110 mil em 2027.</strong> Quem abrir o MEI no meio de 2027 tem R$ 9.166,67 por mês de atividade, e mês começado conta inteiro.</li>
     <li><strong>Limite de R$ 140 mil a partir de 2028.</strong> No ano de abertura, R$ 11.666,67 por mês.</li>
-    <li><strong>Dois empregados a partir de 2027</strong>, cada um ganhando só o salário mínimo ou o piso da categoria. Hoje é um.</li>
+    <li><strong>Dois empregados a partir de 2027</strong>, cada um ganhando só o salário mínimo ou o piso da categoria. Hoje é um. <a href="/mei-pode-ter-funcionario/">Veja quanto custa</a>.</li>
     <li><strong>Perdão das dívidas federais do MEI</strong> constituídas até 13 de outubro de 2026, com multa e juros, pra quem pagar em dia o DAS dos seis meses seguintes. <a href="/perdao-dividas-mei/">Veja quem tem direito</a>.</li>
     <li><strong>Volta pro MEI:</strong> empresas do Simples Nacional que faturam dentro do limite novo poderão voltar a ser MEI, segundo o governo, conforme regras que ainda vão sair.</li>
   </ol>
@@ -682,6 +688,7 @@ def pagina_perdao():
     <li><strong>Se a dívida está na Justiça</strong>, fale com quem cuida do processo: pra ter a baixa é preciso desistir da ação.</li>
   </ol>
   <p><a class="btn" href="/calculadora-das-mei/">Ver o valor do meu DAS</a></p>
+  <p>Dívida de depois de 13/10/2026, ou de ICMS e ISS? <a href="/das-atrasado-mei/">Veja como pagar ou parcelar</a>.</p>
 </section>
 {oferta("maquininha", "perdao")}
 {chamada_planilha("perdao")}
@@ -769,6 +776,398 @@ def pagina_planilha():
                   "/planilha-mei/", [ld, ld_faq], robots="index,follow" if link else "noindex,follow") + corpo + RODAPE
 
 
+PORTAL = '<a href="https://www.gov.br/empresas-e-negocios/pt-br/empreendedor" rel="noopener">Portal do Empreendedor</a>'
+PGMEI = '<a href="https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao" rel="noopener">PGMEI</a>'
+
+
+def guias():
+    """Os guias dos temas que mais se procuram sobre MEI. Cada um vira uma página."""
+    sal = MINIMO
+    fgts, patronal, desconto = round(sal * 0.08, 2), round(sal * 0.03, 2), round(sal * 0.075, 2)
+    # 13º e férias com um terço, guardados todo mês, com FGTS e INSS patronal em cima
+    reserva = round((sal / 12 + sal * 4 / 3 / 12) * 1.11, 2)
+    custo = round(sal + fgts + patronal + reserva, 2)
+    return [
+        {
+            "url": "/declaracao-anual-mei/", "curto": "Declaração anual",
+            "title": f"Declaração anual do MEI (DASN-SIMEI): prazo, multa e como fazer",
+            "desc": "A declaração anual do MEI vai até 31 de maio. Veja quem precisa entregar, o que informar, como fazer pelo celular e quanto é a multa por atraso.",
+            "chapeu": "DASN-SIMEI", "h1": "Declaração anual do MEI: prazo, multa e passo a passo",
+            "entrada": "Todo ano, até 31 de maio, o MEI informa quanto faturou no ano anterior. Leva cinco minutos e é obrigatória mesmo pra quem não faturou nada.",
+            "resumo": [("Prazo", "31 de maio", "Sobre o ano anterior"), ("Custo", "Grátis", "Feita pela internet"),
+                       ("Sem faturar?", "Entrega igual", "Informa zero"), ("Atrasou", "R$ 50", "Multa mínima, R$ 25 se entregar sozinho")],
+            "secoes": [
+                f"""<h2>Quem precisa entregar</h2>
+  <p>Todo MEI que teve CNPJ ativo em qualquer parte do ano anterior. Abriu em novembro? Entrega. Não vendeu nada? Entrega informando zero. Fechou o MEI? Entrega a declaração de extinção, com prazo próprio (<a href="/como-dar-baixa-mei/">veja como dar baixa</a>).</p>
+  <p>A declaração de {ANO + 1} é sobre o que você faturou em {ANO}. Ela abre em janeiro e vai até 31 de maio de {ANO + 1}.</p>""",
+                f"""<h2>O que você vai informar</h2>
+  <ol class="lista">
+    <li><strong>Receita bruta total do ano:</strong> tudo que entrou com as vendas e serviços, com nota ou sem nota. É o que entrou, não o lucro.</li>
+    <li><strong>Quanto disso foi comércio ou indústria:</strong> venda de mercadoria, comida, produto que você fabrica.</li>
+    <li><strong>Quanto foi serviço.</strong> As duas partes somadas dão o total.</li>
+    <li><strong>Se teve empregado</strong> no ano.</li>
+  </ol>
+  <p>Quem guarda o relatório mensal de receitas tem a conta pronta: é só somar os doze meses.</p>""",
+                f"""<h2>Passo a passo</h2>
+  <ol class="lista">
+    <li>Entre no {PORTAL} e escolha <strong>Já sou MEI</strong> e depois <strong>Declaração anual de faturamento</strong>. Pelo celular, o aplicativo MEI faz o mesmo.</li>
+    <li>Digite o CNPJ e escolha o ano.</li>
+    <li>Preencha a receita de comércio, a de serviço e se teve empregado.</li>
+    <li>Confira e transmita. Salve o recibo em PDF.</li>
+    <li>Se aparecer DAS em aberto no fim, ele já pode ser emitido ali mesmo.</li>
+  </ol>
+  <p>Errou algum valor? Dá pra fazer uma declaração retificadora no mesmo lugar, sem multa, enquanto estiver no prazo.</p>""",
+                f"""<h2>Multa por atraso</h2>
+  <p>É 2% ao mês sobre os impostos declarados, limitada a 20%, com mínimo de R$ 50. Como o imposto do MEI é baixo, quase sempre a multa fica nos R$ 50. Entregando atrasada por conta própria, antes de a Receita cobrar, ela cai pela metade: R$ 25.</p>
+  <p>Mais caro que a multa é não entregar. Sem a declaração, o MEI não consegue parcelar dívidas e pode ter o CNPJ cancelado.</p>
+  <div class="aviso"><p>Faturou mais que o limite no ano? A declaração vai mostrar. Até 20% acima, você paga um DAS complementar sobre o excesso. <a href="/limite-mei/">Veja as regras do limite</a>.</p></div>""",
+            ],
+            "faq": [
+                ("Qual o prazo da declaração anual do MEI?", "31 de maio de cada ano, sobre o faturamento do ano anterior."),
+                ("MEI que não faturou precisa declarar?", "Precisa. Informa receita zero e entrega normalmente."),
+                ("Quanto é a multa por atraso da DASN-SIMEI?", "2% ao mês sobre os impostos declarados, até 20%, com mínimo de R$ 50. Entregando por conta própria, antes de a Receita cobrar, cai pela metade."),
+                ("Informo o faturamento ou o lucro?", "O faturamento: tudo que entrou com vendas e serviços, antes de tirar as despesas."),
+                ("Dá pra corrigir depois de enviar?", "Dá. É só fazer uma declaração retificadora no mesmo lugar."),
+            ],
+            "fontes": [("Portal do Empreendedor", "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor"),
+                       ("DASN-SIMEI no Portal do Simples Nacional", "https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/dasnsimei.app/Identificacao")],
+            "leia": ["/das-atrasado-mei/", "/limite-mei/", "/nota-fiscal-mei/"],
+        },
+        {
+            "url": "/como-abrir-mei/", "curto": "Como abrir MEI",
+            "title": f"Como abrir MEI em {ANO}: passo a passo grátis pelo gov.br",
+            "desc": f"Abrir MEI é grátis e leva 15 minutos. Veja o que precisa, quem pode, o passo a passo no gov.br e o que fazer depois de receber o CNPJ em {ANO}.",
+            "chapeu": "Passo a passo", "h1": f"Como abrir MEI em {ANO}, de graça e pelo celular",
+            "entrada": "O CNPJ sai na hora, sem contador e sem pagar nada. Você só precisa de uma conta gov.br prata ou ouro e de saber qual é a sua atividade.",
+            "resumo": [("Custo", "R$ 0", "Desconfie de quem cobra"), ("Tempo", "15 min", "CNPJ sai na hora"),
+                       ("Precisa de", "gov.br", "Nível prata ou ouro"), ("Paga por mês", brl(INSS + 5), "Serviço, em " + str(ANO))],
+            "secoes": [
+                f"""<h2>Antes de começar: você pode ser MEI?</h2>
+  <ul class="lista">
+    <li><strong>A sua atividade está na lista.</strong> São 470 ocupações permitidas. <a href="/">Procure a sua</a> e anote o nome exato.</li>
+    <li><strong>Você vai faturar até o limite:</strong> R$ 81 mil em {ANO}, R$ 110 mil em 2027 e R$ 140 mil a partir de 2028.</li>
+    <li><strong>Não é sócio, administrador ou dono</strong> de outra empresa.</li>
+    <li><strong>Terá no máximo um empregado</strong> (dois a partir de 2027).</li>
+    <li><strong>Servidor público:</strong> o federal em atividade não pode. Estadual e municipal depende do estatuto do seu cargo.</li>
+  </ul>""",
+                f"""<h2>Passo a passo</h2>
+  <ol class="lista">
+    <li><strong>Deixe a conta gov.br no nível prata ou ouro.</strong> No aplicativo gov.br, faça o reconhecimento facial ou entre pelo banco. O nível bronze não abre MEI.</li>
+    <li>Entre no {PORTAL} e escolha <strong>Quero ser MEI</strong> e depois <strong>Formalize-se</strong>.</li>
+    <li>Confirme os dados pessoais, o telefone e o e-mail.</li>
+    <li><strong>Escolha a ocupação principal</strong> e, se quiser, até 15 secundárias. A principal é a que você mais faz.</li>
+    <li><strong>Diga como você trabalha:</strong> em ponto fixo, em casa, na casa do cliente, pela internet, de porta em porta ou em ponto móvel.</li>
+    <li>Informe o endereço, aceite as declarações e confirme.</li>
+    <li>Pronto: o <strong>CNPJ e o certificado (CCMEI)</strong> saem na hora. Salve o PDF.</li>
+  </ol>
+  <div class="aviso"><p>Abrir MEI é grátis. Sites que cobram pra abrir, ou boletos que chegam pelo correio cobrando taxa de registro, não são do governo.</p></div>""",
+                f"""<h2>Depois de abrir</h2>
+  <ol class="lista">
+    <li><strong>O primeiro DAS</strong> vence no dia 20 do mês seguinte à abertura. <a href="/boleto-das-mei/">Veja como emitir</a>.</li>
+    <li><strong>Alvará:</strong> atividade de baixo risco é dispensada. Se você atende num ponto fixo, confirme na prefeitura.</li>
+    <li><strong>Nota fiscal:</strong> pra serviço, você já pode emitir pelo emissor nacional. <a href="/nota-fiscal-mei/">Veja como</a>.</li>
+    <li><strong>Separe o dinheiro:</strong> abra uma conta no CNPJ e receba os clientes nela. Fica fácil saber quanto faturou.</li>
+    <li><strong>Anote o que entra todo mês.</strong> A lei pede o relatório mensal de receitas, e a declaração anual sai dele.</li>
+  </ol>""",
+            ],
+            "faq": [
+                ("Quanto custa abrir MEI?", "Nada. A abertura no Portal do Empreendedor é gratuita. Depois, o MEI paga só o DAS mensal."),
+                ("Quanto tempo demora pra sair o CNPJ?", "Sai na hora, assim que você confirma o cadastro."),
+                ("Por que o gov.br pede nível prata ou ouro?", "É a exigência pra formalizar. Dá pra subir de nível pelo reconhecimento facial no aplicativo gov.br ou entrando pelo seu banco."),
+                ("Posso abrir MEI trabalhando de carteira assinada?", "Pode. Só fique atento se um dia for demitido: com MEI ativo, o seguro-desemprego pode ser negado se o MEI der renda suficiente pra você se manter."),
+                ("Posso abrir MEI em casa?", "Pode. Na hora do cadastro, escolha a forma de atuação e use o endereço de casa."),
+            ],
+            "fontes": [("Portal do Empreendedor", "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor"),
+                       ("Lei Complementar 123/2006", "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm")],
+            "leia": ["/boleto-das-mei/", "/nota-fiscal-mei/", "/mei-pode-ter-funcionario/"],
+        },
+        {
+            "url": "/nota-fiscal-mei/", "curto": "Nota fiscal",
+            "title": f"Nota fiscal do MEI em {ANO}: quando é obrigatória e como emitir",
+            "desc": "Como o MEI emite nota fiscal de serviço pelo emissor nacional e de produto pela Sefaz, quando é obrigatória e o que muda em 2027.",
+            "chapeu": "NFS-e e NF-e", "h1": "Nota fiscal do MEI: quando emitir e como fazer",
+            "entrada": f"Em {ANO}, a nota é obrigatória quando o cliente é empresa. A partir de 2027, pela lei da reforma tributária, passa a ser obrigatória em toda venda, também pra pessoa física.",
+            "resumo": [("Cliente empresa", "Obrigatória", "Já hoje"), ("Cliente pessoa", "Opcional", f"Até dezembro de {ANO}"),
+                       ("A partir de 2027", "Sempre", "Em toda venda"), ("Custo", "Grátis", "Emissor do governo")],
+            "secoes": [
+                f"""<h2>Quando a nota é obrigatória</h2>
+  <ul class="lista">
+    <li><strong>Venda ou serviço pra empresa (CNPJ):</strong> obrigatória.</li>
+    <li><strong>Pra pessoa física, em {ANO}:</strong> a lei dispensa. Se o cliente pedir, emita.</li>
+    <li><strong>A partir de 1º de janeiro de 2027:</strong> a Lei Complementar 214/2025 (reforma tributária) passa a exigir nota em todas as vendas e serviços do MEI, pra qualquer cliente. Vale começar a se acostumar agora.</li>
+  </ul>""",
+                f"""<h2>Nota de serviço (NFS-e), passo a passo</h2>
+  <p>Desde setembro de 2023 o MEI emite nota de serviço pelo <a href="https://www.nfse.gov.br/EmissorNacional" rel="noopener">Emissor Nacional</a>, no computador, ou pelo aplicativo NFS-e Mobile. É grátis.</p>
+  <ol class="lista">
+    <li>Entre com a conta gov.br e faça o primeiro acesso com o CNPJ.</li>
+    <li>Clique em <strong>Emitir NFS-e</strong> e informe o CPF ou CNPJ do cliente.</li>
+    <li>Escolha o código do serviço (o sistema busca pelo nome) e descreva o que foi feito.</li>
+    <li>Coloque o valor e confirme. O ISS não é cobrado na nota: ele já vai no seu DAS.</li>
+    <li>Baixe o PDF e mande pro cliente.</li>
+  </ol>
+  <p>Aparecerem campos de IBS e CBS? Em {ANO} o MEI pode deixar em branco. Eles só passam a ser exigidos do MEI em 2027.</p>""",
+                f"""<h2>Nota de produto (NF-e)</h2>
+  <p>Quem vende mercadoria emite a nota pela secretaria da Fazenda do estado. Precisa de inscrição estadual, que em muitos estados já sai com o MEI. Alguns estados têm emissor gratuito no site da Sefaz; outros pedem um programa e certificado digital. Procure por "emissor de nota fiscal MEI" mais o nome do seu estado no site da Sefaz.</p>""",
+                f"""<h2>O que guardar</h2>
+  <p>Guarde as notas que você emite, as notas das compras de mercadoria e o relatório mensal de receitas. Não precisa mandar pra ninguém, mas a fiscalização pode pedir por cinco anos.</p>""",
+            ],
+            "faq": [
+                ("MEI é obrigado a emitir nota fiscal pra pessoa física?", f"Em {ANO}, não, a menos que o cliente peça. A partir de 1º de janeiro de 2027, pela LC 214/2025, passa a ser obrigatório em toda venda e serviço."),
+                ("Onde o MEI emite nota de serviço?", "No Emissor Nacional (nfse.gov.br) ou no aplicativo NFS-e Mobile, de graça, entrando com a conta gov.br."),
+                ("O MEI paga imposto em cada nota?", "Não. O imposto do MEI é o valor fixo do DAS, pago todo mês. A nota não gera imposto a mais."),
+                ("Preciso preencher IBS e CBS na nota?", f"Não em {ANO}. Esses campos só passam a ser exigidos do MEI em 2027."),
+                ("Esqueci de emitir. E agora?", "Emita assim que puder. No emissor nacional você informa a data em que o serviço foi prestado, que é a competência da nota."),
+            ],
+            "fontes": [("Emissor Nacional da NFS-e", "https://www.nfse.gov.br/EmissorNacional"),
+                       ("Lei Complementar 214/2025", "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm"),
+                       ("Lei Complementar 123/2006, art. 26", "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm")],
+            "leia": ["/declaracao-anual-mei/", "/como-abrir-mei/", "/boleto-das-mei/"],
+        },
+        {
+            "url": "/das-atrasado-mei/", "curto": "DAS atrasado",
+            "title": f"DAS do MEI atrasado: como regularizar e parcelar em {ANO}",
+            "desc": "MEI com DAS atrasado: quanto fica a multa, como pagar, como parcelar em até 60 vezes e o perdão das dívidas da LC 238/2026.",
+            "chapeu": "Regularizar", "h1": "DAS do MEI atrasado: como pagar, parcelar ou entrar no perdão",
+            "entrada": "Atrasar o DAS custa multa e juros, mas o risco maior é perder os benefícios do INSS. A lei nova ainda perdoa as dívidas federais até 13/10/2026. Veja o que fazer no seu caso.",
+            "resumo": [("Multa", "0,33% ao dia", "No máximo 20%"), ("Juros", "Selic", "Calculados na guia"),
+                       ("Parcelamento", "Até 60x", "Parcela mínima de R$ 50"), ("Perdão", "Até 13/10/2026", "LC 238/2026")],
+            "secoes": [
+                f"""<h2>O que acontece quando o DAS atrasa</h2>
+  <ul class="lista">
+    <li><strong>Multa e juros:</strong> 0,33% por dia, no máximo 20%, mais juros pela taxa Selic. <a href="/calculadora-das-mei/">Calcule a multa</a>.</li>
+    <li><strong>Benefícios do INSS:</strong> o mês sem pagar não conta, e depois de um tempo sem pagar você perde a cobertura. <a href="/beneficios-inss-mei/">Veja os benefícios</a>.</li>
+    <li><strong>Dívida ativa:</strong> a dívida vai pra Procuradoria da Fazenda, pode ir pro seu CPF e dificultar crédito.</li>
+    <li><strong>CNPJ:</strong> MEI que fica muito tempo sem pagar e sem declarar pode ter o registro cancelado.</li>
+  </ul>""",
+                f"""<h2>Antes de pagar: veja se entra no perdão</h2>
+  <p>A Lei Complementar 238/2026 perdoa as dívidas federais do MEI constituídas até 13 de outubro de 2026, com multa e juros, pra quem pagar em dia o DAS dos seis meses seguintes. O que já foi pago não volta. Então, se a sua dívida é dessa época, <a href="/perdao-dividas-mei/">leia as regras do perdão</a> antes de parcelar.</p>
+  <p>ICMS e ISS que fazem parte do DAS são do estado e do município e podem ficar de fora do perdão.</p>""",
+                f"""<h2>Como regularizar, passo a passo</h2>
+  <ol class="lista">
+    <li><strong>Veja o que está em aberto.</strong> No {PGMEI}, com o CNPJ, escolha o ano e veja os meses sem pagamento. Dívida já inscrita aparece no <a href="https://www.regularize.pgfn.gov.br" rel="noopener">Regularize</a>, da PGFN.</li>
+    <li><strong>Entregue as declarações anuais que faltam.</strong> Sem elas, o parcelamento não abre. <a href="/declaracao-anual-mei/">Veja como</a>.</li>
+    <li><strong>Pague à vista</strong> gerando a guia atualizada no próprio dia. Guia antiga, emitida em outra data, sai com valor errado.</li>
+    <li><strong>Ou parcele:</strong> no Portal do Simples Nacional, em Parcelamento MEI, em até 60 vezes, com parcela mínima de R$ 50. Entram os anos cuja declaração já foi entregue.</li>
+    <li><strong>Dívida ativa:</strong> negocie no Regularize. A PGFN abre de tempos em tempos transações com desconto em multa e juros.</li>
+  </ol>
+  <div class="aviso"><p>Depois de regularizar, o que mais protege é o DAS do mês em dia. Débito automático evita esquecer. <a href="/boleto-das-mei/">Veja como ligar</a>.</p></div>""",
+            ],
+            "faq": [
+                ("Quanto é a multa do DAS atrasado?", "0,33% por dia de atraso, no máximo 20% do valor, mais juros pela taxa Selic."),
+                ("Dá pra parcelar o DAS do MEI?", "Dá, em até 60 vezes com parcela mínima de R$ 50, no Portal do Simples Nacional. Antes é preciso entregar as declarações anuais dos anos em atraso."),
+                ("Minha dívida do MEI vai ser perdoada?", "As dívidas federais constituídas até 13/10/2026 entram no perdão da LC 238/2026, com a condição de pagar o DAS em dia por seis meses."),
+                ("Dívida do MEI vai pro meu CPF?", "O MEI e a pessoa são a mesma pessoa pra cobrança. Dívida inscrita em dívida ativa pode atingir o seu CPF."),
+                ("Posso dar baixa no MEI com dívida?", "Pode, mas a dívida continua existindo e precisa ser paga."),
+            ],
+            "fontes": [("PGMEI, Receita Federal", "https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao"),
+                       ("Regularize, PGFN", "https://www.regularize.pgfn.gov.br"),
+                       ("Lei Complementar 238/2026", "https://www.planalto.gov.br/ccivil_03/leis/lcp/Lcp238.htm")],
+            "leia": ["/perdao-dividas-mei/", "/boleto-das-mei/", "/beneficios-inss-mei/"],
+        },
+        {
+            "url": "/mei-pode-ter-funcionario/", "curto": "Funcionário",
+            "title": f"MEI pode ter funcionário? Um em {ANO}, dois a partir de 2027",
+            "desc": f"O MEI pode ter um empregado em {ANO} e dois a partir de 2027 (LC 238/2026). Veja o salário permitido, quanto custa por mês e como registrar no eSocial.",
+            "chapeu": "Empregado", "h1": "MEI pode ter funcionário? Pode, e a partir de 2027 são dois",
+            "entrada": f"Em {ANO} o MEI pode registrar um empregado, que ganha o salário mínimo ou o piso da categoria. A Lei Complementar 238/2026 libera o segundo a partir de 2027.",
+            "resumo": [(f"Em {ANO}", "1 empregado", "Mínimo ou piso"), ("A partir de 2027", "2 empregados", "LC 238/2026"),
+                       ("Encargos", "11%", "8% FGTS + 3% INSS"), ("Custo real", brl(custo), "Por mês, com 13º e férias")],
+            "secoes": [
+                f"""<h2>As regras</h2>
+  <ul class="lista">
+    <li><strong>Quantos:</strong> um empregado em {ANO}, dois a partir de 1º de janeiro de 2027.</li>
+    <li><strong>Quanto pode pagar:</strong> exclusivamente o salário mínimo ({brl(sal)} em {ANO}) ou o piso da categoria, se houver. Pagar mais que isso desenquadra o MEI.</li>
+    <li><strong>Registro:</strong> carteira de trabalho digital e eSocial, como qualquer empregador.</li>
+  </ul>""",
+                f"""<h2>Quanto custa um empregado com salário mínimo</h2>
+  <div class="rolagem" style="max-width:560px"><table><thead><tr><th>Item</th><th class="num">Por mês</th></tr></thead><tbody>
+  <tr><td>Salário</td><td class=num>{brl(sal)}</td></tr>
+  <tr><td>FGTS (8%)</td><td class=num>{brl(fgts)}</td></tr>
+  <tr><td>INSS do patrão (3%)</td><td class=num>{brl(patronal)}</td></tr>
+  <tr><td>Reserva pro 13º e férias com 1/3</td><td class=num>{brl(reserva)}</td></tr>
+  <tr class="total"><td>Custo real por mês</td><td class=num>{brl(custo)}</td></tr></tbody></table></div>
+  <p>O INSS do empregado (7,5%, {brl(desconto)}) é descontado do salário dele e você só repassa. Vale-transporte, se houver, pode descontar até 6% do salário.</p>""",
+                f"""<h2>Como registrar, passo a passo</h2>
+  <ol class="lista">
+    <li>Peça os documentos e faça o exame admissional.</li>
+    <li>Entre no <a href="https://www.gov.br/esocial" rel="noopener">eSocial</a> com a conta gov.br, no módulo simplificado do MEI, e cadastre o empregado antes do primeiro dia de trabalho.</li>
+    <li>Todo mês, feche a folha no eSocial. Ele gera uma guia única (DAE) com FGTS, INSS do patrão e INSS do empregado.</li>
+    <li>Pague a guia até o dia 20 do mês seguinte. É separada do DAS do MEI.</li>
+  </ol>
+  <div class="aviso"><p>O segundo empregado só pode ser registrado a partir de 2027. Contratar antes, ou pagar acima do mínimo ou do piso, tira você do MEI.</p></div>""",
+            ],
+            "faq": [
+                ("Quantos funcionários o MEI pode ter?", f"Um em {ANO}. A partir de 1º de janeiro de 2027, dois, pela Lei Complementar 238/2026."),
+                ("Quanto o MEI pode pagar ao funcionário?", f"Só o salário mínimo ({brl(sal)} em {ANO}) ou o piso da categoria."),
+                ("Quanto custa um funcionário pro MEI?", f"Com salário mínimo, uns {brl(custo)} por mês, contando FGTS, INSS do patrão e a reserva pro 13º e as férias."),
+                ("O MEI paga o INSS do funcionário?", "Paga 3% de INSS patronal e repassa os 7,5% descontados do salário do empregado, na mesma guia do eSocial."),
+                ("Sócio ou parente pode ser o empregado?", "Parente pode, registrado como qualquer empregado. Sócio não existe no MEI."),
+            ],
+            "fontes": [("Lei Complementar 238/2026", "https://www.planalto.gov.br/ccivil_03/leis/lcp/Lcp238.htm"),
+                       ("eSocial", "https://www.gov.br/esocial")],
+            "leia": ["/novo-limite-mei/", "/limite-mei/", "/beneficios-inss-mei/"],
+        },
+        {
+            "url": "/beneficios-inss-mei/", "curto": "Benefícios do INSS",
+            "title": "Benefícios do INSS pro MEI: aposentadoria, auxílio e maternidade",
+            "desc": "O que o DAS do MEI garante no INSS: aposentadoria por idade, auxílio por incapacidade, salário-maternidade e pensão. Veja as carências e o que não cobre.",
+            "chapeu": "Previdência", "h1": "Benefícios do INSS pro MEI: o que o DAS garante",
+            "entrada": f"Dos {brl(INSS + 5)} do DAS, {brl(INSS)} vão pro INSS. Isso dá direito a aposentadoria, auxílio quando fica doente e salário-maternidade, sempre no valor de um salário mínimo.",
+            "resumo": [("Valor do benefício", brl(sal), "Um salário mínimo"), ("Auxílio doença", "12 meses", "De contribuição"),
+                       ("Maternidade", "120 dias", "Sem carência mínima"), ("Aposentadoria", "Por idade", "62 mulheres, 65 homens")],
+            "secoes": [
+                f"""<h2>O que o MEI tem</h2>
+  <ul class="lista">
+    <li><strong>Aposentadoria por idade:</strong> mulheres aos 62 anos com 15 anos de contribuição; homens aos 65 com 20 anos (15 pra quem já contribuía antes de 13/11/2019).</li>
+    <li><strong>Auxílio por incapacidade temporária</strong> (o antigo auxílio-doença): depois de 12 meses de contribuição. Acidente dispensa a carência.</li>
+    <li><strong>Aposentadoria por incapacidade permanente:</strong> também com 12 meses, depois de perícia.</li>
+    <li><strong>Salário-maternidade:</strong> 120 dias, por parto ou adoção. Desde a decisão do STF de 2024, não exige número mínimo de contribuições: basta estar com a cobertura em dia.</li>
+    <li><strong>Pensão por morte e auxílio-reclusão</strong> pra família.</li>
+  </ul>""",
+                f"""<h2>O que o MEI não tem</h2>
+  <ul class="lista">
+    <li><strong>Aposentadoria por tempo de contribuição</strong> e <strong>benefício acima do mínimo:</strong> o DAS cobre só o valor do salário mínimo.</li>
+    <li>Quer contar esse tempo pra outra aposentadoria? Dá pra complementar com mais 15% do salário mínimo por mês, numa guia própria (GPS, código 1910).</li>
+    <li><strong>Seguro-desemprego:</strong> o MEI não tem. E quem tem MEI com renda pode perder o seguro de um emprego anterior.</li>
+  </ul>""",
+                f"""<h2>O que derruba os benefícios</h2>
+  <p>A cobertura depende do DAS pago. Ficar muitos meses sem pagar faz você perder a qualidade de segurado, e a contribuição paga com atraso nem sempre conta pra carência. Na prática: quem quer ter o auxílio quando precisar paga o DAS em dia, todo mês.</p>
+  <p>Pede o benefício pelo aplicativo Meu INSS ou pelo telefone 135.</p>""",
+            ],
+            "faq": [
+                ("MEI tem direito a aposentadoria?", "Tem, à aposentadoria por idade, no valor de um salário mínimo: mulheres aos 62 anos e homens aos 65, com o tempo mínimo de contribuição."),
+                ("MEI tem direito a auxílio-doença?", "Tem, depois de 12 meses de contribuição. Em caso de acidente, não precisa de carência."),
+                ("MEI tem salário-maternidade?", "Tem, por 120 dias, no valor de um salário mínimo. Desde 2024 não exige número mínimo de contribuições."),
+                ("MEI tem seguro-desemprego?", "Não. O seguro-desemprego é pra quem perde emprego com carteira."),
+                ("Como aposentar com mais que um salário mínimo sendo MEI?", "Só com contribuição a mais. A complementação de 15% conta o tempo, mas o valor depende do quanto e por quanto tempo você contribuiu. Vale conversar com um especialista em previdência."),
+            ],
+            "fontes": [("INSS", "https://www.gov.br/inss/pt-br"), ("Portal do Empreendedor", "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor")],
+            "leia": ["/das-atrasado-mei/", "/boleto-das-mei/", "/mei-pode-ter-funcionario/"],
+        },
+        {
+            "url": "/como-dar-baixa-mei/", "curto": "Dar baixa no MEI",
+            "title": "Como dar baixa no MEI: passo a passo, dívidas e declaração",
+            "desc": "Como encerrar o MEI pelo gov.br de graça, o que acontece com as dívidas, o prazo da declaração de extinção e quando é melhor não fechar.",
+            "chapeu": "Encerrar o CNPJ", "h1": "Como dar baixa no MEI sem deixar pendência",
+            "entrada": "Fechar o MEI é grátis e sai na hora pelo gov.br. Mas as dívidas não somem, e ainda falta uma declaração depois. Veja a ordem certa.",
+            "resumo": [("Custo", "Grátis", "Pela internet"), ("Tempo", "Na hora", "Sai o CCMEI baixado"),
+                       ("Dívidas", "Continuam", "Com você"), ("Depois", "Declaração", "De extinção")],
+            "secoes": [
+                f"""<h2>Antes de fechar, confira</h2>
+  <ul class="lista">
+    <li><strong>Tem empregado?</strong> Faça a demissão e o acerto no eSocial antes.</li>
+    <li><strong>Tem dívida antiga?</strong> O perdão da LC 238/2026 pede seis meses de DAS em dia, e com o MEI fechado não há DAS pra pagar. <a href="/perdao-dividas-mei/">Leia as regras</a> antes de decidir.</li>
+    <li><strong>Passou do limite?</strong> Talvez o caso seja migrar pra microempresa, não fechar. <a href="/limite-mei/">Veja o limite</a>.</li>
+    <li><strong>Vai continuar trabalhando?</strong> Sem o MEI, você perde a cobertura do INSS que o DAS garante.</li>
+  </ul>""",
+                f"""<h2>Passo a passo</h2>
+  <ol class="lista">
+    <li>Entre no {PORTAL} e escolha <strong>Já sou MEI</strong> e depois <strong>Solicitar baixa</strong>.</li>
+    <li>Entre com a conta gov.br prata ou ouro.</li>
+    <li>Confirme os dados e as declarações.</li>
+    <li>Salve o certificado (CCMEI) com a situação de baixa. É o seu comprovante.</li>
+  </ol>""",
+                f"""<h2>Depois da baixa</h2>
+  <ol class="lista">
+    <li><strong>Entregue a declaração de extinção</strong> (DASN-SIMEI de situação especial). Baixou entre janeiro e abril: até 30 de junho. Entre maio e dezembro: até o último dia do mês seguinte.</li>
+    <li><strong>Pague os DAS até o mês da baixa.</strong> Eles continuam valendo e podem ser parcelados.</li>
+    <li><strong>Cancele</strong> débito automático, maquininha no CNPJ e contas que não vai mais usar.</li>
+  </ol>
+  <p>Quer voltar a ser MEI depois? Pode abrir de novo. Sai um CNPJ novo.</p>""",
+            ],
+            "faq": [
+                ("Quanto custa dar baixa no MEI?", "Nada. É feito pelo Portal do Empreendedor, de graça."),
+                ("Posso dar baixa no MEI com dívida?", "Pode. A dívida continua e precisa ser paga, e pode ir pra dívida ativa no seu nome."),
+                ("Qual o prazo da declaração de extinção do MEI?", "Baixa entre janeiro e abril: até 30 de junho. Entre maio e dezembro: até o último dia do mês seguinte à baixa."),
+                ("Depois de dar baixa posso abrir outro MEI?", "Pode. Você faz uma nova formalização e recebe um CNPJ novo."),
+                ("Posso só deixar o MEI parado?", "Pode, mas continua devendo o DAS todo mês e a declaração anual. Se não vai usar, é melhor dar baixa."),
+            ],
+            "fontes": [("Portal do Empreendedor", "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor"),
+                       ("DASN-SIMEI no Portal do Simples Nacional", "https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/dasnsimei.app/Identificacao")],
+            "leia": ["/das-atrasado-mei/", "/declaracao-anual-mei/", "/perdao-dividas-mei/"],
+        },
+        {
+            "url": "/boleto-das-mei/", "curto": "Boleto do DAS",
+            "title": f"Boleto do DAS MEI {ANO}: como emitir, pagar no Pix e débito automático",
+            "desc": f"Como emitir o boleto do DAS MEI {ANO} pelo PGMEI ou pelo aplicativo, pagar com Pix, ligar o débito automático e evitar o golpe do boleto falso.",
+            "chapeu": "Guia do DAS", "h1": f"Boleto do DAS MEI {ANO}: emitir, pagar e não esquecer",
+            "entrada": f"O DAS vence todo dia 20 e custa {brl(INSS + 5)} pra serviço e {brl(INSS + 1)} pra comércio em {ANO}. Você emite em um minuto, só com o CNPJ, e paga com Pix.",
+            "resumo": [("Vencimento", "Dia 20", "Do mês seguinte"), ("Serviço", brl(INSS + 5), "Por mês"),
+                       ("Comércio", brl(INSS + 1), "Por mês"), ("Precisa de", "Só o CNPJ", "No PGMEI")],
+            "secoes": [
+                f"""<h2>Como emitir pelo site</h2>
+  <ol class="lista">
+    <li>Entre no {PGMEI}, o site da Receita pra gerar o DAS.</li>
+    <li>Digite o CNPJ. Não precisa de senha.</li>
+    <li>Clique em <strong>Emitir guia de pagamento</strong> e escolha o ano.</li>
+    <li>Marque o mês (ou vários meses de uma vez) e clique em <strong>Apurar / Gerar DAS</strong>.</li>
+    <li>Baixe o PDF. A guia tem código de barras e QR code do Pix.</li>
+  </ol>
+  <p>Pelo celular, o aplicativo MEI, do governo, faz o mesmo e avisa quando vence.</p>""",
+                f"""<h2>Como pagar</h2>
+  <ul class="lista">
+    <li><strong>Pix:</strong> leia o QR code da guia no app do banco. É o mais rápido.</li>
+    <li><strong>Código de barras:</strong> no app do banco, na lotérica ou no caixa.</li>
+    <li><strong>Débito automático:</strong> no próprio PGMEI, em <strong>Débito automático</strong>, escolha o banco. Daí em diante o DAS sai sozinho todo dia 20.</li>
+  </ul>
+  <p>O valor muda todo janeiro, junto com o salário mínimo. <a href="/calculadora-das-mei/">Confira o seu</a>.</p>""",
+                f"""<h2>Cuidado com o boleto falso</h2>
+  <div class="aviso"><p>O governo não manda DAS pelo correio, por e-mail ou por WhatsApp. Boletos de "taxa de registro", "contribuição sindical" ou "cadastro nacional" que chegam assim são golpe. Só pague a guia que você mesmo gerou no PGMEI ou no aplicativo MEI.</p></div>
+  <p>Atrasou? A guia gerada hoje já vem com multa e juros. <a href="/das-atrasado-mei/">Veja como regularizar</a>.</p>""",
+            ],
+            "faq": [
+                ("Como tirar o boleto do DAS MEI?", "No PGMEI, site da Receita, só com o CNPJ, ou pelo aplicativo MEI do governo."),
+                ("Quando vence o DAS do MEI?", "Todo dia 20, sobre o mês anterior. Se cair em dia sem expediente bancário, vai pro dia útil seguinte."),
+                ("Dá pra pagar o DAS com Pix?", "Dá. A guia tem QR code do Pix."),
+                ("Dá pra emitir o DAS do ano inteiro?", "Dá. No PGMEI, marque os meses que quiser. Cada guia tem o seu vencimento."),
+                (f"Quanto é o DAS do MEI em {ANO}?", f"{brl(INSS + 5)} pra serviço, {brl(INSS + 1)} pra comércio e {brl(INSS + 6)} pra quem faz os dois."),
+            ],
+            "fontes": [("PGMEI, Receita Federal", "https://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao"),
+                       ("Portal do Empreendedor", "https://www.gov.br/empresas-e-negocios/pt-br/empreendedor")],
+            "leia": ["/calculadora-das-mei/", "/das-atrasado-mei/", "/declaracao-anual-mei/"],
+        },
+    ]
+
+
+NOMES_LINK = {"/limite-mei/": "Limite de faturamento", "/calculadora-das-mei/": "Calculadora do DAS",
+              "/novo-limite-mei/": "Novo limite do MEI", "/perdao-dividas-mei/": "Perdão de dívidas"}
+
+
+def pagina_guia(g, nomes):
+    mig, ld = migalha([("Início", "/"), (g["curto"], g["url"])])
+    ld_faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in g["faq"]]}
+    ld_art = {"@context": "https://schema.org", "@type": "Article", "headline": g["h1"],
+              "datePublished": "2026-10-29", "dateModified": HOJE, "publisher": {"@type": "Organization", "name": "Guia do MEI"}}
+    resumo = "".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}<small>{e(c)}</small></dd></div>" for a, b, c in g["resumo"])
+    secoes = [f"<section>\n  {s}\n</section>" for s in g["secoes"]]
+    secoes.insert(1, oferta("maquininha", g["url"].strip("/")))
+    leia = "".join(f'<a href="{u}">{e(nomes[u])}</a>' for u in g["leia"])
+    fontes = ", ".join(f'<a href="{u}" rel="noopener">{e(t)}</a>' for t, u in g["fontes"])
+    corpo = f"""<main id="conteudo"><div class="w">
+{mig}
+<div class="titulo-pag">
+  <p class="chapeu" style="color:#8A6400">{e(g["chapeu"])}</p>
+  <h1>{e(g["h1"])}</h1>
+  <p class="entrada">{e(g["entrada"])}</p>
+</div>
+<dl class="resumo">{resumo}</dl>
+{"".join(secoes)}
+{chamada_planilha(g["url"].strip("/"))}
+<section>
+  <h2>Perguntas frequentes</h2>
+  {"".join(f'<details><summary>{e(q)}</summary><div><p>{e(a)}</p></div></details>' for q, a in g["faq"])}
+</section>
+<section>
+  <h2>Leia também</h2>
+  <div class="grade">{leia}</div>
+</section>
+<p class="fonte">Fontes: {fontes}. Atualizado em {HOJE_BR}. As regras mudam: confira sempre no Portal do Empreendedor antes de agir.</p>
+</div></main>
+"""
+    return cabeca(g["title"], g["desc"], g["url"], [ld, ld_faq, ld_art]) + corpo + RODAPE
+
+
 def sitemap(urls):
     linhas = "".join(f"  <url><loc>{SITE}{u}</loc><lastmod>{HOJE}</lastmod></url>\n" for u in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{linhas}</urlset>\n'
@@ -807,7 +1206,11 @@ def main():
     escrever("/planilha-mei/", pagina_planilha())
     escrever("/novo-limite-mei/", pagina_novo_limite())
     escrever("/perdao-dividas-mei/", pagina_perdao())
-    urls[4:4] = ["/novo-limite-mei/", "/perdao-dividas-mei/"]
+    gs = guias()
+    nomes = dict(NOMES_LINK, **{g["url"]: g["curto"] for g in gs})
+    for g in gs:
+        escrever(g["url"], pagina_guia(g, nomes))
+    urls[4:4] = ["/novo-limite-mei/", "/perdao-dividas-mei/"] + [g["url"] for g in gs]
     if PLANILHA["kiwify"]:
         urls.append("/planilha-mei/")
 
