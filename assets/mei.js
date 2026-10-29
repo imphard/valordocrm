@@ -73,17 +73,20 @@
   var fLim = document.getElementById("calc-limite");
   if (fLim) {
     var calcLim = function () {
-      var anual = fLim.tipo.value === "caminhoneiro" ? 251600 : 81000;
-      var abertura = parseInt(fLim.abertura.value, 10); // 0 = aberto antes deste ano
+      // LC 238/2026: 110 mil em 2027 e 140 mil a partir de 2028; o caminhoneiro não mudou
+      var ano = parseInt(fLim.ano ? fLim.ano.value : new Date().getFullYear(), 10);
+      var anual = fLim.tipo.value === "caminhoneiro" ? 251600 : ano >= 2028 ? 140000 : ano === 2027 ? 110000 : 81000;
+      var abertura = parseInt(fLim.abertura.value, 10); // 0 = aberto antes do ano escolhido
       var meses = abertura ? 13 - abertura : 12;
-      var limite = (anual / 12) * meses;
+      var limite = Math.round((anual / 12) * meses * 100) / 100;
       var fat = parseFloat(String(fLim.faturado.value).replace(/\./g, "").replace(",", ".")) || 0;
-      var mesAtual = new Date().getMonth() + 1;
-      var restantes = Math.max(1, 12 - mesAtual + 1);
+      var hoje = new Date();
+      // no ano corrente, divide pelo que resta até dezembro; em ano futuro, pelos meses de atividade
+      var restantes = ano === hoje.getFullYear() ? Math.max(1, 12 - hoje.getMonth()) : meses;
       var falta = limite - fat;
       var saida = document.getElementById("lim-saida");
       saida.className = "saida";
-      document.getElementById("lim-limite").textContent = "Seu limite em " + new Date().getFullYear() + ": " + brl(limite) +
+      document.getElementById("lim-limite").textContent = "Seu limite em " + ano + ": " + brl(limite) +
         (abertura ? " (" + meses + " meses de atividade)" : "");
       if (fat <= limite) {
         document.getElementById("lim-grande").textContent = "Faltam " + brl(falta);

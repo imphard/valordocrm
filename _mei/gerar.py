@@ -26,6 +26,11 @@ INSS = round(MINIMO * 0.05, 2)
 INSS_CAMINHONEIRO = round(MINIMO * 0.12, 2)
 LIMITE = 81000
 LIMITE_CAMINHONEIRO = 251600
+# LC 238/2026 (sancionada em 21/10/2026): 110 mil em 2027 e 140 mil a partir de 2028;
+# dois empregados a partir de 2027. O caminhoneiro não mudou.
+LIMITE_2027 = 110000
+LIMITE_2028 = 140000
+LEI = '<a href="/novo-limite-mei/">LC 238/2026</a>'
 
 # Conta do AdSense (o mesmo id vai no ads.txt da raiz)
 ADSENSE = "ca-pub-5457625892554793"
@@ -242,7 +247,7 @@ RODAPE = f"""<footer class="rodape"><div class="w">
   <p>Informação independente, sem ligação com o governo. Abrir MEI no Portal do Empreendedor é grátis.</p></div>
   <div><a href="/mei/">Profissões</a> · <a href="/calculadora-das-mei/">DAS</a> · <a href="/limite-mei/">Limite</a> · <a href="/privacidade/">Privacidade</a> · <a href="/crm/">Provando o valor do CRM</a></div>
 </div></footer>
-<script src="/assets/mei.js?v=2" defer></script>
+<script src="/assets/mei.js?v=3" defer></script>
 <script src="/assets/analitica.js" defer></script>
 </body>
 </html>
@@ -300,7 +305,7 @@ def pagina_ocupacao(o, s, nome, parecidas):
     if len(titulo) > 70:
         titulo = f"MEI {nome}: CNAE e DAS {ANO}"
     descricao = (f"{nome} pode ser MEI com o CNAE {o['cnae']} ({o['desc']}). Em {ANO} o DAS é {brl(mes)} por mês, "
-                 f"com limite de {brl(limite)[:-3]} por ano. Veja nota fiscal, obrigações e como abrir de graça.")
+                 f"com limite de {brl(limite)[:-3]} (sobe em 2027). Veja nota fiscal, obrigações e como abrir de graça.")
     inclui = {(True, True): "o INSS, o ICMS e o ISS", (False, True): "o INSS e o ISS",
               (True, False): "o INSS e o ICMS", (False, False): "só o INSS"}[(bool(icms), bool(iss))]
     mig, ld_mig = migalha([("Início", "/"), ("Profissões", "/mei/"), (nome, caminho)])
@@ -310,8 +315,11 @@ def pagina_ocupacao(o, s, nome, parecidas):
         (f"Quanto o MEI {nome.lower()} paga por mês em {ANO}?",
          f"{brl(mes)} por mês no DAS, que vence todo dia 20. Esse valor já inclui {inclui}."),
         (f"Quanto o MEI {nome.lower()} pode faturar?",
-         f"Até {brl(limite)[:-3]} por ano. No ano em que abre, o limite é proporcional: {brl(limite / 12)[:-3]} por mês de atividade."),
-        ("Pode ter funcionário?", "Pode ter um empregado, que receba o salário mínimo ou o piso da categoria."),
+         (f"Até {brl(limite)[:-3]} por ano. No ano em que abre, o limite é proporcional: {brl(limite / 12)[:-3]} por mês de atividade."
+          if t.startswith("caminhoneiro") else
+          f"Até R$ 81.000 em {ANO}. Pela Lei Complementar 238/2026, o limite sobe pra R$ 110.000 em 2027 e R$ 140.000 a partir de 2028. "
+          "No ano em que abre, é proporcional aos meses de atividade.")),
+        ("Pode ter funcionário?", f"Em {ANO}, um empregado. A partir de 2027, a Lei Complementar 238/2026 permite dois, cada um ganhando o salário mínimo ou o piso da categoria."),
     ]
     ld_faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
         {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
@@ -328,7 +336,7 @@ def pagina_ocupacao(o, s, nome, parecidas):
   <div><dt>CNAE</dt><dd>{e(o['cnae'])}<small>{e(o['desc'])}</small></dd></div>
   <div><dt>DAS por mês</dt><dd>{brl(mes)}<small>{brl(mes * 12)} no ano</small></dd></div>
   <div><dt>Tipo</dt><dd>{TIPO_TXT[t]}<small>Paga {impostos if impostos != 'só INSS' else 'só o INSS'}</small></dd></div>
-  <div><dt>Limite por ano</dt><dd>{brl(limite)[:-3]}<small>{brl(limite / 12)[:-3]} por mês, em média</small></dd></div>
+  <div><dt>Limite em {ANO}</dt><dd>{brl(limite)[:-3]}<small>{"Caminhoneiro não mudou com a lei nova" if t.startswith("caminhoneiro") else "Sobe pra R$ 110 mil em 2027 e R$ 140 mil em 2028"}</small></dd></div>
 </dl>
 
 {oferta("maquininha", s)}
@@ -344,9 +352,9 @@ def pagina_ocupacao(o, s, nome, parecidas):
 <section>
   <h2>Pode ser MEI? As condições</h2>
   <ul class="lista">
-    <li><strong>Faturar até {brl(limite)[:-3]} por ano</strong>, somando tudo que entrar pelo CNPJ.</li>
+    <li><strong>Faturar até {brl(limite)[:-3]} por ano</strong>, somando tudo que entrar pelo CNPJ.{"" if t.startswith("caminhoneiro") else " A " + LEI + " sobe o limite pra R$ 110 mil em 2027 e R$ 140 mil a partir de 2028."}</li>
     <li><strong>Não ser sócio, dono ou administrador de outra empresa.</strong></li>
-    <li><strong>Ter no máximo um empregado</strong>, com salário mínimo ou piso da categoria.</li>
+    <li><strong>Ter no máximo um empregado em {ANO}</strong>, com salário mínimo ou piso da categoria. A partir de 2027 podem ser dois.</li>
     <li><strong>Exercer uma atividade da lista oficial.</strong> {e(nome)} está na lista, então essa parte está resolvida. Dá pra somar até 15 ocupações secundárias.</li>
   </ul>
   <div class="aviso"><p>Servidor público federal na ativa não pode ser MEI. Servidor estadual ou municipal depende do estatuto do seu órgão.</p></div>
@@ -444,9 +452,15 @@ def pagina_home(ocs, por_nome):
 </section>
 
 <section>
-  <h2>O limite continua R$ 81 mil</h2>
-  <p>O projeto que sobe o limite pra R$ 130 mil (PLP 108/2021) passou no Senado e teve urgência aprovada na Câmara, mas ainda não foi votado nem sancionado. Até lá, vale R$ 81 mil por ano, ou R$ 6.750 por mês no ano em que o MEI é aberto.</p>
-  <p><a class="btn sec" href="/limite-mei/">Ver quanto ainda dá pra faturar</a></p>
+  <p class="chapeu" style="color:#8A6400">Lei nova</p>
+  <h2>O limite do MEI vai subir pra R$ 140 mil</h2>
+  <p>A Lei Complementar 238/2026, sancionada em 21 de outubro, aumenta o limite de faturamento em duas etapas e libera um segundo empregado. Em {ANO} nada muda: vale R$ 81 mil até dezembro.</p>
+  <div class="rolagem" style="max-width:560px"><table><thead><tr><th>Ano</th><th class="num">Limite</th><th class="num">Por mês</th></tr></thead><tbody>
+  <tr><td>{ANO}</td><td class=num>R$ 81.000</td><td class=num>R$ 6.750</td></tr>
+  <tr><td>2027</td><td class=num>R$ 110.000</td><td class=num>R$ 9.166,67</td></tr>
+  <tr class="total"><td>2028 em diante</td><td class=num>R$ 140.000</td><td class=num>R$ 11.666,67</td></tr></tbody></table></div>
+  <p>A mesma lei perdoa dívidas de DAS em atraso até 13/10/2026, pra quem pagar em dia os seis meses seguintes.</p>
+  <p><a class="btn" href="/novo-limite-mei/">Tudo que muda com a lei nova</a> <a class="btn sec" href="/perdao-dividas-mei/">Perdão das dívidas do MEI</a></p>
 </section>
 
 <section>
@@ -530,39 +544,157 @@ def pagina_das():
 def pagina_limite():
     mig, ld = migalha([("Início", "/"), ("Limite de faturamento", "/limite-mei/")])
     meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
-    opts = '<option value="0">Antes deste ano</option>' + "".join(f'<option value="{i}">Em {m} deste ano</option>' for i, m in enumerate(meses, 1))
+    opts = '<option value="0">Antes do ano escolhido</option>' + "".join(f'<option value="{i}">Em {m} do ano escolhido</option>' for i, m in enumerate(meses, 1))
     corpo = f"""<main id="conteudo"><div class="w">
 {mig}
 <div class="titulo-pag">
-  <h1>Limite do MEI {ANO}: quanto ainda dá pra faturar</h1>
-  <p class="entrada">Coloque o que já faturou no ano e veja quanto falta, a média por mês até dezembro e o que acontece se passar.</p>
+  <h1>Limite do MEI: quanto ainda dá pra faturar</h1>
+  <p class="entrada">R$ 81 mil em {ANO}, R$ 110 mil em 2027 e R$ 140 mil a partir de 2028. Escolha o ano, coloque o que já faturou e veja quanto falta.</p>
 </div>
 <form id="calc-limite" class="calc" onsubmit="return false">
   <div><label for="tipo">Tipo de MEI</label>
-  <select id="tipo" name="tipo"><option value="geral">MEI comum (R$ 81 mil)</option><option value="caminhoneiro">Caminhoneiro (R$ 251,6 mil)</option></select></div>
+  <select id="tipo" name="tipo"><option value="geral">MEI comum</option><option value="caminhoneiro">Caminhoneiro (R$ 251,6 mil)</option></select></div>
+  <div><label for="ano">Ano</label>
+  <select id="ano" name="ano"><option value="{ANO}">{ANO} (R$ 81 mil)</option><option value="2027">2027 (R$ 110 mil)</option><option value="2028">2028 em diante (R$ 140 mil)</option></select></div>
   <div><label for="abertura">Quando o MEI foi aberto</label><select id="abertura" name="abertura">{opts}</select></div>
-  <div><label for="faturado">Quanto já faturou este ano (R$)</label>
+  <div><label for="faturado">Quanto já faturou no ano (R$)</label>
   <input id="faturado" name="faturado" inputmode="decimal" placeholder="Ex.: 42.000" value=""></div>
 </form>
 <div class="saida" id="lim-saida"><div class="grande" id="lim-grande"></div><p id="lim-texto"></p><p id="lim-limite"></p></div>
 <section>
   <h2>Como funciona o limite</h2>
   <ul class="lista">
-    <li><strong>R$ 81 mil por ano</strong> pro MEI comum e R$ 251,6 mil pro caminhoneiro.</li>
-    <li><strong>No ano de abertura, é proporcional:</strong> R$ 6.750 por mês de atividade, contando o mês em que abriu.</li>
+    <li><strong>MEI comum:</strong> R$ 81 mil em {ANO}, R$ 110 mil em 2027 e R$ 140 mil a partir de 2028, pela Lei Complementar 238/2026.</li>
+    <li><strong>Caminhoneiro:</strong> R$ 251,6 mil por ano. A lei nova não mudou esse valor.</li>
+    <li><strong>No ano de abertura, é proporcional:</strong> R$ 6.750 por mês de atividade em {ANO}, R$ 9.166,67 em 2027 e R$ 11.666,67 a partir de 2028. Mês começado conta inteiro.</li>
     <li><strong>Passou até 20%:</strong> continua MEI até dezembro, paga um DAS complementar sobre o excesso e vira microempresa em janeiro.</li>
     <li><strong>Passou mais de 20%:</strong> o desenquadramento volta pro começo do ano (ou pra data de abertura), com os impostos recalculados.</li>
   </ul>
-  <p>O projeto que subiria o limite pra R$ 130 mil ainda não foi aprovado pela Câmara. Se mudar, esta página muda junto.</p>
+  <p><a href="/novo-limite-mei/">Veja tudo que muda com a lei nova</a>, inclusive o segundo empregado e o perdão de dívidas.</p>
 </section>
 {chamada_planilha("limite")}
 {oferta("maquininha", "limite")}
 {oferta("contabilidade", "limite")}
 </div></main>
 """
-    return cabeca(f"Limite MEI {ANO}: calculadora de quanto ainda dá pra faturar",
-                  "O limite do MEI segue R$ 81 mil por ano. Calcule quanto ainda pode faturar, a média por mês e o que acontece se passar.",
+    return cabeca("Limite do MEI 2026, 2027 e 2028: calculadora de faturamento",
+                  "Limite do MEI: R$ 81 mil em 2026, R$ 110 mil em 2027 e R$ 140 mil a partir de 2028 (LC 238/2026). Calcule quanto ainda pode faturar.",
                   "/limite-mei/", [ld]) + corpo + RODAPE
+
+
+FONTES_LEI = ('<p class="fonte">Fontes: <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/Lcp238.htm" rel="noopener">texto da Lei Complementar nº 238/2026 no Planalto</a>, '
+              '<a href="https://agenciabrasil.ebc.com.br/economia/noticia/2026-10/sancionada-lei-que-perdoa-divida-e-aumenta-limite-de-mei" rel="noopener">Agência Brasil</a> e '
+              '<a href="https://fenacon.org.br/noticias/sancionada-lei-que-amplia-limite-de-faturamento-do-mei/" rel="noopener">Fenacon</a>. '
+              f'Atualizado em {HOJE_BR}. As regras de detalhe saem em resolução do Comitê Gestor do Simples Nacional: confira no Portal do Empreendedor.</p>')
+
+
+def pagina_novo_limite():
+    mig, ld = migalha([("Início", "/"), ("Novo limite do MEI", "/novo-limite-mei/")])
+    faq = [
+        ("O limite de R$ 110 mil já vale em 2026?", "Não. Em 2026 o limite continua R$ 81 mil. Os R$ 110 mil valem a partir de 1º de janeiro de 2027, e os R$ 140 mil a partir de 1º de janeiro de 2028."),
+        ("Quanto o MEI pode faturar por mês em 2027?", "Na média, R$ 9.166,67. No ano em que o MEI abre, o limite é esse valor vezes os meses de atividade, contando o mês de abertura inteiro."),
+        ("O DAS vai aumentar por causa do limite novo?", "A lei não muda a forma do DAS: continua 5% do salário mínimo mais R$ 1 de ICMS e R$ 5 de ISS. O valor muda só quando o salário mínimo muda."),
+        ("O MEI pode ter dois funcionários quando?", "A partir de 2027. Cada um recebendo exclusivamente um salário mínimo ou o piso da categoria."),
+        ("Quem virou microempresa pode voltar a ser MEI?", "Pela notícia oficial da sanção, empresas do Simples que faturam dentro do novo limite poderão voltar a se enquadrar como MEI, conforme as regras que ainda serão publicadas."),
+    ]
+    ld_faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+    ld_art = {"@context": "https://schema.org", "@type": "Article", "headline": "Novo limite do MEI: R$ 110 mil em 2027 e R$ 140 mil em 2028",
+              "datePublished": "2026-10-29", "dateModified": HOJE, "publisher": {"@type": "Organization", "name": "Guia do MEI"}}
+    corpo = f"""<main id="conteudo"><div class="w">
+{mig}
+<div class="titulo-pag">
+  <p class="chapeu" style="color:#8A6400">Lei Complementar 238/2026</p>
+  <h1>Novo limite do MEI: R$ 110 mil em 2027 e R$ 140 mil em 2028</h1>
+  <p class="entrada">A lei foi sancionada em 21 de outubro de 2026. Ela aumenta o limite de faturamento em duas etapas, libera um segundo empregado e perdoa dívidas antigas. Em 2026, o limite continua R$ 81 mil.</p>
+</div>
+<dl class="resumo">
+  <div><dt>Em 2026</dt><dd>R$ 81.000<small>Nada muda até dezembro</small></dd></div>
+  <div><dt>Em 2027</dt><dd>R$ 110.000<small>R$ 9.166,67 por mês</small></dd></div>
+  <div><dt>2028 em diante</dt><dd>R$ 140.000<small>R$ 11.666,67 por mês</small></dd></div>
+  <div><dt>Empregados</dt><dd>Até 2<small>A partir de 2027</small></dd></div>
+</dl>
+{oferta("maquininha", "novo-limite")}
+<section>
+  <h2>O que muda, em ordem</h2>
+  <ol class="lista">
+    <li><strong>Limite de R$ 110 mil em 2027.</strong> Quem abrir o MEI no meio de 2027 tem R$ 9.166,67 por mês de atividade, e mês começado conta inteiro.</li>
+    <li><strong>Limite de R$ 140 mil a partir de 2028.</strong> No ano de abertura, R$ 11.666,67 por mês.</li>
+    <li><strong>Dois empregados a partir de 2027</strong>, cada um ganhando só o salário mínimo ou o piso da categoria. Hoje é um.</li>
+    <li><strong>Perdão das dívidas federais do MEI</strong> constituídas até 13 de outubro de 2026, com multa e juros, pra quem pagar em dia o DAS dos seis meses seguintes. <a href="/perdao-dividas-mei/">Veja quem tem direito</a>.</li>
+    <li><strong>Volta pro MEI:</strong> empresas do Simples Nacional que faturam dentro do limite novo poderão voltar a ser MEI, segundo o governo, conforme regras que ainda vão sair.</li>
+  </ol>
+  <div class="aviso"><p>A própria lei diz que o aumento do limite depende de a perda de arrecadação constar nas leis de orçamento de 2027 a 2029. Na prática, o governo já anunciou as datas, mas vale acompanhar.</p></div>
+</section>
+<section>
+  <h2>O que não muda</h2>
+  <ul class="lista">
+    <li><strong>O limite de {ANO}:</strong> continua R$ 81 mil. Quem passar disso agora segue a regra antiga: até 20% acima, continua MEI até dezembro e paga DAS complementar; mais que isso, o desenquadramento volta pro começo do ano.</li>
+    <li><strong>O DAS:</strong> continua fixo, 5% do salário mínimo mais o ICMS e o ISS da atividade. <a href="/calculadora-das-mei/">Calcular o meu DAS</a>.</li>
+    <li><strong>O caminhoneiro:</strong> o limite de R$ 251,6 mil não mudou.</li>
+    <li><strong>A declaração anual:</strong> segue até 31 de maio.</li>
+  </ul>
+  <p><a class="btn" href="/limite-mei/">Calcular quanto ainda dá pra faturar</a></p>
+</section>
+{chamada_planilha("novo-limite")}
+<section>
+  <h2>Perguntas frequentes</h2>
+  {"".join(f'<details><summary>{e(q)}</summary><div><p>{e(a)}</p></div></details>' for q, a in faq)}
+</section>
+{FONTES_LEI}
+</div></main>
+"""
+    return cabeca("Novo limite do MEI 2027 e 2028: R$ 110 mil e R$ 140 mil (LC 238/2026)",
+                  "Lei sancionada em 21/10/2026: limite do MEI sobe pra R$ 110 mil em 2027 e R$ 140 mil em 2028, com dois empregados e perdão de dívidas. Em 2026 segue R$ 81 mil.",
+                  "/novo-limite-mei/", [ld, ld_faq, ld_art]) + corpo + RODAPE
+
+
+def pagina_perdao():
+    mig, ld = migalha([("Início", "/"), ("Novo limite do MEI", "/novo-limite-mei/"), ("Perdão de dívidas", "/perdao-dividas-mei/")])
+    faq = [
+        ("Preciso pedir o perdão das dívidas?", "Pelo que o governo informou, a remissão é automática pra quem tem dívida só na Receita ou na Dívida Ativa. Quem discute a dívida na Justiça precisa desistir da ação e pedir a baixa."),
+        ("Quais dívidas entram?", "Débitos federais do MEI constituídos até 13 de outubro de 2026, inscritos ou não em Dívida Ativa, inclusive parcelados ou em cobrança judicial: contribuição do INSS em atraso, multas, juros e encargos."),
+        ("O que eu preciso fazer pra não perder o perdão?", "Pagar em dia o DAS dos seis meses seguintes à entrada em vigor. Atrasou nesse período, o perdão pode ser cancelado."),
+        ("Paguei parte da dívida. Recebo de volta?", "Não. O que já foi pago não é devolvido."),
+        ("Vale pro ICMS e o ISS em atraso?", "A lei fala em créditos de titularidade da União. ICMS (estado) e ISS (município) que fazem parte do DAS não estão claramente incluídos: confira no Portal do Empreendedor quando a regulamentação sair."),
+    ]
+    ld_faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+    corpo = f"""<main id="conteudo"><div class="w">
+{mig}
+<div class="titulo-pag">
+  <p class="chapeu" style="color:#8A6400">Lei Complementar 238/2026</p>
+  <h1>Perdão de dívidas do MEI: quem tem direito e o que fazer</h1>
+  <p class="entrada">A lei que aumentou o limite do MEI também perdoa as dívidas federais em atraso até 13 de outubro de 2026, com multa e juros. A condição é pagar o DAS em dia nos seis meses seguintes.</p>
+</div>
+<dl class="resumo">
+  <div><dt>Dívidas até</dt><dd>13/10/2026<small>Constituídas até essa data</small></dd></div>
+  <div><dt>Começa em</dt><dd>01/01/2027<small>Segundo o governo</small></dd></div>
+  <div><dt>Condição</dt><dd>6 meses<small>de DAS pago em dia</small></dd></div>
+  <div><dt>Devolve o que pagou?</dt><dd>Não<small>Só perdoa o que falta</small></dd></div>
+</dl>
+<section>
+  <h2>O que fazer agora</h2>
+  <ol class="lista">
+    <li><strong>Veja quanto você deve.</strong> No Portal do Empreendedor (Pagamento de contribuição mensal) ou no app MEI aparecem os meses em aberto. A dívida já inscrita aparece no portal Regularize, da PGFN.</li>
+    <li><strong>Não comece um parcelamento novo só por causa dessas dívidas</strong> sem conferir antes: o que já foi pago não volta.</li>
+    <li><strong>Deixe o DAS de agora em dia.</strong> O perdão exige pagar em dia os seis meses depois da entrada em vigor. Marque o dia 20 no celular.</li>
+    <li><strong>Se a dívida está na Justiça</strong>, fale com quem cuida do processo: pra ter a baixa é preciso desistir da ação.</li>
+  </ol>
+  <p><a class="btn" href="/calculadora-das-mei/">Ver o valor do meu DAS</a></p>
+</section>
+{oferta("maquininha", "perdao")}
+{chamada_planilha("perdao")}
+<section>
+  <h2>Perguntas frequentes</h2>
+  {"".join(f'<details><summary>{e(q)}</summary><div><p>{e(a)}</p></div></details>' for q, a in faq)}
+</section>
+{FONTES_LEI}
+</div></main>
+"""
+    return cabeca("Perdão de dívidas do MEI 2026: quem tem direito (LC 238/2026)",
+                  "A LC 238/2026 perdoa as dívidas federais do MEI até 13/10/2026, com multa e juros, pra quem pagar o DAS em dia por seis meses. Veja o que fazer agora.",
+                  "/perdao-dividas-mei/", [ld, ld_faq]) + corpo + RODAPE
 
 
 def pagina_planilha():
@@ -673,6 +805,9 @@ def main():
     escrever("/calculadora-das-mei/", pagina_das())
     escrever("/limite-mei/", pagina_limite())
     escrever("/planilha-mei/", pagina_planilha())
+    escrever("/novo-limite-mei/", pagina_novo_limite())
+    escrever("/perdao-dividas-mei/", pagina_perdao())
+    urls[4:4] = ["/novo-limite-mei/", "/perdao-dividas-mei/"]
     if PLANILHA["kiwify"]:
         urls.append("/planilha-mei/")
 
