@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora DAS MEI 2026: valor, total no ano e atraso</title>
+<meta name="description" content="Calcule o DAS do MEI em 2026: R$ 86,05 pra serviço, R$ 82,05 pra comércio. Veja o total do ano e a multa por atraso.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://valordocrm.com.br/calculadora-das-mei/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Guia do MEI">
+<meta property="og:title" content="Calculadora DAS MEI 2026: valor, total no ano e atraso">
+<meta property="og:description" content="Calcule o DAS do MEI em 2026: R$ 86,05 pra serviço, R$ 82,05 pra comércio. Veja o total do ano e a multa por atraso.">
+<meta property="og:url" content="https://valordocrm.com.br/calculadora-das-mei/">
+<meta property="og:locale" content="pt_BR">
+<link rel="stylesheet" href="/assets/mei.css">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#0B6B48">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://valordocrm.com.br/"}, {"@type": "ListItem", "position": 2, "name": "Calculadora do DAS", "item": "https://valordocrm.com.br/calculadora-das-mei/"}]}</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo"><div class="w">
+  <a class="marca" href="/">Guia do <b>MEI</b></a>
+  <nav class="nav">
+    <a href="/mei/">Todas as profissões</a>
+    <a href="/calculadora-das-mei/">Calculadora do DAS</a>
+    <a href="/limite-mei/">Limite de faturamento</a>
+  </nav>
+</div></header>
+<main id="conteudo"><div class="w">
+<nav class="migalha" aria-label="Você está em"><a href="/">Início</a> › Calculadora do DAS</nav>
+<div class="titulo-pag">
+  <h1>Calculadora do DAS MEI 2026</h1>
+  <p class="entrada">Escolha o tipo de atividade e veja o valor da guia, o total do ano e quanto fica com atraso.</p>
+</div>
+<form id="calc-das" class="calc" onsubmit="return false">
+  <div><label for="tipo">Sua atividade</label>
+  <select id="tipo" name="tipo">
+    <option value="servico">Serviço (paga ISS)</option>
+    <option value="comercio">Comércio ou indústria (paga ICMS)</option>
+    <option value="ambos">Comércio e serviço (ICMS e ISS)</option>
+    <option value="locacao">Aluguel de bens (só INSS)</option>
+    <option value="caminhoneiro">Caminhoneiro</option>
+    <option value="caminhoneiro_iss">Caminhoneiro com serviço municipal</option>
+  </select></div>
+  <div><label for="atraso">Dias de atraso (deixe 0 se está em dia)</label>
+  <input id="atraso" name="atraso" type="number" min="0" max="999" value="0" inputmode="numeric"></div>
+</form>
+<div class="saida"><div class="grande" id="das-mes"></div><p id="das-detalhe"></p><p id="das-atraso"></p></div>
+<script>(function(){var t=new URLSearchParams(location.search).get('tipo');var s=document.getElementById('tipo');if(t&&s.querySelector('option[value="'+t+'"]'))s.value=t;})();</script>
+<section>
+  <h2>Como o valor é formado</h2>
+  <p>O DAS do MEI é fixo: 5% do salário mínimo pro INSS (R$ 81,05 em 2026), mais R$ 1 de ICMS pra quem vende mercadoria e R$ 5 de ISS pra quem presta serviço. O caminhoneiro paga 12% do mínimo de INSS (R$ 194,52). Não importa se você faturou R$ 500 ou R$ 6.000 no mês: o valor é o mesmo.</p>
+  <p>Não sabe se a sua atividade é serviço ou comércio? <a href="/">Procure sua profissão</a> que a página dela mostra.</p>
+</section>
+
+<p class="fonte">Valores com o salário mínimo de 2026 (R$ 1.621). A multa por atraso é de 0,33% ao dia, limitada a 20%, mais juros pela taxa Selic. A guia exata sai no Portal do Empreendedor ou no aplicativo MEI.</p>
+</div></main>
+<footer class="rodape"><div class="w">
+  <div>Guia do MEI · informação independente, sem ligação com o governo. Abrir MEI no Portal do Empreendedor é grátis.</div>
+  <div><a href="/mei/">Profissões</a> · <a href="/calculadora-das-mei/">DAS</a> · <a href="/limite-mei/">Limite</a> · <a href="/privacidade/">Privacidade</a> · <a href="/crm/">Provando o valor do CRM</a></div>
+</div></footer>
+<script src="/assets/mei.js" defer></script>
+<script src="/assets/analitica.js" defer></script>
+</body>
+</html>
