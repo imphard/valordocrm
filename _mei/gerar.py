@@ -27,6 +27,9 @@ INSS_CAMINHONEIRO = round(MINIMO * 0.12, 2)
 LIMITE = 81000
 LIMITE_CAMINHONEIRO = 251600
 
+# Conta do AdSense (o mesmo id vai no ads.txt da raiz)
+ADSENSE = "ca-pub-5457625892554793"
+
 # Links de parceiros. Bloco só aparece quando a url estiver preenchida.
 OFERTAS = {
     "contabilidade": {
@@ -211,6 +214,7 @@ def cabeca(titulo, descricao, caminho, extra_ld=None, robots="index,follow"):
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ADSENSE}" crossorigin="anonymous"></script>
 <link rel="preload" href="/assets/mei/jakarta-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/mei.css?v=2">
 <link rel="icon" href="/assets/mei/favicon.ico" sizes="48x48">
