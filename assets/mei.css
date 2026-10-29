@@ -75,6 +75,7 @@ tr.total td{font-weight:800}
 /* oferta de parceiro */
 .oferta{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:1px solid var(--linha);border-left:4px solid var(--verde);border-radius:0 12px 12px 0;padding:16px 18px;margin:16px 0}
 .oferta p{margin:0;max-width:52ch}
+.oferta-botoes{display:flex;gap:8px;flex-wrap:wrap}
 .oferta .rot{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--tinta3)}
 .btn{display:inline-block;background:var(--verde);color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:10px;border:0;font:inherit;font-weight:700;cursor:pointer}
 .btn:hover{background:var(--verde2)}

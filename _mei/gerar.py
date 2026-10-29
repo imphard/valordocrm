@@ -36,10 +36,13 @@ OFERTAS = {
         "botao": "Ver contabilidade online",
     },
     "maquininha": {
-        "url": "",
-        "rotulo": "Parceiro",
-        "texto": "Recebe no cartão ou no Pix? Uma maquininha sem mensalidade, com o dinheiro na conta no mesmo dia, ajuda a separar o dinheiro do negócio do pessoal.",
+        "url": "https://buy.infinitepay.io/smart?rid=pataconecta",
+        "rotulo": "Parceiro InfinitePay",
+        "texto": "Quer receber no cartão e no Pix com o CNPJ do MEI? Dá pra usar a maquininha da InfinitePay ou cobrar por aproximação no próprio celular, com o InfiniteTap.",
         "botao": "Ver a maquininha",
+        # segundo botão, opcional
+        "url2": "https://infinitepay.onelink.me/IGWD/pataconecta",
+        "botao2": "Cobrar pelo celular",
     },
 }
 
@@ -147,9 +150,12 @@ def oferta(chave, ref):
     o = OFERTAS[chave]
     if not o["url"]:
         return ""
-    sep = "&" if "?" in o["url"] else "?"
+    # link de indicação vai sem parâmetro extra, pra não atrapalhar a atribuição do parceiro
+    botoes = f'<a class="btn" rel="sponsored noopener" target="_blank" href="{e(o["url"])}" data-oferta="{chave}" data-ref="{e(ref)}">{e(o["botao"])}</a>'
+    if o.get("url2"):
+        botoes += f' <a class="btn sec" rel="sponsored noopener" target="_blank" href="{e(o["url2"])}" data-oferta="{chave}-2" data-ref="{e(ref)}">{e(o["botao2"])}</a>'
     return (f'<aside class="oferta"><p><span class="rot">{e(o["rotulo"])}</span>{e(o["texto"])}</p>'
-            f'<a class="btn" rel="sponsored noopener" target="_blank" href="{e(o["url"])}{sep}utm_source=guiadomei&amp;utm_content={e(ref)}">{e(o["botao"])}</a></aside>')
+            f'<div class="oferta-botoes">{botoes}</div></aside>')
 
 
 def cabeca(titulo, descricao, caminho, extra_ld=None, robots="index,follow"):
@@ -394,6 +400,7 @@ def pagina_home(ocs, por_nome):
   <p>O projeto que sobe o limite pra R$ 130 mil (PLP 108/2021) passou no Senado e teve urgência aprovada na Câmara, mas ainda não foi votado nem sancionado. Até lá, vale R$ 81 mil por ano, ou R$ 6.750 por mês no ano em que o MEI é aberto.</p>
   <p><a class="btn sec" href="/limite-mei/">Ver quanto ainda dá pra faturar</a></p>
 </section>
+{oferta("maquininha", "home")}
 
 <section>
   <h2>Datas que todo MEI precisa lembrar</h2>
@@ -500,6 +507,7 @@ def pagina_limite():
   </ul>
   <p>O projeto que subiria o limite pra R$ 130 mil ainda não foi aprovado pela Câmara. Se mudar, esta página muda junto.</p>
 </section>
+{oferta("maquininha", "limite")}
 {oferta("contabilidade", "limite")}
 </div></main>
 """
